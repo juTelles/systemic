@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { io } from 'socket.io-client';
 
-
 export default function App() {
   const [status, setStatus] = useState('disconnected');
   const [last, setLast] = useState('');
@@ -21,7 +20,7 @@ export default function App() {
   }, []);
 
   return (
-    <div style={{ padding:  }}>
+    <div style={{ padding: 16 }}>
       <h1>Systemic rules</h1>
       <p>Status: {status}</p>
       <p>Último: {last}</p>
