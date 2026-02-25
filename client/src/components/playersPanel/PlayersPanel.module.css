@@ -1,0 +1,39 @@
+.playersPanelWrapper {
+  width: 20%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  border-top: 2px solid var(--yellow);
+  background-color: var(--bg-elevated);
+}
+.playersPanelTitle {
+  color: var(--text-main);
+  font-size: var(--font-md);
+  font-family: var(--font-family);
+  margin: 0.2rem 0;
+}
+.playersItemsContainer {
+  width: 95%;
+  height: 80%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  overflow-y: auto;
+}
+/* Custom Scrollbar para Chrome/Edge/Safari */
+.playersItemsContainer::-webkit-scrollbar {
+  width: 6px;
+}
+.playersItemsContainer::-webkit-scrollbar-track {
+  background: #020202;
+}
+.playersItemsContainer::-webkit-scrollbar-thumb {
+  background: #333;
+  border-radius: 10px;
+}
+.playersItemsContainer::-webkit-scrollbar-thumb:hover {
+  background: var(--bg-hover);
+}
