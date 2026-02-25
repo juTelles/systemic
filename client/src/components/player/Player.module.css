@@ -1,0 +1,20 @@
+.playerItemWrapper {
+  width: 95%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.playerName {
+  color: var(--text-main);
+  font-size: var(--font-sm);
+  text-wrap: nowrap;
+  font-family: var(--font-family);
+  line-height: 1;
+}
+.playerPoints {
+  color: var(--text-main);
+  font-size: var(--font-md);
+  text-wrap: nowrap;
+  font-family: var(--font-family);
+  font-weight: bolder;
+}
