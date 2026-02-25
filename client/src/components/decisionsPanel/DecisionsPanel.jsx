@@ -1,6 +1,6 @@
 // eslint-disable-next-line no-unused-vars
 // import react, { Children, useEffect, useState } from 'react';
-import DecisionOption from '../decisionButton/DecisionButton';
+import DecisionButton from '../decisionButton/DecisionButton';
 import styles from './DecisionsPanel.module.css';
 
 function DecisionsPanel() {
@@ -20,7 +20,7 @@ function DecisionsPanel() {
     <div className={styles.decisionsPanelWrapper}>
       <div className={styles.decisionsContainer}>
         {decisionsOptions.map((option) => (
-          <DecisionOption
+          <DecisionButton
             key={option.index}
             optionDescription={option.optionDescription}
             cost={option.cost}

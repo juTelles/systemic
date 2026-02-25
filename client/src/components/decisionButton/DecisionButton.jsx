@@ -2,16 +2,16 @@
 import react from 'react';
 import styles from './DecisionButton.module.css';
 
-function DecisionOption({ optionDescription, cost, type, categoryColor }) {
+function DecisionButton({ optionDescription, cost, type, categoryColor }) {
   function handleClick() {
     console.log(`Option clicked: ${optionDescription} with cost ${cost}`);
   }
 
   return (
-    <div className={styles.decisionOptionWrapper}>
+    <div className={styles.decisionButtonWrapper}>
       <button
         style={{ '--category-color': categoryColor }}
-        className={styles.optionButton}
+        className={styles.decisionButton}
         onClick={handleClick}
       >
         {optionDescription}
@@ -24,4 +24,4 @@ function DecisionOption({ optionDescription, cost, type, categoryColor }) {
   );
 }
 
-export default DecisionOption;
+export default DecisionButton;

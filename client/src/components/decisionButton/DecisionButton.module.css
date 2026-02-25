@@ -1,7 +1,7 @@
-.decisionOptionWrapper {
+.decisionButtonWrapper {
   margin: 0.2rem;
 }
-.optionButton {
+.decisionButton {
   width: 9.5rem;
   height: 3.6rem;
   font-family: var(--font-family);
@@ -16,7 +16,7 @@
   color: var(--text-main);
   box-shadow: 0 0 4px var(--category-color);
 }
-.optionButton:hover {
+.decisionButton:hover {
   background: var(--category-color);
   color: var(--bg-pure);
   box-shadow: 0 0 20px var(--category-color);
