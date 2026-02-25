@@ -1,0 +1,30 @@
+.gamePromptPanelWrapper {
+  width: 30%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 2px solid var(--ciano);
+  background-color: var(--bg-elevated);
+}
+.gamePromptPanel {
+  width: 90%;
+  height: 80%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0.3rem 0 0.6rem 0;
+}
+.gamePromptPanelTitle {
+  color: var(--text-main);
+  font-size: var(--font-md);
+  margin: 0.3rem 0;
+  font-family: var(--font-family);
+}
+.gamePromptPanelText {
+  color: var(--text-main);
+  font-family: var(--font-family);
+  font-size: var(--font-sm);
+  margin: 0.3rem 0;
+}
