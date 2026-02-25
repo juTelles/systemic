@@ -1,7 +1,4 @@
 // shared/protocol.js
-
-// shared/protocol.js
-
 export const PROTOCOL_VERSION = 1;
 
 export const MSG = {
