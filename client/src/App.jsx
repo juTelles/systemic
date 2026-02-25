@@ -1,5 +1,11 @@
 import { useEffect, useState } from 'react';
 import { io } from 'socket.io-client';
+import styles from './App.module.css';
+import './theme.css';
+import Board from './components/board/Board';
+import Header from './components/header/Header';
+import TopBar from './components/topBar/TopBar';
+import BottomPanel from './components/bottomPanel/BottomPanel';
 
 export default function App() {
   const [status, setStatus] = useState('disconnected');
@@ -20,10 +26,11 @@ export default function App() {
   }, []);
 
   return (
-    <div style={{ padding: 16 }}>
-      <h1>Systemic rules</h1>
-      <p>Status: {status}</p>
-      <p>Último: {last}</p>
+    <div className={styles.pageContainer}>
+      <Header title="Systemic" />
+      <TopBar />
+      <Board />
+      <BottomPanel />
     </div>
   );
 }
