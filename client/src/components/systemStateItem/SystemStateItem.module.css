@@ -1,0 +1,71 @@
+/* color mapping */
+.statusCheckerActive[data-status="healthy"] {
+  --led-neon: var(--color-green-neon);
+  --led-dark: var(--color-green-dark);
+  --led-light: var(--color-green-light);
+}
+.statusCheckerActive[data-status="warning"] {
+  --led-neon: var(--color-yellow-neon);
+  --led-dark: var(--color-yellow-dark);
+  --led-light: var(--color-yellow-light);
+}
+.statusCheckerActive[data-status="critical"] {
+  --led-neon: var(--color-red-neon);
+  --led-dark: var(--color-red-dark);
+  --led-light: var(--color-red-light);
+  animation: pulsarCritico 0.5s infinite alternate ease-in-out;
+}
+.systemStateItemWrapper {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.statusChecker {
+  width: 0.7rem;
+  height: 0.7rem;
+  background: var(--bg-elevated);
+  border-style: solid;
+  border-color: var(--text-main);
+  border-width: 3px;
+  padding: 2px;
+  border-radius: 50%;
+}
+.systemStatelabel {
+  font-weight: bolder;
+  color: var(--text-main);
+  font-family: var(--font-family);
+  font-size: var(--font-sm)
+}
+.statusCheckerActive {
+  width: 0.7rem;
+  height: 0.7rem;
+  border-radius: 50%;
+  position: relative;
+  z-index: 10;
+  background-color: var(--led-neon);
+  border: 3px solid var(--led-neon);
+  box-shadow:
+    0 0 5px var(--led-neon),            /* Brilho imediato do LED */
+    0 0 10px var(--led-light), /* Luz iluminando o tabuleiro ao redor */
+    inset 0 0 10px rgba(0,0,0,0.5);   /* Volume para parecer uma lente de plástico */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+@keyframes pulsarCritico {
+  from {
+    background-color: #c2002d;
+    box-shadow:
+      0 0 5px var(--led-dark),            /* Brilho do LED */
+      0 0 10px var(--led-light),           /* Aura de luz base */
+      inset 0 0 10px rgba(0,0,0,0.5); /* Volume interno (NÃO PODE SUMIR) */
+  }
+  to {
+    background-color: var(--led-neon);
+    box-shadow:
+      0 0 15px var(--led-neon),           /* Brilho do LED aumenta */
+      0 0 12px var(--led-light),           /* Aura de luz expande (O PULSO) */
+      inset 0 0 10px rgba(0,0,0,0.5); /* Volume interno mantido */
+  }
+}
