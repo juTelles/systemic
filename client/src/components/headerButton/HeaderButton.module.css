@@ -1,0 +1,29 @@
+.headerButton {
+  width: 7rem;
+  height: 2rem;
+  margin: 1rem 2rem;
+  border-radius: 4px;
+  padding: 8px 20px;
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: var(--font-md);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: var(--font-family);
+  font-weight: 600;
+  font-size: var(--font-xs);
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  letter-spacing: -01.rem;
+  background: var(--bg-button);
+  border: 2px solid var(--color-ciano-neon);
+  color: var(--color-ciano-neon);
+  box-shadow: 0 0 4px var(--color-ciano-neon);
+}
+.headerButton:hover {
+  background: var(--color-ciano-neon);
+  color: #000;
+  box-shadow: 0 0 20px var(--color-ciano-neon);
+}
