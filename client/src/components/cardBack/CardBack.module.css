@@ -1,0 +1,52 @@
+.cardContainer {
+  width: 15%;
+  height: 100%;
+}
+.cardBackMain {
+  width: 150px;
+  height: 210px;
+  background-color: var(--dark-blue);
+  border: 2px solid var(--color-ciano-neon);
+  box-shadow: 0 0 10px var(--color-extra-light);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: 10px;
+}
+.logoText {
+  font-family: ui-monospace, monospace;
+  color: var(--color-ciano-neon);
+  font-weight: bold;
+  text-shadow: 0 0 10px var(--color-ciano-neon);
+  z-index: 2;
+}
+.deckContainer {
+  position: relative;
+  width: 150px;
+  height: 210px;
+  cursor: pointer;
+}
+.cardBackShadow, .cardBackMain {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.cardBackShadow {
+  background: var(--dark-blue);
+  border: 2px solid var(--color-ciano-extra-light);
+}
+.cardBackShadow:nth-child(1) { transform: translate(8px, 8px); z-index: 1; }
+.cardBackShadow:nth-child(2) { transform: translate(5px, 5px); z-index: 2; }
+.cardBackMain { transform: translate(0, 0); z-index: 3; overflow: hidden; }
+
+.deckContainer:hover .cardBackShadow:nth-child(1) { transform: translate(12px, 12px); }
+.deckContainer:hover .cardBackShadow:nth-child(2) { transform: translate(6px, 6px); }
+.deckContainer:hover .cardBackMain {
+  transform: translate(-5px, -5px);
+  box-shadow: 0 0 20px var(--color-ciano-extra-light);
+}
