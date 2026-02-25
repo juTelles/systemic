@@ -2,24 +2,25 @@
   margin: 0.2rem;
 }
 .decisionButton {
-  width: 9.5rem;
+  width: 9rem;
   height: 3.6rem;
+  background: var(--bg-button);
+  color: var(--text-main);
   font-family: var(--font-family);
   font-weight: 600;
   font-size: var(--font-xs);
+  letter-spacing: -0.01rem;
+  border: 2px solid var(--category-color);
   border-radius: 5px;
   cursor: pointer;
   transition: all 0.2s ease;
-  letter-spacing: -01.rem;
-  background: var(--bg-button);
-  border: 2px solid var(--category-color);
-  color: var(--text-main);
   box-shadow: 0 0 4px var(--category-color);
 }
 .decisionButton:hover {
   background: var(--category-color);
   color: var(--bg-pure);
+  text-shadow: 0 0 3px #ffffff;
+  letter-spacing: 0.03rem;
   box-shadow: 0 0 20px var(--category-color);
   transition: all 0.2s ease;
-  text-shadow: 0 0 3px #ffffff;
 }
