@@ -13,7 +13,7 @@
   "type": "module",
   "private": true,
   "dependencies": {
-    "express": "^5.2.1",
+    "express": "^4.19.2",
     "socket.io": "^4.8.3"
   }
 }
