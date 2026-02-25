@@ -1,36 +1,71 @@
-import { useEffect, useState } from 'react';
-import { io } from 'socket.io-client';
-import styles from './App.module.css';
-import './theme.css';
-import Board from './components/board/Board';
-import Header from './components/header/Header';
-import TopBar from './components/topBar/TopBar';
-import BottomPanel from './components/bottomPanel/BottomPanel';
+import { useEffect, useMemo, useRef, useState } from "react";
+import { createSocketClient } from "./socketClient";
 
 export default function App() {
-  const [status, setStatus] = useState('disconnected');
-  const [last, setLast] = useState('');
+  const [state, setState] = useState(null);
+  const [err, setErr] = useState(null);
 
-  useEffect(() => {
-    const socket = io(); // mesmo host do front (Render), sem URL
-    socket.on('connect', () => setStatus('connected'));
-    socket.on('disconnect', () => setStatus('disconnected'));
-    socket.on('PONG', () => setLast('PONG recebido'));
-    socket.on('LOG', (msg) => setLast(msg.message));
+  const clientRef = useRef(null);
 
-    // teste
-    socket.emit('JOIN_ROOM', { roomId: 'banca', name: 'Juliana' });
-    socket.emit('PING');
-
-    return () => socket.close();
+  const socketUrl = useMemo(() => {
+    // Local: backend em http://localhost:8080
+    // Em produção: seu domínio do Render (https://...)
+    return "http://localhost:8080";
   }, []);
 
+  useEffect(() => {
+    const client = createSocketClient({
+      url: socketUrl,
+      onState: (s) => setState(s),
+      onError: (e) => setErr(e),
+    });
+
+    clientRef.current = client;
+
+    return () => {
+      client.socket.disconnect();
+      clientRef.current = null;
+    };
+  }, [socketUrl]);
+
+  const send = (action) => {
+    if (!clientRef.current) return;
+    clientRef.current.sendAction(action);
+  };
+
+  if (!state) {
+    return <div style={{ padding: 16 }}>Conectando e aguardando STATE...</div>;
+  }
+
   return (
-    <div className={styles.pageContainer}>
-      <Header title="Systemic" />
-      <TopBar />
-      <Board />
-      <BottomPanel />
+    <div style={{ padding: 16 }}>
+      <h1>Systemic (Socket.IO test)</h1>
+
+      {err && (
+        <pre style={{ background: "#fee", padding: 12 }}>
+          {JSON.stringify(err, null, 2)}
+        </pre>
+      )}
+
+      <pre style={{ background: "#eee", padding: 12 }}>
+        {JSON.stringify(state, null, 2)}
+      </pre>
+
+      <div style={{ display: "flex", gap: 8 }}>
+        <button onClick={() => send({ type: "END_TURN" })}>END_TURN</button>
+        <button onClick={() => send({ type: "RESET_GAME" })}>RESET_GAME</button>
+        <button onClick={() => send({ type: "FOO" })}>AÇÃO INVÁLIDA</button>
+      </div>
     </div>
   );
 }
+
+//   return (
+//     <div className={styles.pageContainer}>
+//       <Header title="Systemic" />
+//       <TopBar />
+//       <Board />
+//       <BottomPanel />
+//     </div>
+//   );
+// }
