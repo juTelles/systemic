@@ -1,0 +1,46 @@
+:root {
+  --font-xs: 0.75rem;
+  --font-sm: 0.875rem;
+  --font-md: 1rem;
+  --font-lg: 1.25rem;
+
+  --font-family: 'ui-monospace', monospace;
+
+  --bg-pure: #020202;
+  --bg-surface: #121212;
+  --bg-hover: #1e1e1e;
+  --bg-elevated: rgba(18, 18, 18, 0.2);
+  --bg-button: rgba(18, 18, 18, 0.8);
+
+  --text-main: #F5F5F5;
+  --text-muted: #a0a0a0;
+  --red: #FF0055;
+  --yellow: #FDE047;
+  --orange: #FF8A00;
+  --green: #00FF9F;
+  --ciano: #22d3ee;
+  --dark-blue:#020617;
+
+  --shadow: rgba(0,0,0,0.5);
+
+  --color-green-dark: #064E3B;
+  --color-green-neon: #00FF9F;
+  --color-green-neon-dark: #4ADE80;
+  --color-green-light: rgba(74, 222, 128, 0.4);
+
+  --color-red-dark: #450A0A;
+  --color-red-neon: #FF003C;
+  --color-red-light: rgba(255, 0, 60, 0.4);
+
+  --color-orange-dark: #431407;
+  --color-orange-neon: #FF8A00;
+  --color-orange-light: rgba(255, 138, 0, 0.4);
+
+  --color-yellow-dark: #422006;
+  --color-yellow-neon: #FDE047;
+  --color-yellow-light: rgba(253, 224, 71, 0.4);
+
+  --color-ciano-neon: #22d3ee;
+  --color-ciano-light: rgba(0, 242, 255, 0.6);
+  --color-ciano-extra-light: rgba(0, 242, 255, 0.4);
+}
