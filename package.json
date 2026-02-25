@@ -1,4 +1,7 @@
 {
+  "name": "systemic-client",
+  "version": "1.0.0",
+  "type": "module",
   "private": true,
   "scripts": {
     "build": "npm --prefix client ci && npm --prefix client run build && npm --prefix server ci",
