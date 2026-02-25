@@ -1,0 +1,9 @@
+/* Sticker component styles */
+.bottomPanelWrapper {
+  width: 95%;
+  height: 25vh;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0.3rem;
+}
