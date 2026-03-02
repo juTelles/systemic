@@ -1,71 +1,27 @@
-import { useEffect, useMemo, useRef, useState } from "react";
-import { createSocketClient } from "./socketClient";
+import styles from './App.module.css';
+import { useSystemicClient } from "./useSystemicClient";
+import GameScreen from './screens/gameScreen/GameScreen';
+import './theme.css';
+import LobbyScreen from './screens/lobbyScreen/LobbyScreen';
 
 export default function App() {
-  const [state, setState] = useState(null);
-  const [err, setErr] = useState(null);
-
-  const clientRef = useRef(null);
-
-  const socketUrl = useMemo(() => {
-    // Local: backend em http://localhost:8080
-    // Em produção: seu domínio do Render (https://...)
-    return "http://localhost:8080";
-  }, []);
-
-  useEffect(() => {
-    const client = createSocketClient({
-      url: socketUrl,
-      onState: (s) => setState(s),
-      onError: (e) => setErr(e),
-    });
-
-    clientRef.current = client;
-
-    return () => {
-      client.socket.disconnect();
-      clientRef.current = null;
-    };
-  }, [socketUrl]);
-
-  const send = (action) => {
-    if (!clientRef.current) return;
-    clientRef.current.sendAction(action);
-  };
-
-  if (!state) {
-    return <div style={{ padding: 16 }}>Conectando e aguardando STATE...</div>;
-  }
+  const socketUrl = "http://localhost:10000";
+  const { state, err, send } = useSystemicClient(socketUrl);
 
   return (
-    <div style={{ padding: 16 }}>
-      <h1>Systemic (Socket.IO test)</h1>
-
-      {err && (
-        <pre style={{ background: "#fee", padding: 12 }}>
-          {JSON.stringify(err, null, 2)}
-        </pre>
+    <div className={styles.app}>
+      {err && <pre className={styles.error}>{JSON.stringify(err, null, 2)}</pre>}
+        <LobbyScreen/>
+      {!state ? (
+        <div>Conectando...</div>
+      ) : (
+        <>
+          {/* exemplo */}
+          {/* <Board state={state} /> */}
+          {/* <Actions onAction={send} /> */}
+          <button onClick={() => send({ type: "END_TURN" })}>END_TURN</button>
+        </>
       )}
-
-      <pre style={{ background: "#eee", padding: 12 }}>
-        {JSON.stringify(state, null, 2)}
-      </pre>
-
-      <div style={{ display: "flex", gap: 8 }}>
-        <button onClick={() => send({ type: "END_TURN" })}>END_TURN</button>
-        <button onClick={() => send({ type: "RESET_GAME" })}>RESET_GAME</button>
-        <button onClick={() => send({ type: "FOO" })}>AÇÃO INVÁLIDA</button>
-      </div>
     </div>
   );
 }
-
-//   return (
-//     <div className={styles.pageContainer}>
-//       <Header title="Systemic" />
-//       <TopBar />
-//       <Board />
-//       <BottomPanel />
-//     </div>
-//   );
-// }

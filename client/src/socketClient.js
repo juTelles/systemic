@@ -8,6 +8,7 @@ function makeActionId() {
 
 export function createSocketClient({ onState, onError }) {
   const url = import.meta.env.VITE_SOCKET_URL;
+  console.log("[ws] connecting to:", url);
 
   const socket = io(url, {
     transports: ["websocket"],
