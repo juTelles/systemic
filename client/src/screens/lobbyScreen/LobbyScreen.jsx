@@ -3,6 +3,8 @@ import styles from './LobbyScreen.module.css';
 import Header from '../../components/header/Header';
 
 function LobbyScreen() {
+
+  const { rooms } = useRoomsPolling(2000);
   return (
     <div className={styles.pageContainer}>
             {console.log('room', rooms)}
