@@ -1,0 +1,51 @@
+.button {
+  width: 7rem;
+  height: 2rem;
+  /* margin: 1rem 2rem;
+  padding: 8px 20px; */
+  background: var(--bg-button);
+  color: var(--color-ciano-neon);
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 600;
+  font-size: var(--font-xs);
+  text-transform: uppercase;
+  letter-spacing: -0.01rem;
+  cursor: pointer;
+  border-radius: 5px;
+  border: 2px solid var(--color-ciano-neon);
+  transition: all 0.2s ease;
+  box-shadow: 0 0 4px var(--color-ciano-neon);
+}
+.button:hover {
+  background: var(--color-ciano-neon);
+  color: #000;
+  letter-spacing: 0.05rem;
+  box-shadow: 0 0 20px var(--color-ciano-neon);
+}
+.invertedButton {
+  width: 10rem;
+  height: 4rem;
+  font-family: 'JetBrains Mono', monospace;
+  text-transform: uppercase;
+  font-weight: 600;
+  font-size: var(--font-lg);
+  letter-spacing: -0.01rem;
+  border: 2px solid var(--ciano);
+  border-radius: 5px;
+  cursor: pointer;
+  background: var(--ciano);
+  color: var(--bg-pure);
+  text-shadow: 0 0 3px #ffffff;
+  letter-spacing: 0.03rem;
+  box-shadow: 0 0 20px var(--ciano);
+  transition: all 0.2s ease;
+  /* margin: 1rem; */
+}
+.invertedButton:hover {
+  background: var(--bg-button);
+  color: var(--text-main);
+  text-shadow: 0 0 3px #ffffff;
+  letter-spacing: 0.03rem;
+  box-shadow: 0 0 4px var(--ciano);
+  transition: all 0.2s ease;
+}
