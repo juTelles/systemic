@@ -1,7 +1,7 @@
 // eslint-disable-next-line no-unused-vars
 import react from 'react';
 import styles from './Header.module.css';
-import HeaderButton from '../headerButton/HeaderButton';
+import Button from '../button/Button';
 
 function Header({ title }) {
   // const handleClick = () => {
@@ -10,11 +10,11 @@ function Header({ title }) {
 
   return (
     <header className={styles.header}>
-      <HeaderButton label="Opções"/>
+      <Button label="Opções" margin={'1rem 2rem'} padding={'8px 20px'} />
       <div className={styles.titleDiv}>
         <h1 className={styles.gameTitle}>{title}</h1>
       </div>
-      <HeaderButton label="Regras"/>
+      <Button label="Regras"  margin={'1rem 2rem'} padding={'8px 20px'}/>
     </header>
   );
 }
