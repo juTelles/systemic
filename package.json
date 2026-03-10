@@ -4,7 +4,8 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "build": "npm --prefix client ci && npm --prefix client run build && npm --prefix server ci",
-    "start": "npm --prefix server start"
+    "build": "npm --prefix client install && npm --prefix client run build && npm --prefix server install",
+    "start": "node server/server.js"
+    
   }
 }
