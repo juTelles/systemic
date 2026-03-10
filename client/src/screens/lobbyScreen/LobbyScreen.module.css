@@ -6,58 +6,23 @@
   align-items: center;
   justify-content: space-between;
 }
-.formWrapper {
+.lobbyWrapper {
   width: 100%;
   height: 90%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: space-around;
 }
-.startButtonWrapper {
-  width: 20%;
-  height: 20%;
-  margin: 1rem;
+.buttonsWrapper {
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+gap: 20px;
 }
-.startButton {
-  width: 10rem;
-  height: 4rem;
-  font-family: var(--font-family);
-  font-weight: 600;
-  font-size: var(--font-lg);
-  letter-spacing: -0.01rem;
-  border: 2px solid var(--ciano);
-  border-radius: 5px;
-  cursor: pointer;
-  background: var(--ciano);
-  color: var(--bg-pure);
-  text-shadow: 0 0 3px #ffffff;
-  letter-spacing: 0.03rem;
-  box-shadow: 0 0 20px var(--ciano);
-  transition: all 0.2s ease;
-  margin: 1rem;
-}
-.startButton:hover {
-  background: var(--bg-button);
-  color: var(--text-main);
-  text-shadow: 0 0 3px #ffffff;
-  letter-spacing: 0.03rem;
-  box-shadow: 0 0 4px var(--ciano);
-  transition: all 0.2s ease;
-}
-.nameInput {
-  width: 10rem;
-  height: 4rem;
-  margin: 1rem;
-  background: var(--bg-button);
+.bottomInfo {
+  font-size: var(--font-md);
   color: var(--text-main);
   font-family: var(--font-family);
-  font-weight: 600;
-  font-size: var(--font-lg);
-  letter-spacing: -0.01rem;
-  border: 2px solid var(--ciano);
-  border-radius: 5px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  box-shadow: 0 0 4px var(--ciano);
 }
