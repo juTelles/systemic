@@ -108,20 +108,22 @@ export function createRoomsService() {
 
   function getState(roomId) {
     const room = store.get(roomId);
-    return room ? room.state : null;
+    if (!room) {
+      throw createError(ERRORS.ROOM_NOT_FOUND, 404);
+    }
+    return room.state;
   }
 
   function applyRoomAction(roomId, action, ctx) {
     const room = store.get(roomId);
-
     if (!room) {
-      throw new Error("Room not found");
+      throw createError(ERRORS.ROOM_NOT_FOUND, 404);
     }
+    console.log(`Applying action to room ${roomId} with action:`, action, 'and context:', ctx);
 
-    const nextState = applyAction(room.state, action, ctx);
+    let nextState = applyAction(room.state, action, ctx);
 
     room.state = nextState;
-
-    return nextState;
+    return room.state;
   }
-}
+};
