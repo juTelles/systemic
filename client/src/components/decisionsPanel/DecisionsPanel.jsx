@@ -2,35 +2,38 @@
 // import react, { Children, useEffect, useState } from 'react';
 import DecisionButton from '../decisionButton/DecisionButton';
 import styles from './DecisionsPanel.module.css';
+import { decisions } from '../../../../shared/src/definitions/decisons';
+import { decisionsTxt } from '../../texts/decisionsTxt';
 
-function DecisionsPanel() {
+function DecisionsPanel({ roomState, isPreGame, localPlayerId }) {
 
-  const decisionsOptions = [
-    { optionDescription: 'Bug Local', cost: 10, type:'localBug', index: 1, categoryColor: '#FDE047' },
-    { optionDescription: 'Bug Estrutural', cost: 20, type:'strucuturalBug', index: 2, categoryColor: '#FF8A00' },
-    { optionDescription: 'Bug de Requisição', cost: 15, type:'requsitionsBug', index: 3, categoryColor: '#FF0055' },
-    { optionDescription: 'Desenvolver Testes', cost: 5, type: 'tests', index: 4, categoryColor: '#00FF9F' },
-    { optionDescription: 'Bug Local com Testes', cost: 10, type:'localBug', index: 7, categoryColor: '#FDE047' },
-    { optionDescription: 'Bug Estrutural com Testes', cost: 20, type:'strucuturalBug', index: 8, categoryColor: '#FF8A00'},
-    { optionDescription: 'Bug de Requisição com Testes', cost: 15, type:'requsitionsBug', index: 9, categoryColor: '#FF0055' },
-    { optionDescription: 'Doar / Guardar', type: 'giveOrHoldPoints', cost: 2, index: 5, categoryColor: '#22d3ee'},
-  ];
+    const costs = roomState?.gameConfig?.decisionCosts;
+    console.log('DecisionsPanel renderizado com roomState:', decisions);
 
-  return (
-    <div className={styles.decisionsPanelWrapper}>
+      if (!costs) return null;
+
+      return (
+        <div className={styles.decisionsPanelWrapper}>
       <div className={styles.decisionsContainer}>
-        {decisionsOptions.map((option) => (
-          <DecisionButton
-            key={option.index}
-            optionDescription={option.optionDescription}
-            cost={option.cost}
-            type={option.type}
-            categoryColor={option.categoryColor}
-          />
-        ))}
+        {decisions.forUI.map((id) => {
+            return (
+              <DecisionButton
+                key={decisions.options[id].id}
+                id={decisions.options[id].id}
+                optionDescription={decisionsTxt[decisions.options[id].id].label.pt}
+                cost={costs[decisions.options[id].costType]}
+                categoryColor={decisionsTxt[decisions.options[id].id].categoryColor}
+                isPreGame={isPreGame}
+                localPlayerId={localPlayerId}
+                type={decisions.options[id].type}
+              />
+            );
+          })}
       </div>
     </div>
-  );
+  )
 }
 
 export default DecisionsPanel;
+
+// TODO: Change categoryColor to be defined in the color css variables, and then use the variable name in the decisionsTxt, instead of the hex color directly. This way we can keep all colors in one place and make it easier to update them in the future.
