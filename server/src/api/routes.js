@@ -1,6 +1,6 @@
-import express from "express";
+import express from 'express';
 
-export function createRoutes({ rooms }) {
+export function createRoutes({ rooms, runGameLoop }) {
   const router = express.Router();
 
   router.get('/rooms', (req, res) => {
