@@ -44,14 +44,22 @@ export function createRoutes({ rooms }) {
     }
   });
 
-  router.post("/rooms/:roomId/leave", (req, res) => {
-    const { roomId } = req.params;
-    const { playerId } = req.body;
+  router.post('/rooms/:roomId/leave', (req, res) => {
+    try {
+      const { roomId } = req.params;
+      const { playerId } = req.body;
 
-    const result = rooms.leaveRoom(roomId, playerId);
-    console.log("Leaving room", roomId);
-    res.json(result);
+      const result = rooms.leaveRoom(roomId, playerId);
+      console.log('Leaving room', roomId);
+      res.json(result);
+    } catch (err) {
+      console.error(err);
+      res.status(err.status || 500).json({
+        code: err.code || err.message || "INTERNAL_ERROR",
+      });
+    }
   });
+  //TODO: fix leave feature, not implemented anymore > leave room and leave game
 
   router.get("/rooms/:roomId/state", (req, res) => {
     const { roomId } = req.params;
