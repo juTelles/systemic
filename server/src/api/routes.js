@@ -3,10 +3,16 @@ import express from "express";
 export function createRoutes({ rooms }) {
   const router = express.Router();
 
-  router.get("/rooms", (req, res) => {
-    const roomsList = rooms.listRooms();
-    // console.log("Getting all rooms", roomsList);
-    res.json({ roomsList });
+  router.get('/rooms', (req, res) => {
+    try {
+      const roomsList = rooms.listRooms();
+      res.json({ roomsList });
+    } catch (err) {
+      console.error(err);
+      res.status(err.status || 500).json({
+        code: err.code || err.message || "INTERNAL_ERROR",
+      });
+    }
   });
 
   router.post("/rooms/createRoom", (req, res) => {
