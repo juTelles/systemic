@@ -1,12 +1,23 @@
 
 .header {
   width: 100vw;
-  height: 9vh;
+  height: 10vh;
   z-index: 1;
   display: flex;
   justify-content: space-between;
 }
+.menuButtonDiv {
+  width: 30%;
+  display: flex;
+  justify-content: flex-start;
+}
+.rulesButtonDiv {
+  width: 30%;
+  display: flex;
+  justify-content: flex-end;
+}
 .gameTitle {
+  width: 100%;
   color: var(--color-ciano-neon);
   font-family: 'JetBrains Mono', monospace;
   text-transform: uppercase;
@@ -20,5 +31,5 @@
   text-transform: uppercase;
 }
 .titleDiv {
-  width: 33.%;
+  width: 30%;
 }
