@@ -56,6 +56,44 @@ export function applyAction(state, action, ctx = {}) {
       };
       return next;
     }
+
+    case ACTION_TYPES.GAME_START: {
+      const gameConfig = structuredClone(gameConfigs.regularMode);
+
+      if (!isGameReadyToStart(gameConfig, next, 'LOBBY', PLAYER_STATUS.READY)) {
+        //TODO: Fix this log, applyRoomAction returns only the new state, so we passing
+        // would means nothing without refactoring the applyRoomAction to return both
+        // the new state and the log of what happened, throwing an error or something
+        // triggers the cleanUp function in the client, which is not what we want in this case,
+        // since it's not an error from the user, but from the game state, so we should just log it and return the next state without applying the GAME_START action
+        console.warn('[GAME_START] skipped: conditions not met');
+        return next;
+      }
+      next.flow.blockedUntil = now + 1500;
+      next.flow.step = steps['GAME_START'];
+      next.gameConfig = gameConfig;
+      next.components = structuredClone(components);
+      next.components = applyGameStartBugs(next.components);
+      const deck = composeDeck(gameConfigs.regularMode.deck.composition);
+      next.deck = deck;
+      next.phase = 'IN_GAME';
+      next.meta.rev += 1;
+      next.meta.updatedAt = now;
+      next.players = next.players.map((player) => ({
+        ...player,
+        status: 'PLAYING',
+        handPoints: 0,
+        bankPoints: 0,
+      }));
+      next.log.lastEvent = {
+        type: ACTION_TYPES.GAME_START,
+        by: action.senderId ?? null,
+        at: now,
+        data: { phase: action.phase },
+      };
+      return next;
+    }
+
       next.flow.turn += 1;
       next.meta.rev += 1;
       next.meta.updatedAt = now;
