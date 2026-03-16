@@ -28,13 +28,20 @@ export async function createRoom() {
 }
 
 export async function getRoomState(roomId, rev) {
-  const res = await fetch(`/api/rooms/${roomId}/state?rev=${rev}`);
-  return res.json();
+  const result = await apiFetch(`/rooms/${roomId}/state?rev=${rev}`);
+  return result;
 }
 
-export async function sendAction(roomId, playerId, action) {
+export async function sendAction(roomId, senderId, type, payload = {}) {
+console.log(`Sending action to room ${roomId} from sender ${senderId} with type ${type} and payload:`, payload);
   return apiFetch(`/rooms/${roomId}/action`, {
     method: "POST",
-    body: JSON.stringify({ playerId, action })
+    body: JSON.stringify({
+      senderId,
+      action: {
+        type,
+        payload,
+      },
+    }),
   });
 }
