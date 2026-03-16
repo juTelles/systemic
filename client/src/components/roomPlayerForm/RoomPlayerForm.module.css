@@ -19,3 +19,8 @@
   font-family: var(--font-family);
   font-size: var(--font-md);
 }
+.errorMessage {
+  color: var(--text-error);
+  font-size: var(--font-xs);
+  margin-top: 5px;
+}

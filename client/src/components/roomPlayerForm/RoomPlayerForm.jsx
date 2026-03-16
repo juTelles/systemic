@@ -1,80 +1,53 @@
 // eslint-disable-next-line no-unused-vars
-import Button from '../button/Button';
+import Button from '../button/button';
 import styles from './RoomPlayerForm.module.css';
 import { useState } from 'react';
-import { joinRoom } from '../../api/roomsApi';
+import { getErrorMessage } from '../../texts/errorsMessages';
+// import { validateNickname } from '../../utils/validations';
 
-function RoomPlayerForm({ roomId, room }) {
+function RoomPlayerForm({ room, onJoinRoom }) {
   const [inputValue, setInputValue] = useState('');
-  // const [nickname, setNickname] = useState('');
-  // const [playerId, setPlayerId] = useState('');
-  // const [roomId, setRoomId] = useState('');
-  // const player = {
-  //   nickname: '',
-  //   playerId: '',
-  //   roomId: '',
-  // };
+  const [error, setError] = useState('');
 
   const handleChange = (event) => {
-      setInputValue(event.target.value);
+    setInputValue(event.target.value);
+    if (error) setError('');
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault(); // Prevents page refresh
-    const validationResult = validateNickname();
-    if (validationResult === false) {
-      alert('Nickname inválido. Certifique-se de que o nickname tenha entre 1 e 8 caracteres e não seja igual ao de outro jogador na sala.');
-      console.log('eeeeeeee',validateNickname());
-      return;
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    setError('');
+    const trimmedInputValue = inputValue.trim();
+    const result = await onJoinRoom(room, trimmedInputValue);
+    if (!result.ok) {
+      setError(getErrorMessage(result.code));
     }
-    console.log('Submitting nickname:', inputValue);
-    const playerJoin = async () => {
-      try {
-        const player = await joinRoom(room.id, inputValue);
-        console.log('Player joined room successfully:', player);
-      } catch (err) {
-        console.error('Failed to get room list:', err);
-        console.error(err);
-      }
-    };
-    playerJoin();
-    // setNickname(player.nickname);
-    // console.log('Submitted:', inputValue);
-    setInputValue(''); // Clear state
   };
-
-const validateNickname = () => {
-  let result = true;
-  result = inputValue.length >= 8 || inputValue.length < 1 ? true : false;
-  console.log('validateNickname result', room.players);
-  room.players.map((player) => {
-    if (player.nickname === inputValue) {
-      result = false;
-    }
-    return result;
-  });
-}
 
   return (
     <div className={styles.roomPlayerFormContainer}>
-      <div className={styles.playersFormWrapper}>
+      <form
+        className={styles.playersFormWrapper}
+        onSubmit={handleSubmit}
+      >
         <input
+          type="text"
           maxLength="8"
           placeholder="escolha um apelido..."
           className={styles.playerForm}
-          type="text"
           onChange={handleChange}
           value={inputValue}
         />
         <Button
-          label={'+'}
-          width={'10%'}
-          height={'100%'}
+          type="submit"
+          label="+"
+          width="10%"
+          height="100%"
           inverted={true}
-          borderRadius={'0px'}
-          onClick={handleSubmit}
+          borderRadius="0px"
         />
-      </div>
+      </form>
+      {error && <span className={styles.errorMessage}>{error}</span>}
     </div>
   );
 }
