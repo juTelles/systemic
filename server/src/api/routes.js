@@ -61,22 +61,30 @@ export function createRoutes({ rooms, runGameLoop }) {
   });
   //TODO: fix leave feature, not implemented anymore > leave room and leave game
 
-  router.get("/rooms/:roomId/state", (req, res) => {
-    const { roomId } = req.params;
-    const clientRev = Number(req.query.rev ?? 0);
+  router.get('/rooms/:roomId/state', (req, res) => {
+    try {
+      const { roomId } = req.params;
+      const clientRev = Number(req.query.rev ?? 0);
 
-    const room = roomsService.getRoom(roomId);
+      let roomState = rooms.getState(roomId);
 
-    if (!room) {
-      return res.status(404).json({ error: "Room not found" });
-    }
+      if (!roomState) {
+        return res.status(404).json({ error: 'Room not found' });
+      }
 
-    const serverRev = room.state.rev;
+      roomState = runGameLoop(roomState, roomId);
 
-    if (clientRev === serverRev) {
-      return res.json({ changed: false });
-    }
+      const serverRev = roomState.meta.rev;
 
+      if (clientRev === serverRev) {
+        return res.json({ changed: false });
+      }
+
+      res.json({
+        changed: true,
+        rev: serverRev,
+        state: roomState,
+      });
     } catch (err) {
       console.error(err);
       res.status(err.status || 500).json({
