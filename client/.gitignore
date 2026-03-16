@@ -14,7 +14,7 @@ lerna-debug.log*
 # Ignoring server-side rendering build outputs
 dist-ssr
 build/
-
+dist/
 # Ignore local environment configuration files
 *.local
 
