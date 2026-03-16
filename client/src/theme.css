@@ -11,9 +11,11 @@
   --bg-hover: #1e1e1e;
   --bg-elevated: rgba(18, 18, 18, 0.2);
   --bg-button: rgba(18, 18, 18, 0.8);
+  --text-error: #FF003C;
 
   --text-main: #F5F5F5;
   --text-muted: #a0a0a0;
+  --button-disabled: #707070;
   --red: #FF0055;
   --yellow: #FDE047;
   --orange: #FF8A00;
