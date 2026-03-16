@@ -94,6 +94,25 @@ export function applyAction(state, action, ctx = {}) {
       return next;
     }
 
+    case ACTION_TYPES.ROUND_START: {
+      next.flow.step = steps['ROUND_START'];
+      next.flow.blockedUntil = now + 1500;
+      next.players.every(
+        (player) =>
+          (player.handPoints = next.gameConfig.taskPoints.playerPerRound)
+      );
+      next.flow.round += 1;
+      next.flow.turn = 0;
+      next.meta.rev += 1;
+      next.meta.updatedAt = now;
+      next.log.lastEvent = {
+        type: ACTION_TYPES.END_TURN,
+        by: action.senderId ?? null,
+        at: now,
+      };
+      return next;
+    }
+
       next.flow.turn += 1;
       next.meta.rev += 1;
       next.meta.updatedAt = now;
