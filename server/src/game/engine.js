@@ -113,6 +113,19 @@ export function applyAction(state, action, ctx = {}) {
       return next;
     }
 
+    case ACTION_TYPES.TURN_START: {
+      next.flow.step = steps['TURN_START'];
+      next.flow.turn += 1;
+      next.flow.currentPlayerId = next.players[next.flow.turn].id;
+      next.meta.rev += 1;
+      next.meta.updatedAt = now;
+      next.log.lastEvent = {
+        type: ACTION_TYPES.END_TURN,
+        by: action.senderId ?? null,
+        at: now,
+      };
+      return next;
+    }
       next.flow.turn += 1;
       next.meta.rev += 1;
       next.meta.updatedAt = now;
