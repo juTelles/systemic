@@ -12,7 +12,6 @@ function GameScreen({ roomId, localPlayerId, onSessionInvalid }) {
   const previousPhaseRef = useRef(null);
   const { roomState, isLoading, errorCode } = useStatePolling(roomId);
   const isPreGame = roomState?.phase === 'LOBBY';
-  console.log(roomState);
 
   useEffect(() => {
     if (isLoading) return;
