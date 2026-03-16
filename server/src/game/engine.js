@@ -140,6 +140,29 @@ export function applyAction(state, action, ctx = {}) {
       return next;
     }
 // TODO: Rethink if it is a necessary action to have
+
+    case ACTION_TYPES.CHOOSE_DECISION: {
+      next.flow.step = steps['CHOOSE_DECISION'];
+
+      let decisionsAvailable = [];
+      const player = getPlayerObject(next.flow.currentPlayerId, next.players);
+      if (next.decisions.available.length === 0) {
+        decisionsAvailable = getAvailableDecisions(
+          next.gameConfig.decisionCosts,
+          getTotalPlayersPoints(player)
+        );
+      }
+      next.decisions.available = decisionsAvailable;
+      next.meta.rev += 1;
+      next.meta.updatedAt = now;
+      next.log.lastEvent = {
+        type: ACTION_TYPES.APPLY_DECISION,
+        by: action.senderId ?? null,
+        at: now,
+      };
+      return next;
+    }
+
       next.flow.turn += 1;
       next.meta.rev += 1;
       next.meta.updatedAt = now;
