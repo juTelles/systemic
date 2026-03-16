@@ -200,12 +200,20 @@ export function applyAction(state, action, ctx = {}) {
       };
       return next;
     }
+
+    case ACTION_TYPES.END_TURN: {
+      next.flow.blockedUntil = now + 1500;
       next.flow.turn += 1;
       next.meta.rev += 1;
       next.meta.updatedAt = now;
-      next.log.lastEvent = { type: "END_TURN", by: ctx.playerId ?? null, at: now };
+      next.log.lastEvent = {
+        type: ACTION_TYPES.END_TURN,
+        by: action.senderId ?? null,
+        at: now,
+      };
       return next;
     }
+// TODO: Fix, remenber to zero the turn count
 
     case "SET_PHASE": {
       next.phase = action.phase;
