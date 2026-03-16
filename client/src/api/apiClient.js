@@ -1,17 +1,44 @@
 export async function apiFetch(path, options = {}) {
-  const res = await fetch(`/api${path}`, {
-    headers: {
-      "Content-Type": "application/json",
-      ...(options.headers || {})
-    },
-    ...options
-  });
-  // console.log(`API request to /api${path} with options:`, options);
-  const data = await res.json();
+  const headers = {
+    ...(options.body ? { 'Content-Type': 'application/json' } : {}),
+    ...(options.headers || {}),
+  };
 
-  if (!res.ok) {
-    throw new Error(data?.error?.message || "API error");
+  try {
+    const res = await fetch(`/api${path}`, {
+      ...options,
+      headers,
+    });
+
+    let data = null;
+
+    try {
+      data = await res.json();
+    } catch {
+      data = null;
+    }
+
+    if (!res.ok) {
+      return {
+        ok: false,
+        code: data?.error?.code || 'INTERNAL_ERROR',
+        status: res.status,
+        isUnexpected: false,
+      };
+    }
+
+    return {
+      ok: true,
+      ...data,
+    };
+  } catch (err) {
+    console.error(err);
+    return {
+      ok: false,
+      code: err.code || 'INTERNAL_ERROR',
+      status: 0,
+      error: err.message || 'An unexpected error occurred',
+      isUnexpected: true,
+    };
   }
-
-  return data;
 }
