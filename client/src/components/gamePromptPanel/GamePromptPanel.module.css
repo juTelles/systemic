@@ -5,7 +5,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  border-top: 2px solid var(--ciano);
+  border-top: 2px solid var(--yellow);
   background-color: var(--bg-elevated);
 }
 .gamePromptPanel {
