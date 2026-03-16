@@ -16,9 +16,17 @@ function DecisionButton({ optionDescription, cost, type, categoryColor }) {
       >
         {optionDescription}
         <br />
-        {(type !== 'holdPoints') & (type !== 'givePoints')
-          ? `${cost} Pontos`
-          : `Limite: ${cost} Pontos`}
+        {type === 'BUG' ? (
+          <>
+            {`${cost} Pontos`}
+            <br />
+            {`Testado: ${cost} Pontos`}
+          </>
+        ) : type === 'POINTS' ? (
+          <>{`Limite: ${cost} Pontos`}</>
+        ) : (
+          `${cost} Pontos`
+        )}
       </button>
     </div>
   );
