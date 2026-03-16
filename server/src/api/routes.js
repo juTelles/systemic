@@ -92,7 +92,13 @@ export function createRoutes({ rooms }) {
 
     const state = rooms.applyRoomAction(roomId, action, { playerId });
 
-    res.json({ state });
+      res.json({ roomState });
+    } catch (err) {
+      console.error(err);
+      res.status(err.status || 500).json({
+        code: err.code || err.message || "INTERNAL_ERROR",
+      });
+    }
   });
 
   return router;
