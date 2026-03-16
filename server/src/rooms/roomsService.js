@@ -19,14 +19,18 @@ export function createRoomsService() {
 
 
   function createRoom() {
-    const roomId = store.generateRoomId();
+    const finalRoomId = store.generateRoomId();
 
-    const room = store.ensure(roomId, (id) => ({
+    const existingRoom = store.get(finalRoomId);
+    if (existingRoom) {
+      throw createError(ERRORS.ROOM_ALREADY_EXISTS);
+    }
+
+    const room = store.ensure(finalRoomId, (id) => ({
       id,
-      state: createInitialState({ roomId: id })
+      state: createInitialState({ roomId: id }),
     }));
-
-    room.state.rev++;
+    room.state.meta.rev++;
 
     return { id: room.id, state: room.state };
   }
