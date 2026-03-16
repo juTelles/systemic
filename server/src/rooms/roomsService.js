@@ -1,9 +1,18 @@
-import { createRoomsStore } from "./roomsStore.js";
-import { createInitialState } from "../game/initialState.js";
-import { applyAction } from "../game/engine.js";
-import crypto from "crypto";
+import {
+  validateNickname,
+  validateNicknameAvailability,
+} from '../../../shared/utils/validations.js';
+import { ERRORS } from '../../../shared/src/constants/errors.js';
+import { createError } from '../utils/createErrors.js';
+import { createRoomsStore } from './roomsStore.js';
+import { createInitialState } from '../game/initialState.js';
+import { applyAction } from '../game/engine.js';
+import crypto from 'crypto';
+import { playerDef } from '../../../shared/src/definitions/player.js';
+
 
 const MAX_PLAYERS = 4;
+const MIN_PLAYERS = 2;
 
 export function createRoomsService() {
   const store = createRoomsStore();
@@ -14,9 +23,8 @@ export function createRoomsService() {
     applyRoomAction,
     listRooms,
     createRoom,
-    leaveRoom
+    leaveRoom,
   };
-
 
   function createRoom() {
     const finalRoomId = store.generateRoomId();
