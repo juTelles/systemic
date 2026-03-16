@@ -77,11 +77,13 @@ export function createRoutes({ rooms }) {
       return res.json({ changed: false });
     }
 
-    res.json({
-      changed: true,
-      rev: serverRev,
-      state: room.state
-    });
+    } catch (err) {
+      console.error(err);
+      res.status(err.status || 500).json({
+        code: err.code || err.message || "INTERNAL_ERROR",
+      });
+    }
+
   });
 
   router.post("/rooms/:roomId/action", (req, res) => {
