@@ -229,8 +229,12 @@ export function applyAction(state, action, ctx = {}) {
     }
 
     default:
-      throw new Error("Unknown action type");
+      const err = new Error('Unknown action type');
+      err.code = 'UNKNOWN_ACTION_TYPE';
+      err.status = 400;
+      throw err;
   }
+}
 // TODO: Think if necessary to have sapate action dor setting phase
 // TODO: Send flag for showing start game dialog from last flag and turning it of after unbloking GAME_START action, to avoid checking the conditions for starting the game in every state update (currently it's only checked when a player sets ready, but it could be checked in other moments in the future, like when a player leaves the room, etc...)
 // function shouldStartGame(state) {
@@ -239,3 +243,4 @@ export function applyAction(state, action, ctx = {}) {
 //     ? true
 //     : false;
 // }
+// TODO: Reasherch better way to handle the actions an game flow
