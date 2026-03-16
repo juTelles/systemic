@@ -1,18 +1,22 @@
 .playersPanelWrapper {
-  width: 20%;
+  width: 23%;
   height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
-  border-top: 2px solid var(--yellow);
+  border-top: 2px solid var(--orange);
   background-color: var(--bg-elevated);
+}
+.playersPanelButton {
+ align-self: flex-start;
 }
 .playersPanelTitle {
   color: var(--text-main);
   font-size: var(--font-md);
   font-family: var(--font-family);
   margin: 0.2rem 0;
+  width: 50%;
 }
 .playersItemsContainer {
   width: 95%;
@@ -20,7 +24,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-around;
+  justify-content: flex-start;
   overflow-y: auto;
 }
 /* Custom Scrollbar para Chrome/Edge/Safari */
