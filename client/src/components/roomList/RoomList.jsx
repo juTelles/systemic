@@ -4,7 +4,7 @@ import styles from './RoomList.module.css';
 import RoomListPlayers from '../roomListPlayers/RoomListPlayers';
 import RoomPlayerForm from '../roomPlayerForm/RoomPlayerForm';
 
-function RoomList({rooms}) {
+function RoomList({ rooms, onJoinRoom }) {
   return (
     <div className={styles.roomListContainer}>
       <h2 className={styles.roomListTitle}>Salas</h2>
@@ -19,8 +19,28 @@ function RoomList({rooms}) {
                   Sala {room.id} - {room.phase}
                 </li>
               </div>
-              <RoomListPlayers roomId={room.id} room={room} />
-              {room.playersCount < 4 ? <RoomPlayerForm roomId={room.id} room={room} /> : <p className={styles.roomFullMessage}>Sala pronta para jogar</p>}
+              <RoomListPlayers
+                roomId={room.id}
+                room={room}
+              />
+              {room.playersCount < 4 ? (
+                <RoomPlayerForm
+                  rooms={rooms}
+                  roomId={room.id}
+                  room={room}
+                  onJoinRoom={onJoinRoom}
+                />
+              ) : ( ''
+              //   <Button
+              //   label={'Entrar na sala'}
+              //   reversed={true}
+              //   width="100%"
+              //   height="1.5rem"
+              //   inverted={true}
+              //   fontSize={'0.8rem'}
+              //   margin={'0.5rem 0 0 0.5rem'}
+              // />
+              )}
             </div>
           ))
         )}
