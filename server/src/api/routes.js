@@ -28,13 +28,20 @@ export function createRoutes({ rooms }) {
     }
   });
 
-  router.post("/rooms/:roomId/join", (req, res) => {
-    const { roomId } = req.params;
-    const { nickname } = req.body;
+  router.post('/rooms/:roomId/join', (req, res) => {
+    try {
+      const { roomId } = req.params;
+      const { nickname } = req.body;
 
-    const result = rooms.joinRoom(roomId, nickname);
-    console.log("Joining room", roomId, "with nickname", nickname);
-    res.json(result);
+      const result = rooms.joinRoom(roomId, nickname);
+      console.log('Joining room', roomId, 'with nickname', nickname);
+      res.json(result);
+    } catch (err) {
+      console.error(err);
+      res.status(err.status || 500).json({
+        code: err.code || err.message || "INTERNAL_ERROR",
+      });
+    }
   });
 
   router.post("/rooms/:roomId/leave", (req, res) => {
