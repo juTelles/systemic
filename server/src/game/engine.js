@@ -215,15 +215,27 @@ export function applyAction(state, action, ctx = {}) {
     }
 // TODO: Fix, remenber to zero the turn count
 
-    case "SET_PHASE": {
+    case ACTION_TYPES.SET_PHASE: {
       next.phase = action.phase;
       next.meta.rev += 1;
       next.meta.updatedAt = now;
-      next.log.lastEvent = { type: "SET_PHASE", by: ctx.playerId ?? null, at: now, data: { phase: action.phase } };
+      next.log.lastEvent = {
+        type: ACTION_TYPES.SET_PHASE,
+        by: action.senderId ?? null,
+        at: now,
+        data: { phase: action.phase },
+      };
       return next;
     }
 
     default:
       throw new Error("Unknown action type");
   }
-}
+// TODO: Think if necessary to have sapate action dor setting phase
+// TODO: Send flag for showing start game dialog from last flag and turning it of after unbloking GAME_START action, to avoid checking the conditions for starting the game in every state update (currently it's only checked when a player sets ready, but it could be checked in other moments in the future, like when a player leaves the room, etc...)
+// function shouldStartGame(state) {
+//   return state.players.length >= MIN_PLAYERS &&
+//     state.players.every((player) => player.status === 'READY')
+//     ? true
+//     : false;
+// }
