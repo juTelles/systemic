@@ -5,6 +5,7 @@ import { fileURLToPath } from "url";
 
 import { createRoutes } from "./api/routes.js";
 import { createRoomsService } from "./rooms/roomsService.js";
+import { createRunGameLoop } from "./game/controller.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -29,9 +30,10 @@ export function createApp() {
 
   // dependências do "domínio"
   const rooms = createRoomsService();
+  const runGameLoop = createRunGameLoop({ rooms });
 
   // API primeiro, para não conflitar com SPA
-  app.use("/api", createRoutes({ rooms }));
+  app.use("/api", createRoutes({ rooms, runGameLoop  }));
 
   // Servir o front buildado (Vite)
   const clientDistPath = path.resolve(__dirname, "../../client/dist");
