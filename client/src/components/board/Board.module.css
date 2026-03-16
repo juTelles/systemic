@@ -1,16 +1,8 @@
-.boardWrapper {
-  width: 95%;
-  height: 30vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-}
 .board {
   position: relative;
-  width: 95%;
-  height: 40vh;
-  margin: 0.3rem;
+  width: 100%;
+  height: 100%;
+  margin: 0rem;
   /* border-style: solid;
   border-color: #ffffff;
   border-width: 3px;
@@ -26,74 +18,77 @@
 .connectionsLayer {
   position: absolute;
   inset: 0;
-  width: 95%;
+  width: 100%;
   height: 100%;
   pointer-events: none; /* pra não “roubar” clique dos nós */
   z-index: 1;
 }
 .nodesLayer {
   z-index: 2; /* nós acima das linhas */
-  width: 90%;
-  max-height: 90%;
-  height: 22rem;
+  width: 100%;
+  height: 100%;
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-  grid-template-rows: 1fr 1fr 1fr 1fr;
-  gap: clamp(8px, 1vw, 16px);
-  justify-items: center;
+  grid-template-columns: 10% 6% 10% 10% 10% 6% 10% 10% 10% 6% 10%;
+  grid-template-rows: 10% 10% 10% 10% 10% 10% 10% 10% 10% 10%;
+  justify-content: center;
+}
+.interface {
+  grid-row: 1/4;
+  grid-column: 1;
+  z-index: 2;
+justify-self: start;
 }
 .frontend{
-  height: 20vw;
-  width: 20vw;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 1fr;
-  align-items: center;
-  justify-items: center;
-  align-content: center;
-  justify-content: center;
-  grid-row: 1 / 4;
-  grid-column: 1 / 3;
+  grid-row: 5/7;
+  grid-column: 2;
   z-index: 2;
 }
-.appRequisition {
-  grid-row: 3 / 4;
-  grid-column: 3 / 4;
+.interaction {
+  grid-row: 1/4;
+  grid-column: 3;
+  z-index: 2;
+}
+.applicationRequests {
+  grid-row: 7;
+  grid-column: 4;
+  z-index: 2;
+  justify-self: end;
+}
+.logic {
+  grid-row: 4/7;
+  grid-column: 5;
   z-index: 2;
 }
 .backend{
-  height: 20vw;
-  width: 20vw;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 1fr;
-  align-items: center;
-  justify-items: center;
-  align-content: center;
-  justify-content: center;
-  grid-row: 2 / 4;
-  grid-column: 5 / 7;
-  z-index: 2;
+  grid-row: 8/9;
+  grid-column: 6;
+  z-index: 6;
+ justify-self: center;
 }
-.dataRequisition {
-  grid-row: 3 / 4;
-  grid-column: 8 / 9;
+.integrations {
+  grid-row: 4/7;
+  grid-column: 7;
+  z-index: 2;
+
+}
+.dataRequests {
+  grid-row: 7;
+  grid-column: 8;
+  z-index: 2;
+  justify-self: start;
+}
+.data {
+  grid-row: 1/4;
+  grid-column: 9;
   z-index: 2;
 }
 .database{
-  height: 20vw;
-  width: 20vw;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 1fr;
-  align-items: center;
-  justify-items: center;
-  align-content: center;
-  justify-content: center;
-  grid-row: 1 / 4;
-  grid-column: 9 / 11;
+  grid-row: 5/8;
+  grid-column: 10;
   z-index: 2;
 }
-.structural {
-  grid-column: 1 / 3;
+.structure {
+  grid-row: 1/4;
+  grid-column: 11;
+  z-index: 2;
 }
