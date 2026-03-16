@@ -163,6 +163,43 @@ export function applyAction(state, action, ctx = {}) {
       return next;
     }
 
+    case ACTION_TYPES.APPLY_DECISION: {
+      next.flow.step = steps['APPLY_DECISION'];
+
+      const currentPlayer = getPlayerObject(
+        next.flow.currentPlayerId,
+        next.players
+      );
+
+      next = applyDecisionEffect(action, next, currentPlayer.id);
+
+      let decisionsAvailable = getAvailableDecisions(
+        next.gameConfig.decisionCosts,
+        getTotalPlayersPoints(currentPlayer)
+      );
+      if (decisionsAvailable.length === 0) {
+        next.flow.step.next = 'DRAW_CARD';
+      } else {
+        next.flow.step.next = 'CHOOSE_DECISION';
+      }
+      next.decisions.applied.push({
+        chosen: action.decision.chosen,
+        target: action.decision.target,
+        selectedAmount: action.decision.selectedAmount,
+      });
+      next.decisions.available = decisionsAvailable;
+      next.decisions.chosen = null;
+      next.decisions.target = null;
+      next.decisions.selectedAmount = 0;
+      next.meta.rev += 1;
+      next.meta.updatedAt = now;
+      next.log.lastEvent = {
+        type: ACTION_TYPES.PLAYER_TURN,
+        by: action.senderId ?? null,
+        at: now,
+      };
+      return next;
+    }
       next.flow.turn += 1;
       next.meta.rev += 1;
       next.meta.updatedAt = now;
