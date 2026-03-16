@@ -75,20 +75,34 @@ export function createRoomsService() {
     const room = store.get(roomId);
 
     if (!room) {
-      throw new Error("Room not found");
+      throw createError(ERRORS.ROOM_NOT_FOUND, 404);
     }
     const initialCount = room.state.players.length;
-    room.state.players = room.state.players.filter(p => p.id !== playerId);
 
-    return room.state.players.length < initialCount;
+    const exists = room.state.players.some((player) => player.id === playerId);
+    if (!exists) {
+      throw createError(ERRORS.PLAYER_NOT_FOUND, 404);
+    }
+    room.state.players = room.state.players.filter(
+      (player) => player.id !== playerId
+    );
+    room.state.meta.rev += 1;
+
+    return {
+      removed: true,
+      state: room.state,
+    };
   }
 
   function listRooms() {
-    return store.getAll().map(room => ({
+    return store.getAll().map((room) => ({
       id: room.id,
       playersCount: room.state.players.length,
-      players: room.state.players.map(player => ({ nickname: player.nickname, id: player.id })),
-      phase: room.state.phase
+      players: room.state.players.map((player) => ({
+        nickname: player.nickname,
+        id: player.id,
+      })),
+      phase: room.state.phase,
     }));
   }
 
