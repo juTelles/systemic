@@ -15,10 +15,17 @@ export function createRoutes({ rooms }) {
     }
   });
 
-  router.post("/rooms/createRoom", (req, res) => {
-    const result = rooms.createRoom();
-    console.log("Creating room", result);
-    res.json(result);
+  router.post('/rooms/createRoom', (req, res) => {
+    try {
+      const result = rooms.createRoom();
+      console.log('Creating room', result);
+      res.json(result);
+    } catch (err) {
+      console.error(err);
+      res.status(err.status || 500).json({
+        code: err.code || err.message || "INTERNAL_ERROR",
+      });
+    }
   });
 
   router.post("/rooms/:roomId/join", (req, res) => {
