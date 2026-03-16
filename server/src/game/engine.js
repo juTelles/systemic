@@ -126,6 +126,20 @@ export function applyAction(state, action, ctx = {}) {
       };
       return next;
     }
+
+    case ACTION_TYPES.PLAYER_TURN: {
+      next.flow.step = steps['PLAYER_TURN'];
+      next.flow.blockedUntil = now + 1500;
+      next.meta.rev += 1;
+      next.meta.updatedAt = now;
+      next.log.lastEvent = {
+        type: ACTION_TYPES.PLAYER_TURN,
+        by: action.senderId ?? null,
+        at: now,
+      };
+      return next;
+    }
+// TODO: Rethink if it is a necessary action to have
       next.flow.turn += 1;
       next.meta.rev += 1;
       next.meta.updatedAt = now;
