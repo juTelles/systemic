@@ -35,22 +35,39 @@ export function createRoomsService() {
     let room = store.get(roomId);
 
     if (!room) {
-      room = createRoom(roomId);
+      throw createError(ERRORS.ROOM_NOT_FOUND, 404);
+    }
+    const nicknameValidation = validateNickname(nickname);
+    if (!nicknameValidation.ok) {
+      return nicknameValidation;
     }
 
-    if (room.state.players.length >= MAX_PLAYERS) {
-      throw new Error("Room is full");
-    }
-
-    const player = {
-      id: crypto.randomUUID(),
+    const availabilityValidation = validateNicknameAvailability(
+      room.state.players,
       nickname
-    };
+    );
+    if (!availabilityValidation.ok) {
+      return availabilityValidation;
+    }
+
+    if (room.state.phase !== 'LOBBY') {
+      return { ok: false, code: 'GAME_ALREADY_STARTED' };
+    }
+    if (room.state.players.length >= MAX_PLAYERS) {
+      return { ok: false, code: 'ROOM_FULL' };
+    }
+
+    let player ={...playerDef};
+    player.id = crypto.randomUUID();
+    player.nickname = nickname;
+
     room.state.players.push(player);
+    room.state.meta.rev += 1;
 
     return {
       playerId: player.id,
-      state: room.state
+      playerNickname: player.nickname,
+      state: room.state,
     };
   }
 
