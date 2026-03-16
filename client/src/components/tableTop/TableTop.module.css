@@ -1,0 +1,10 @@
+/* Sticker component styles */
+.topBarWrapper {
+  width: 95%;
+  height: 50vh;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 1rem;
+  gap: 1rem;
+}
