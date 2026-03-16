@@ -49,3 +49,10 @@
   box-shadow: 0 0 4px var(--ciano);
   transition: all 0.2s ease;
 }
+.button:disabled {
+  background: var(--bg-button);
+  color: var(--button-disabled);
+  border-color: var(--button-disabled);
+  cursor: not-allowed;
+  box-shadow: none;
+}
