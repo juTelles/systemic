@@ -9,7 +9,7 @@ lerna-debug.log*
 
 # Node modules
 **/node_modules
-server/node_modules
+/server/node_modules
 client/node_modules
 # Build artifacts
 # Ignoring server-side rendering build outputs
