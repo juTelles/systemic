@@ -9,14 +9,14 @@ function AbsorbedBugsPanel() {
     { component: 'Interação', count: 20, id: 2 },
     { component: 'Frontend', count: 15, id: 3 },
     { component: 'Req de Aplicação', count: 5, id: 4 },
-    { component: 'Lógica', count: 5, id: 4 },
-    { component: 'Integrações', count: 5, id: 4 },
-    { component: 'Integrações', count: 5, id: 4 },
-    { component: 'Integrações', count: 5, id: 4 },
-    { component: 'Req de Dados', count: 5, id: 4 },
-    { component: 'Banco de Dados', count: 5, id: 4 },
-    { component: 'Dados', count: 5, id: 4 },
-    { component: 'Estrutura', count: 5, id: 4 },
+    { component: 'Lógica', count: 5, id: 5 },
+    { component: 'Integrações', count: 5, id: 6 },
+    { component: 'Integrações', count: 5, id: 7 },
+    { component: 'Integrações', count: 5, id: 8 },
+    { component: 'Req de Dados', count: 5, id: 9 },
+    { component: 'Banco de Dados', count: 5, id: 10 },
+    { component: 'Dados', count: 5, id: 11 },
+    { component: 'Estrutura', count: 5, id: 12 },
   ];
 
   return (
