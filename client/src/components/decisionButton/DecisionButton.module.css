@@ -8,7 +8,7 @@
   color: var(--text-main);
   font-family: var(--font-family);
   font-weight: 600;
-  font-size: var(--font-xs);
+  font-size: var(--font-md);
   letter-spacing: -0.01rem;
   border: 2px solid var(--category-color);
   border-radius: 5px;

@@ -20,6 +20,7 @@
   font-weight: bold;
   text-shadow: 0 0 10px var(--color-ciano-neon);
   z-index: 2;
+  font-size: 28px;
 }
 .deckContainer {
   position: relative;

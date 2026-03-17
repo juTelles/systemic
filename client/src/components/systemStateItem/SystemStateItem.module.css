@@ -35,7 +35,7 @@
   font-weight: bolder;
   color: var(--text-main);
   font-family: var(--font-family);
-  font-size: var(--font-sm)
+  font-size: var(--font-md)
 }
 .statusCheckerActive {
   width: 0.7rem;

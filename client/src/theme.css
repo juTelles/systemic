@@ -1,8 +1,15 @@
 :root {
-  --font-xs: 0.75rem;
-  --font-sm: 0.875rem;
-  --font-md: 1rem;
-  --font-lg: 1.25rem;
+  /* O texto terá 2% da altura da tela, não importa a resolução */
+  --font-xs: 1.6vh;
+  --font-sm: 1.8vh;
+  --font-md: 2vh;
+  --font-lg: 2.5vh;
+  --font-xl: 3.5vh;
+
+  --font-xs: clamp(10px, 1.6vh, 18px);
+  --font-sm: clamp(12px, 1.8vh, 20px);
+  --font-md: clamp(14px, 2vh, 22px);
+  --font-lg: clamp(18px, 2.5vh, 28px
 
   --font-family: 'ui-monospace', monospace;
 

@@ -7,7 +7,7 @@
   color: var(--color-ciano-neon);
   font-family: 'JetBrains Mono', monospace;
   font-weight: 600;
-  font-size: var(--font-xs);
+  font-size: var(--font-md);
   text-transform: uppercase;
   letter-spacing: -0.01rem;
   cursor: pointer;
@@ -28,7 +28,7 @@
   font-family: 'JetBrains Mono', monospace;
   text-transform: uppercase;
   font-weight: 600;
-  font-size: var(--font-lg);
+  font-size: var(--font-md);
   letter-spacing: -0.01rem;
   border: 2px solid var(--ciano);
   border-radius: 5px;
