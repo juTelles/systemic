@@ -4,10 +4,9 @@ import Button from '../../components/button/Button';
 import RoomList from '../../components/RoomList/RoomList';
 import { useRoomsPolling } from '../../hooks/useRoomsPolling';
 import { joinRoom } from '../../api/roomsApi';
-import GameHeader from '../../components/gameHeader/GameHeader';
+import LobbyHeader from '../../components/lobbyHeader/LobbyHeader';
 
 function LobbyScreen({ onJoinSuccess }) {
-
   const { rooms } = useRoomsPolling(2000);
 
   async function handleCreateRoom() {
@@ -37,8 +36,8 @@ function LobbyScreen({ onJoinSuccess }) {
 
   return (
     <div className={styles.pageContainer}>
-      {/* {console.log('room', rooms)} */}
-      <GameHeader title="Systemic" />
+      {console.log('room', rooms)}
+      <LobbyHeader title="Systemic" />
       <div className={styles.lobbyWrapper}>
         <RoomList rooms={rooms} onJoinRoom={handleJoinRoom} />
         <div className={styles.buttonsWrapper}>

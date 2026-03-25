@@ -113,6 +113,7 @@ export function createRoomsService() {
       players: room.state.players.map((player) => ({
         nickname: player.nickname,
         id: player.id,
+        status: player.status,
       })),
       phase: room.state.phase,
     }));

@@ -5,6 +5,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
+  gap: 1.2rem;
 }
 .lobbyWrapper {
   width: 100%;

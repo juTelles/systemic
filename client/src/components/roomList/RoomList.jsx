@@ -16,7 +16,7 @@ function RoomList({ rooms, onJoinRoom }) {
             <div key={room.id} className={styles.roomItemWrapper}>
               <div key={room.id} className={styles.roomItemHeader}>
                 <li className={styles.roomItem}>
-                  Sala {room.id} - {room.phase}
+                  Sala {room.id} - {room.phase == 'LOBBY'? 'AGUARDANDO' : 'JOGANDO'}
                 </li>
               </div>
               <RoomListPlayers

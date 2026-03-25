@@ -1,15 +1,11 @@
 // eslint-disable-next-line no-unused-vars
-import react from 'react';
-import styles from './GameHeader.module.css';
+import styles from './LobbyHeader.module.css';
 import Button from '../button/Button';
 
-function GameHeader({ title, }) {
-  // const handleClick = () => {
-  //   alert('Em desenvolvimento');
-  // };
+function LobbyHeader({ title, }) {
 
   return (
-    <header className={styles.header}>
+    <header className={styles.lobbyHeader}>
       <div className={styles.menuButtonDiv}>
       <Button label="Opções" margin={'1rem 2rem'} padding={'8px 20px'} />
       </div>
@@ -23,4 +19,4 @@ function GameHeader({ title, }) {
   );
 }
 
-export default GameHeader;
+export default LobbyHeader;
