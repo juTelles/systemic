@@ -2,10 +2,10 @@
 import react from 'react';
 import styles from './Button.module.css';
 
-function Button({ label, width, height, padding, margin, onClick, inverted, borderRadius, fontSize, disabled }) {
+function Button({ label, width, height, padding, margin, onClick, inverted, borderRadius, fontSize, disabled, border }) {
   return (
     <button
-      style={{ width: width, height: height, margin: margin, padding: padding, borderRadius: borderRadius, fontSize: fontSize }}
+      style={{ width: width, height: height, margin: margin, padding: padding, borderRadius: borderRadius, fontSize: fontSize, border: border }}
       className={inverted ? styles.invertedButton : styles.button}
       onClick={onClick} disabled={disabled}
     >

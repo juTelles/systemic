@@ -6,6 +6,7 @@ import StatusBar from '../../components/statusBar/StatusBar';
 import { useStatePolling } from '../../hooks/useStatePolling';
 import { useRef, useEffect, useState } from 'react';
 import TableTop from '../../components/tableTop/TableTop';
+import LateralBar from '../../components/lateralBar/LateralBar';
 
 function GameScreen({ roomId, localPlayerId, onSessionInvalid }) {
   const [showGameStartDialog, setShowGameStartDialog] = useState(false);
@@ -59,27 +60,32 @@ function GameScreen({ roomId, localPlayerId, onSessionInvalid }) {
           </div>
         </div>
       )}
-      <GameHeader
-        title="Systemic"
-        isPreGame={isPreGame}
-        roomState={roomState}
-      />
-      <StatusBar
-        isPreGame={isPreGame}
-        roomState={roomState}
-        localPlayerId={localPlayerId}
-        roomId={roomId}
-      />
-      <TableTop
-        isPreGame={isPreGame}
-        roomState={roomState}
-        localPlayerId={localPlayerId}
-      />
-      <ActionBar
-        isPreGame={isPreGame}
-        roomState={roomState}
-        localPlayerId={localPlayerId}
-      />
+      <div className={styles.mainContainer}>
+        <StatusBar
+          isPreGame={isPreGame}
+          roomState={roomState}
+          localPlayerId={localPlayerId}
+          roomId={roomId}
+          waitDecisionAmount={waitDecisionAmount}
+          waitDecisionTarget={waitDecisionTarget}
+        />
+        <TableTop
+          isPreGame={isPreGame}
+          roomState={roomState}
+          localPlayerId={localPlayerId}
+          waitDecisionTarget={waitDecisionTarget}
+          handleTargetSelected={handleTargetSelected}
+        />
+        <ActionBar
+          isPreGame={isPreGame}
+          roomState={roomState}
+          localPlayerId={localPlayerId}
+          handleDecisionMade={handleDecisionMade}
+        />
+      </div>
+      <div className={styles.lateralBarContainer}>
+        <LateralBar />
+      </div>
     </div>
   );
 }

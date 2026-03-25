@@ -27,18 +27,17 @@
 .ComponentNode {
   width: 1.3rem;
   height: 1.3rem;
-  background: var(--bg-surface);
+  background: var(--bg-pure);
   border-style: solid;
-  border-color: var(--text-main);
+  border-color: #f5f5f5d2;
   border-width: 3px;
   padding: 2px;
   border-radius: 50%;
   z-index: 2;
   display: flex;
   align-items: center;
-  /* cursor: pointer; */
   transition: all 0.2s ease;
-  user-select: none
+  user-select: none;
 }
 label {
   max-width: 7rem;
@@ -100,3 +99,6 @@ label {
   from { opacity: 1; }
   to { opacity: 0.7; }
 } */
+.ComponentNode:hover {
+  transform: scale(1.2);
+}

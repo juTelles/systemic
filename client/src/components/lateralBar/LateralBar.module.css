@@ -5,31 +5,51 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  justify-content: flex-start;
-  gap: 30px;
-  position:relative;
+  justify-content: space-between;
 }
 .cardContainer {
-  width: 90%;
+  width: 80%;
   height: 27%;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: start;
 }
-.panelContainer {
-  width: 90%;
-  height: 49%;
+.absorbedBugsPanelContainer {
+  width: 85%;
+  height: 45%;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 .menuContainer {
-  width: 90%;
-  height: 20%;
-  align-items: center;
-  justify-content: flex-end;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  align-self: flex-end;
+  margin-top: 5px;
+  align-items: center;
+}
+.exitContainer {
+  display: flex;
+  flex-direction: row;
   align-items: flex-start;
-  gap: 1px;
+  align-self: flex-end;
+  margin-bottom: 5px;
+}
+.menuButton, .helpButton, .exitButton {
+  background-color: var(--bg-pure);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  color: var( --color-ciano-extra-light);
+  cursor: pointer;
+}
+.menuButton:hover, .helpButton:hover, .exitButton:hover {
+  color: var(--color-ciano-neon);
+  text-shadow: 0 0 60px var(--color-ciano-neon);
+}
+.icon:hover {
+  text-shadow: 0 0 60px var(--color-ciano-neon);
+  filter: drop-shadow(0 0 2px var(--color-ciano-neon)) drop-shadow(0 0 10px var(--color-ciano-neon));
+  transform: scale(1.1);
 }

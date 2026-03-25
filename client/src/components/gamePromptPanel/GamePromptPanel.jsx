@@ -5,7 +5,7 @@ import { instructions } from '../../../../shared/src/definitions/instructions';
 
 function GamePromptPanel({ step }) {
   return (
-    <div className={styles.gamePromptPanelWrapper}>
+    <div className={styles.gamePromptPanelContainer}>
       <h2 className={styles.gamePromptPanelTitle}>Instruções</h2>
       <div className={styles.gamePromptPanel}>
         <p className={styles.gamePromptPanelText}>

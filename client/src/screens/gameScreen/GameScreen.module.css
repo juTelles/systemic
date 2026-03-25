@@ -2,9 +2,40 @@
   width: 100vw;
   height: 100vh;
   display: flex;
+  flex-direction: row;
+  align-items: center;
+  overflow: hidden;
+  justify-content: space-between;
+  gap: 1.2rem;
+}
+.SideBarContainer {
+  width: 5%;
+  height: 100vh;
+  z-index: 1;
+  display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
+  background-color: var(--bg-);
+  flex-grow: 1;
+}
+.mainContainer {
+  width: 82%;
+  height: 95%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  margin-left: 1.2rem;
+  flex-grow: 2;
+}
+.lateralBarContainer {
+  width: 13%;
+  height: 100%;
+  max-width: 300px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
 }
 .dialogOverlay {
   position: fixed;

@@ -14,7 +14,7 @@
   border-radius: 5px;
   border: 2px solid var(--color-ciano-neon);
   transition: all 0.2s ease;
-  box-shadow: 0 0 4px var(--color-ciano-neon);
+  /* box-shadow: 0 0 4px var(--color-ciano-neon); */
 }
 .button:hover {
   background: var(--color-ciano-neon);
@@ -37,9 +37,8 @@
   color: var(--bg-pure);
   text-shadow: 0 0 3px #ffffff;
   letter-spacing: 0.03rem;
-  box-shadow: 0 0 20px var(--ciano);
+  box-shadow: 0 0 10px var(--ciano);
   transition: all 0.2s ease;
-  /* margin: 1rem; */
 }
 .invertedButton:hover {
   background: var(--bg-button);

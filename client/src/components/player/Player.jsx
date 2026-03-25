@@ -2,7 +2,7 @@
 import react from 'react';
 import styles from './Player.module.css';
 import Button from '../button/Button';
-import { BiCheck } from 'react-icons/bi';
+import { GiCheckMark } from "react-icons/gi";
 
 function Player({
   playerName,
@@ -21,7 +21,7 @@ function Player({
             {playerStatus == 'READY' ? 'PRONTO' : 'Esperando'}
           </span>
           <Button
-            label={<BiCheck size={25} />}
+            label={<GiCheckMark size={16}/>}
             width={'20%'}
             height={'1.2rem'}
             margin={'3px 0px 3px 7px'}
@@ -30,7 +30,6 @@ function Player({
             padding={'0'}
             disabled={localPlayerId == true ? false : true}
           >
-            <BiCheck size={25} />
           </Button>
         </div>
       ) : (

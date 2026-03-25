@@ -1,9 +1,8 @@
 /* Sticker component styles */
-.bottomPanelWrapper {
-  width: 95%;
-  height: 14vh;
+.actionBarContainer {
+  width: 100%;
+  height: 15%;
   display: flex;
-  align-items: center;
-  justify-content: space-around;
-  margin: 0.3rem;
+  flex-direction: row;
+
 }

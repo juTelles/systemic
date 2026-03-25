@@ -13,7 +13,7 @@ function ActionBar({roomState, isPreGame, localPlayerId}) {
   }
 
   return (
-    <div className={styles.bottomPanelWrapper}>
+    <div className={styles.actionBarContainer}>
       <DecisionsPanel roomState={roomState} isPreGame={isPreGame} localPlayerId={localPlayerId} />
     </div>
   );

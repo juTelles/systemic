@@ -8,23 +8,24 @@ import AbsorbedBugsPanel from '../absorbedBugsPanel/AbsorbedBugsPanel';
 import CardBack from '../cardBack/CardBack';
 
 function StatusBar({ roomState, isPreGame, localPlayerId, roomId }) {
-  // const {
-  // } = props;
 
   return (
     // console.log('TopBar renderizado com roomState:', roomState),
-    <div className={styles.topBarWrapper}>
-      <AbsorbedBugsPanel/>
+    <div className={styles.statusBarContainer}>
+      <div className={styles.systemStatesPanelWraper}>
       <SystemStatesPanel />
+      </div>
+      <div className={styles.gamePromptPanelWraper}>
       <GamePromptPanel step={roomState?.flow?.step?.name || ''}/>
+      </div>
+      <div className={styles.playersPanelWraper}>
       <PlayersPanel
         players={roomState?.players}
         isPreGame={isPreGame}
         localPlayerId={localPlayerId}
         roomId={roomId}
       />
-      <CardBack />
-
+      </div>
     </div>
   );
 }

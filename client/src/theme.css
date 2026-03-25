@@ -10,7 +10,7 @@
   --font-sm: clamp(12px, 1.8vh, 20px);
   --font-md: clamp(14px, 2vh, 22px);
   --font-lg: clamp(18px, 2.5vh, 28px);
-  --font-xl: clamp(24px, 3.5vh, 40px
+  --font-xl: clamp(24px, 3.5vh, 40px);
 
   --font-family: 'ui-monospace', monospace;
 
@@ -29,6 +29,7 @@
   --orange: #FF8A00;
   --green: #00FF9F;
   --ciano: #22d3ee;
+  --ciano-dark: #09363d;
   --dark-blue:#020617;
 
   --shadow: rgba(0,0,0,0.5);
