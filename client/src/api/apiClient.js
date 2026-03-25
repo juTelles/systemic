@@ -21,7 +21,7 @@ export async function apiFetch(path, options = {}) {
     if (!res.ok) {
       return {
         ok: false,
-        code: data?.error?.code || 'INTERNAL_ERROR',
+        code: data?.code || data?.error?.code || 'INTERNAL_ERROR',
         status: res.status,
         isUnexpected: false,
       };
