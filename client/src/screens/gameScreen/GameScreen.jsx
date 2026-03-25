@@ -1,6 +1,5 @@
 // eslint-disable-next-line no-unused-vars
 import styles from './GameScreen.module.css';
-import GameHeader from '../../components/gameHeader/GameHeader';
 import ActionBar from '../../components/actionBar/ActionBar';
 import StatusBar from '../../components/statusBar/StatusBar';
 import { useStatePolling } from '../../hooks/useStatePolling';
@@ -66,21 +65,16 @@ function GameScreen({ roomId, localPlayerId, onSessionInvalid }) {
           roomState={roomState}
           localPlayerId={localPlayerId}
           roomId={roomId}
-          waitDecisionAmount={waitDecisionAmount}
-          waitDecisionTarget={waitDecisionTarget}
         />
         <TableTop
           isPreGame={isPreGame}
           roomState={roomState}
           localPlayerId={localPlayerId}
-          waitDecisionTarget={waitDecisionTarget}
-          handleTargetSelected={handleTargetSelected}
         />
         <ActionBar
           isPreGame={isPreGame}
           roomState={roomState}
           localPlayerId={localPlayerId}
-          handleDecisionMade={handleDecisionMade}
         />
       </div>
       <div className={styles.lateralBarContainer}>
