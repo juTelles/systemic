@@ -1,18 +1,19 @@
 {
-  "name": "server",
+  "name": "systemic-server",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
-    "start": "node src/index.js",
+    "start": "node server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
+  "type": "module",
+  "private": true,
   "dependencies": {
-    "express": "^5.2.1",
+    "express": "^4.19.2",
     "socket.io": "^4.8.3"
   }
 }
