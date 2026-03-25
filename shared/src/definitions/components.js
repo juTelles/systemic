@@ -13,7 +13,7 @@ export const components = {
       bugAmount: 0,
       hasTests: false,
     },
-    dataRequisitions: {
+    dataRequests: {
       id: 'dataRequests',
       namePT: 'Requisições de Dados',
       type: 'REQUEST',
@@ -146,7 +146,7 @@ export const components = {
   },
   allIds: [
     'applicationRequests',
-    'dataRequisitions',
+    'dataRequests',
     'frontend',
     'backend',
     'database',
@@ -158,7 +158,7 @@ export const components = {
     'structure',
   ],
   byType: {
-    REQUEST: ['applicationRequisitions', 'dataRequisitions'],
+    REQUEST: ['applicationRequests', 'dataRequests'],
     STRUCTURAL: ['frontend', 'backend', 'database'],
     LOCAL: ['interface', 'interaction', 'logic', 'integrations', 'data', 'structure'],
   },
