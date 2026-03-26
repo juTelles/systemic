@@ -4,6 +4,7 @@ const decisionValidators = {
   REQUIRES_AMOUNT: ({ action }) => typeof action.selectedAmount === 'number',
   COMPONENT_MUST_HAVE_BUG: ({ component }) => component?.bugAmount > 0,
   COMPONENT_MUST_NOT_HAVE_TESTS: ({ component }) => !component?.hasTests,
+  COMPONENT_MUST_HAVE_TESTS: ({ component }) => component?.hasTests,
 };
 
 export function runDecisionValidators(validators, context) {
