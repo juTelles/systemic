@@ -1,0 +1,19 @@
+/* Sticker component styles */
+.statusBarContainer {
+  width: 100%;
+  height: 27%;
+  display: flex;
+  gap: 1rem;
+}
+.systemStatesPanelWraper {
+  width: 30%;
+  height: 100%;
+}
+.gamePromptPanelWraper {
+  width: 70%;
+  height: 100%;
+}
+.playersPanelWraper {
+  width: 40%;
+  height: 100%;
+}

@@ -1,0 +1,34 @@
+.lobbyHeader {
+  width: 100vw;
+  height: 13vh;
+  z-index: 1;
+  display: flex;
+  justify-content: space-between;
+}
+.menuButtonDiv {
+  width: 30%;
+  display: flex;
+  justify-content: flex-start;
+}
+.rulesButtonDiv {
+  width: 30%;
+  display: flex;
+  justify-content: flex-end;
+}
+.gameTitle {
+  width: 100%;
+  color: var(--color-ciano-neon);
+  font-family: 'JetBrains Mono', monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.4rem;
+  font-weight: 800;
+  text-shadow:
+    0 0 1px #fff, /* 1. Centro branco */
+    0 0 8px var(--color-ciano-neon), /* 2. Cor principal */
+    0 0 10px var(--color-ciano-light), /* 3. Aura ciano */
+    0 0 20px var(--color-ciano-extra-light); /* 4. Brilho atmosférico */
+  text-transform: uppercase;
+}
+.titleDiv {
+  width: 30%;
+}

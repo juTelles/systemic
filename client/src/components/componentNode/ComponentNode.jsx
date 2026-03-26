@@ -1,16 +1,25 @@
 // eslint-disable-next-line no-unused-vars
-import react from 'react';
+import { Tooltip } from 'react-tooltip';
 import styles from './ComponentNode.module.css';
 
 function ComponentNode({ anchorRef, ...props }) {
-  const { type, bugQtn, label, hasTests, hasBug } = props;
+  const { type, bugAmount, label, hasTests, hasBug } = props;
 
+  const handleClick = () => {
+    // Lógica para lidar com o clique no componente
+    console.log(`Componente ${label} clicado!`);
+  }
+  
   return (
     <div className={styles.ComponentNodeWrapper}>
       {type === 'local' ? (
         <label className={styles.labelUp}>{label}</label>
       ) : null}
       <div
+        role="button"
+        tabIndex={0}
+        onClick={handleClick}
+        data-tooltip-id="my-btn"
         ref={anchorRef}
         className={`${styles.ComponentNode} ${
           hasTests
@@ -20,8 +29,11 @@ function ComponentNode({ anchorRef, ...props }) {
             : ''
         }`}
         data-status={type}
+        title={`${label}\n${hasTests ? 'Testado' : 'Sem Testes'}\n${hasBug ? 'Com Bugs' : 'Sem Bugs'}`}
+
       >
-        <span className={styles.bugQntLed}>{bugQtn !== 0 ? bugQtn : ''}</span>
+         <Tooltip id="my-btn" place="top" variant="dark" />
+        <span className={styles.bugQntLed}>{bugAmount !== 0 ? bugAmount : ''}</span>
       </div>
       {type !== 'local' ? (
         <label className={styles.labelDown}>{label}</label>

@@ -1,0 +1,24 @@
+.roomListPlayersContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.roomListPlayerItemWrapper {
+  width: 100%;
+  height: 1.7rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--bg-button);
+}
+.roomListPlayerNickname, .roomListPlayerStatus {
+  width: 30%;
+  height: 100%;
+  color: var(--text-main);
+  font-family: var(--font-family);
+  font-size: var(--font-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

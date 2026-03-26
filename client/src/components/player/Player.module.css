@@ -6,15 +6,32 @@
 }
 .playerName {
   color: var(--text-main);
-  font-size: var(--font-sm);
+  font-size: var(--font-md);
   text-wrap: nowrap;
   font-family: var(--font-family);
   line-height: 1;
 }
 .playerPoints {
   color: var(--text-main);
-  font-size: var(--font-md);
+  font-size: var(--font-lg);
   text-wrap: nowrap;
   font-family: var(--font-family);
   font-weight: bolder;
+}
+.playerItemWrapper{
+  display: flex;
+  align-items: space-between;
+  justify-content: space-between;
+}
+.preGameStatusWrapper {
+  width: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.playerStatus {
+  color: var(--text-main);
+  font-size: var(--font-sm);
+  text-wrap: nowrap;
+  font-family: var(--font-family);
 }

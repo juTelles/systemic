@@ -1,0 +1,55 @@
+/* Sticker component styles */
+.lateralBar {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+.cardContainer {
+  width: 80%;
+  height: 27%;
+  display: flex;
+  align-items: center;
+  justify-content: start;
+}
+.absorbedBugsPanelContainer {
+  width: 85%;
+  height: 45%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.menuContainer {
+  display: flex;
+  flex-direction: row;
+  align-self: flex-end;
+  margin-top: 5px;
+  align-items: center;
+}
+.exitContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  align-self: flex-end;
+  margin-bottom: 5px;
+}
+.menuButton, .helpButton, .exitButton {
+  background-color: var(--bg-pure);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  color: var( --color-ciano-extra-light);
+  cursor: pointer;
+}
+.menuButton:hover, .helpButton:hover, .exitButton:hover {
+  color: var(--color-ciano-neon);
+  text-shadow: 0 0 60px var(--color-ciano-neon);
+}
+.icon:hover {
+  text-shadow: 0 0 60px var(--color-ciano-neon);
+  filter: drop-shadow(0 0 2px var(--color-ciano-neon)) drop-shadow(0 0 10px var(--color-ciano-neon));
+  transform: scale(1.1);
+}

@@ -1,8 +1,10 @@
 :root {
-  --font-xs: 0.75rem;
-  --font-sm: 0.875rem;
-  --font-md: 1rem;
-  --font-lg: 1.25rem;
+
+  --font-xs: clamp(10px, 1.6vh, 18px);
+  --font-sm: clamp(12px, 1.8vh, 20px);
+  --font-md: clamp(14px, 2vh, 22px);
+  --font-lg: clamp(18px, 2.5vh, 28px);
+  --font-xl: clamp(24px, 3.5vh, 40px);
 
   --font-family: 'ui-monospace', monospace;
 
@@ -11,14 +13,17 @@
   --bg-hover: #1e1e1e;
   --bg-elevated: rgba(18, 18, 18, 0.2);
   --bg-button: rgba(18, 18, 18, 0.8);
+  --text-error: #FF003C;
 
   --text-main: #F5F5F5;
   --text-muted: #a0a0a0;
+  --button-disabled: #707070;
   --red: #FF0055;
   --yellow: #FDE047;
   --orange: #FF8A00;
   --green: #00FF9F;
   --ciano: #22d3ee;
+  --ciano-dark: #09363d;
   --dark-blue:#020617;
 
   --shadow: rgba(0,0,0,0.5);

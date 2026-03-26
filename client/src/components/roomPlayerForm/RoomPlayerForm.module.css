@@ -1,0 +1,30 @@
+.roomPlayerFormContainer {
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  border-top: 3px solid var(--bg-elevated);
+}
+.playersFormWrapper {
+  height: 1.7rem;
+  color: var(--text-main);
+  font-size: var(--font-md);
+  font-family: var(--font-family);
+  display: flex;
+  flex-direction: row;
+}
+.playerForm {
+  width: 90%;
+  background: var(--bg-button);
+  color: var(--text-main);
+  font-family: var(--font-family);
+  font-size: var(--font-md);
+  padding-left: 10px;
+  display: flex;
+  align-items: center;
+}
+.errorMessage {
+  color: var(--text-error);
+  font-size: var(--font-xs);
+  margin-top: 5px;
+}

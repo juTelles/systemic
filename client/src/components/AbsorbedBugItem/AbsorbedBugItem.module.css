@@ -9,7 +9,7 @@
 }
 .AbsorbedBugItemLabel {
   color: #ffffff;
-  font-size: var(--font-sm);
+  font-size: var(--font-md);
   font-family: var(--font-family);
   text-wrap: nowrap;
 }

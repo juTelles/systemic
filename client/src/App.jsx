@@ -1,26 +1,44 @@
 import styles from './App.module.css';
-import { useSystemicClient } from "./useSystemicClient";
 import GameScreen from './screens/gameScreen/GameScreen';
 import './theme.css';
+import { useState } from 'react';
 import LobbyScreen from './screens/lobbyScreen/LobbyScreen';
 
+const STORAGE_KEYS = {
+  roomId: 'systemic_roomId',
+  localPlayerId: 'systemic_localPlayerId',
+};
+
 export default function App() {
-  const socketUrl = "http://localhost:10000";
-  const { state, err, send } = useSystemicClient(socketUrl);
+  const [roomId, setRoomId] = useState(
+    () => localStorage.getItem(STORAGE_KEYS.roomId) || ''
+  );
+  const [localPlayerId, setLocalPlayerId] = useState(
+    () => localStorage.getItem(STORAGE_KEYS.localPlayerId) || ''
+  );
+
+  const onJoinSuccess = (roomId, localPlayerId) => {
+    //TO DO: make custom hook to manage session and localStorage
+    localStorage.setItem(STORAGE_KEYS.roomId, roomId);
+    localStorage.setItem(STORAGE_KEYS.localPlayerId, localPlayerId);
+    setRoomId(roomId);
+    setLocalPlayerId(localPlayerId);
+  };
+
+  const clearSession = () => {
+    localStorage.removeItem(STORAGE_KEYS.roomId);
+    localStorage.removeItem(STORAGE_KEYS.localPlayerId);
+
+    setRoomId('');
+    setLocalPlayerId('');
+  };
 
   return (
     <div className={styles.app}>
-      {err && <pre className={styles.error}>{JSON.stringify(err, null, 2)}</pre>}
-        <LobbyScreen/>
-      {!state ? (
-        <div>Conectando...</div>
+      {!roomId ? (
+        <LobbyScreen onJoinSuccess={onJoinSuccess} />
       ) : (
-        <>
-          {/* exemplo */}
-          {/* <Board state={state} /> */}
-          {/* <Actions onAction={send} /> */}
-          <button onClick={() => send({ type: "END_TURN" })}>END_TURN</button>
-        </>
+        <GameScreen roomId={roomId} localPlayerId={localPlayerId} onSessionInvalid={clearSession}/>
       )}
     </div>
   );

@@ -1,16 +1,13 @@
 .absorbedBugsPanelWrapper {
-  width: 25%;
-  height: 100%;
+  width: 100%;
+  height: 80%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  /* border-style: solid;
-  border-color: var(--text-main);
-  border-width: 2px;
-  border-radius: 10px;
-  background-color: var(--bg-surface); */
-  border-top: 2px solid var(--green);
+  border: 1px solid;
+  border-image-source: linear-gradient(to bottom, #2c2c2c, #121212);
+  border-image-slice: 1;
   background-color: rgba(18, 18, 18, 0.2);
 }
 .absorbedBugsPanelTitle {
@@ -21,7 +18,7 @@
 }
 .absorbedBugsContainer {
   width: 95%;
-  height: 70%;
+  height: 80%;
   display: flex;
   flex-direction: column;
   align-items: center;

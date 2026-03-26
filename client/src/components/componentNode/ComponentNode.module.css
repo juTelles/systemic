@@ -4,8 +4,8 @@
   --led-dark: var(--color-green-dark);
   --led-light: var(--color-green-light);
 }
-[data-status="requisitions"] {
-  --led-neon: var(--color-red-neon);
+[data-status="requests"] {
+  --led-neon: var( --color-red-neon);
   --led-dark: var(--color-red-dark);
   --led-light: var(--color-red-light);
 }
@@ -25,17 +25,19 @@
   flex-direction: column;
 }
 .ComponentNode {
-  width: 1.5rem;
-  height: 1.5rem;
-  background: var(--bg-surface);
+  width: 1.3rem;
+  height: 1.3rem;
+  background: var(--bg-pure);
   border-style: solid;
-  border-color: var(--text-main);
+  border-color: #f5f5f5d2;
   border-width: 3px;
   padding: 2px;
   border-radius: 50%;
   z-index: 2;
   display: flex;
   align-items: center;
+  transition: all 0.2s ease;
+  user-select: none;
 }
 label {
   max-width: 7rem;
@@ -46,6 +48,7 @@ label {
   font-size: var(--font-md);
   text-wrap: wrap;
   letter-spacing: -0.01em;
+  user-select: none
 }
 .labelUp {
   margin: 0 0 0.3rem 0;
@@ -54,8 +57,8 @@ label {
   margin: 0.4rem 0 0 0;
 }
 .testedComponent {
-  width: 1.5rem;
-  height: 1.5rem;
+  width: 1.3rem;
+  height: 1.3rem;
   border-radius: 50%;
   position: relative;
   z-index: 10;
@@ -70,8 +73,8 @@ label {
   justify-content: center;
 }
 .buggyComponent {
-  width: 1.5rem;
-  height: 1.5rem;
+  width: 1.3rem;
+  height: 1.3rem;
   border-radius: 50%;
   position: relative;
   z-index: 10;
@@ -96,3 +99,6 @@ label {
   from { opacity: 1; }
   to { opacity: 0.7; }
 } */
+.ComponentNode:hover {
+  transform: scale(1.2);
+}

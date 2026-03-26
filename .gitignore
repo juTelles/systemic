@@ -7,20 +7,31 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
-server/node_modules
+# Node modules
+**/node_modules
+/server/node_modules
 client/node_modules
-
-dist
+# Build artifacts
+# Ignoring server-side rendering build outputs
 dist-ssr
+build/
+dist/
+# Ignore local environment configuration files
 *.local
-.env*
+
+# Vite cache
+.vite/
+
+# Environment files
+.env
+.env.*
 
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
-.idea
 .DS_Store
+Thumbs.db
+*.suo
 *.suo
 *.ntvs*
 *.njsproj

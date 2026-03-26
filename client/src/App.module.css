@@ -24,6 +24,10 @@ body {
   Menlo, Monaco, Consolas, monospace;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  height: 100dvh;
 }
 header {
   z-index: 1;
@@ -137,26 +141,13 @@ figure {
   margin: 0rem;
 }
 
-@media (min-width: 320px) {
-  html {
-    font-size: 16px;
-    font-size: calc(16px + 6 * ((100vw - 320px) / 680));
-  }
-}
+@media (min-width: 320px) {}
 @media (min-width: 600px) {
-  html {
-    font-size: 18px;
-    font-size: calc(18px + 6 * ((100vw - 600px) / 850));
-  }
   section {
     width: 80%;
   }
 }
 @media (min-width: 1200px) {
-  html {
-    font-size: 22px;
-    font-size: calc(22px + 6 * ((100vw - 1200px) / 900));
-  }
   section {
     width: 75%;
   }
@@ -167,28 +158,5 @@ figure {
     height: 2.001rem;
     font-size: 2rem;
     margin: 0.5rem;
-  }
-}
-@media (min-width: 1600px) {
-  html {
-    font-size: 24px;
-    font-size: calc(24px + 6 * ((100vw - 1600px) / 900));
-  }
-}
-@media (min-width: 2000px) {
-  html {
-    font-size: 26px;
-    font-size: calc(26px + 6 * ((100vw - 2000px) / 1000));
-  }
-}
-@media (min-width: 3000px) {
-  html {
-    font-size: 30px;
-  }
-}
-@media (orientation: landscape) and (max-height: 500px) {
-  html {
-    font-size: 14px;
-    font-size: calc(14px + 1 * ((100vw - 900px) / 320));
   }
 }

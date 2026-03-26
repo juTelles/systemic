@@ -16,10 +16,12 @@ const EDGES = [
   ['S3', 'R2'],
 ];
 
-function Board() {
+function Board({ roomState }) {
   const boardRef = useRef(null);
   const nodeRefs = useRef({});
   const [lines, setLines] = useState([]);
+
+  const nodes = roomState?.components.nodes;
 
   const registerNode = (id) => (el) => {
     if (el) nodeRefs.current[id] = el;
@@ -47,12 +49,6 @@ function Board() {
 
       next.push({ key: `${a}-${b}`, x1, y1, x2, y2 });
     }
-    console.log(
-      'board?',
-      !!boardRef.current,
-      'refs:',
-      Object.keys(nodeRefs.current)
-    );
     setLines(next);
   };
 
@@ -87,113 +83,133 @@ function Board() {
             x2={ln.x2}
             y2={ln.y2}
             stroke="white"
-            strokeWidth="4"
+            strokeWidth="5"
             opacity="0.7"
           />
         ))}
       </svg>
 
       <div className={styles.nodesLayer}>
-        <div className={styles.frontend}>
+        <div className={styles.interface}>
           <ComponentNode
+            id={'interface'}
             anchorRef={registerNode('L1')}
             label="Interface"
             type="local"
-            bugQtn="2"
-            hasTests={true}
-            hasBug={true}
+            bugAmount={nodes?.interface?.bugAmount}
+            hasTests={nodes?.interface?.hasTests}
+            hasBug={nodes?.interface?.bugAmount > 0}
           />
+        </div>
+        <div className={styles.frontend}>
           <ComponentNode
+            id={'frontend'}
+            anchorRef={registerNode('S1')}
+            label="Frontend"
+            type="structural"
+            bugAmount={nodes?.frontend?.bugAmount}
+            hasTests={nodes?.frontend?.hasTests}
+            hasBug={nodes?.frontend?.bugAmount > 0}
+          />
+        </div>
+        <div className={styles.interaction}>
+          <ComponentNode
+            id={'interaction'}
             anchorRef={registerNode('L2')}
             label="Interação"
             type="local"
-            bugQtn={3}
-            hasTests={false}
-            hasBug={true}
+            bugAmount={nodes?.interaction?.bugAmount}
+            hasTests={nodes?.interaction?.hasTests}
+            hasBug={nodes?.interaction?.bugAmount > 0}
           />
-          <div className={styles.structural}>
-            <ComponentNode
-              anchorRef={registerNode('S1')}
-              label="Frontend"
-              type="structural"
-              bugQtn={1}
-              hasTests={false}
-              hasBug={true}
-            />
-          </div>
         </div>
-        <div className={styles.appRequisition}>
+        <div className={styles.applicationRequests}>
           <ComponentNode
+            id={'applicationRequests'}
             anchorRef={registerNode('R1')}
             label="Requisiçoes de Aplicação"
-            type="requisitions"
-            bugQtn={1}
-            hasTests={false}
-            hasBug={true}
+            type="requests"
+            bugAmount={nodes?.applicationRequests?.bugAmount}
+            hasTests={nodes?.applicationRequests?.hasTests}
+            hasBug={nodes?.applicationRequests?.bugAmount > 0}
+          />
+        </div>
+        <div className={styles.logic}>
+          <ComponentNode
+            id={'logic'}
+            anchorRef={registerNode('L3')}
+            label="Lógica"
+            type="local"
+            bugAmount={nodes?.logic?.bugAmount}
+            hasTests={nodes?.logic?.hasTests}
+            hasBug={nodes?.logic?.bugAmount > 0}
           />
         </div>
         <div className={styles.backend}>
           <ComponentNode
-            anchorRef={registerNode('L3')}
-            label="Lógica"
-            type="local"
-            bugQtn={0}
-            hasTests={true}
-            hasBug={false}
+            id={'backend'}
+            anchorRef={registerNode('S2')}
+            label="Backend"
+            type="structural"
+            bugAmount={nodes?.backend?.bugAmount}
+            hasTests={nodes?.backend?.hasTests}
+            hasBug={nodes?.backend?.bugAmount > 0}
           />
+        </div>
+        <div className={styles.integrations}>
           <ComponentNode
+            id={'integrations'}
             anchorRef={registerNode('L4')}
             label="Integrações"
             type="local"
-            bugQtn={0}
-            hasTests={true}
-            hasBug={false}
+            bugAmount={nodes?.integrations?.bugAmount}
+            hasTests={nodes?.integrations?.hasTests}
+            hasBug={nodes?.integrations?.bugAmount > 0}
           />
-          <div className={styles.structural}>
-            <ComponentNode
-              anchorRef={registerNode('S2')}
-              label="Backend"
-              type="structural"
-              bugQtn={2}
-              hasTests={true}
-              hasBug={true}
-            />
-          </div>
         </div>
-        <div className={styles.dataRequisition}>
+        <div className={styles.dataRequests}>
           <ComponentNode
+            id={'dataRequests'}
             anchorRef={registerNode('R2')}
             label="Requisiçoes de Dados"
-            type="requisitions"
-            bugQtn={0}
-            hasTests={true}
-            hasBug={false}
+            type="requests"
+            bugAmount={nodes?.dataRequests?.bugAmount}
+            hasTests={nodes?.dataRequests?.hasTests}
+            hasBug={nodes?.dataRequests?.bugAmount > 0}
+          />
+        </div>
+        <div className={styles.data}>
+          <ComponentNode
+            id={'data'}
+            anchorRef={registerNode('L5')}
+            label="Dados"
+            type="local"
+            bugAmount={nodes?.data?.bugAmount}
+            hasTests={nodes?.data?.hasTests}
+            hasBug={nodes?.data?.bugAmount > 0}
           />
         </div>
         <div className={styles.database}>
           <ComponentNode
-            anchorRef={registerNode('L5')}
-            label="Dados"
-            type="local"
-            bugQtn={2}
-            hasTests={false}
-            hasBug={true}
+            id={'database'}
+            anchorRef={registerNode('S3')}
+            label="Banco de Dados"
+            type="structural"
+            bugAmount={nodes?.database?.bugAmount}
+            hasTests={nodes?.database?.hasTests}
+            hasBug={nodes?.database?.bugAmount > 0}
           />
+        </div>
+        <div className={styles.structure}>
           <ComponentNode
+            id={'structure'}
             anchorRef={registerNode('L6')}
             label="Estrutura"
             type="local"
+            bugAmount={nodes?.structure?.bugAmount}
+            hasTests={nodes?.structure?.hasTests}
+            hasBug={nodes?.structure?.bugAmount > 0}
           />
-          <div className={styles.structural}>
-            <ComponentNode
-              anchorRef={registerNode('S3')}
-              label="Banco de Dados"
-              type="structural"
-              bugQtn={0}
-              hasTests={false}
-              hasBug={false}
-            />
-          </div>
         </div>
       </div>
     </div>
