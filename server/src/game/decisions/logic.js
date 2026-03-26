@@ -46,8 +46,8 @@ function resolveDecisionContext(decisionAction, state) {
 
   const currentPlayer = getPlayerObject(currentPlayerId, state.players);
 
-  const selectedComponent = componentId
-    ? { ...state.components.nodes[componentId] }
+  const selectedComponent = selectedComponentId
+    ? { ...state.components.nodes[selectedComponentId] }
     : null;
 
   return {
