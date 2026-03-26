@@ -39,7 +39,7 @@ export const instructions = ({
       in: 'Click on the deck to draw a card! Cards can be of 3 types: Points, Bugs, or Events. Each card has a different effect!',
     },
   },
-  RESOLV_CARD: {
+  RESOLVE_CARD: {
     title: 'Card Effects',
     description: {
       pt: `Você comprou uma carta de ${cardType}! ${cardDescription}`,

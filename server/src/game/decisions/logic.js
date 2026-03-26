@@ -26,7 +26,7 @@ export function applyDecisionEffect(action, state) {
   const isValid = runDecisionValidators(definition.validators, context);
   if (!isValid) return next;
 
-  const handler = decisionEffectHandlers[definition.effect];
+  const handler = decisionHandlers[definition.effect];
   if (!handler) return next;
 
   return handler(next, context, definition);
