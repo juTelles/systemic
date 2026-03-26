@@ -1,10 +1,10 @@
 const decisionValidators = {
-  REQUIRES_COMPONENT: ({ action }) => !!action.component,
-  REQUIRES_TARGET: ({ action }) => !!action.target,
-  REQUIRES_AMOUNT: ({ action }) => typeof action.selectedAmount === 'number',
-  COMPONENT_MUST_HAVE_BUG: ({ component }) => component?.bugAmount > 0,
-  COMPONENT_MUST_NOT_HAVE_TESTS: ({ component }) => !component?.hasTests,
-  COMPONENT_MUST_HAVE_TESTS: ({ component }) => component?.hasTests,
+  REQUIRES_COMPONENT: (context) => !!context?.selectedComponent,
+  REQUIRES_TARGET: (context) => !!context?.target,
+  REQUIRES_AMOUNT: (context) => typeof context.selectedAmount === 'number',
+  COMPONENT_MUST_HAVE_BUG: (context) => context?.selectedComponent?.bugAmount > 0,
+  COMPONENT_MUST_NOT_HAVE_TESTS: (context) => !context?.selectedComponent?.hasTests,
+  COMPONENT_MUST_HAVE_TESTS: (context) => context?.selectedComponent?.hasTests,
 };
 
 export function runDecisionValidators(validators, context) {

@@ -36,12 +36,12 @@ function resolveDecisionContext(decisionAction, state) {
   const decisionDefinition = decisions[decisionAction.chosen];
   const currentPlayerId = state.flow.currentPlayerId;
   const target = decisionAction.target;
-  const amount = decisionAction.selectedAmount;
-  const componentId = decisionAction.component;
+  const selectedAmount = decisionAction.selectedAmount;
+  const selectedComponentId = decisionAction.component;
 
   const currentPlayer = getPlayerObject(currentPlayerId, state.players);
 
-  const componentObject = componentId
+  const selectedComponent = componentId
     ? { ...state.components.nodes[componentId] }
     : null;
 
@@ -49,8 +49,8 @@ function resolveDecisionContext(decisionAction, state) {
     decisionDefinition,
     currentPlayer,
     target,
-    componentId,
-    componentObject,
-    amount
+    selectedComponentId,
+    selectedComponent,
+    selectedAmount
   };
 }
