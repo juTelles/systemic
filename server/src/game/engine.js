@@ -171,34 +171,34 @@ export function applyAction(state, action, ctx = {}) {
         next.players
       );
 
-      next = applyDecisionEffect(action, next, currentPlayer.id);
+      const decisionNext = applyDecisionEffect(action, next, currentPlayer.id);
 
       let decisionsAvailable = getAvailableDecisions(
-        next.gameConfig.decisionCosts,
+        decisionNext.gameConfig.decisionCosts,
         getTotalPlayersPoints(currentPlayer)
       );
       if (decisionsAvailable.length === 0) {
-        next.flow.step.next = 'DRAW_CARD';
+        decisionNext.flow.step.next = 'DRAW_CARD';
       } else {
-        next.flow.step.next = 'CHOOSE_DECISION';
+        decisionNext.flow.step.next = 'CHOOSE_DECISION';
       }
-      next.decisions.applied.push({
+      decisionNext.decisions.applied.push({
         chosen: action.decision.chosen,
         target: action.decision.target,
         selectedAmount: action.decision.selectedAmount,
       });
-      next.decisions.available = decisionsAvailable;
-      next.decisions.chosen = null;
-      next.decisions.target = null;
-      next.decisions.selectedAmount = 0;
-      next.meta.rev += 1;
-      next.meta.updatedAt = now;
-      next.log.lastEvent = {
+      decisionNext.decisions.available = decisionsAvailable;
+      decisionNext.decisions.chosen = null;
+      decisionNext.decisions.target = null;
+      decisionNext.decisions.selectedAmount = 0;
+      decisionNext.meta.rev += 1;
+      decisionNext.meta.updatedAt = now;
+      decisionNext.log.lastEvent = {
         type: ACTION_TYPES.PLAYER_TURN,
         by: action.senderId ?? null,
         at: now,
       };
-      return next;
+      return decisionNext;
     }
 
     case ACTION_TYPES.END_TURN: {
