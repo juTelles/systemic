@@ -63,10 +63,10 @@ export function createRoomsService() {
     }
 
     if (room.state.phase !== 'LOBBY') {
-      return { ok: false, code: 'GAME_ALREADY_STARTED' };
+      return { ok: false, code: ERRORS.GAME_ALREADY_STARTED };
     }
     if (room.state.players.length >= MAX_PLAYERS) {
-      return { ok: false, code: 'ROOM_FULL' };
+      return { ok: false, code: ERRORS.ROOM_FULL };
     }
 
     let player ={...playerDef};
