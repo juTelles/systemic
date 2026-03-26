@@ -114,8 +114,8 @@ export function applyAction(state, action, ctx = {}) {
 
     case ACTION_TYPES.TURN_START: {
       next.flow.step = steps['TURN_START'];
-      next.flow.turn += 1;
       next.flow.currentPlayerId = next.players[next.flow.turn].id;
+      next.flow.turn += 1;
       next.meta.rev += 1;
       next.meta.updatedAt = now;
       next.log.lastEvent = {
