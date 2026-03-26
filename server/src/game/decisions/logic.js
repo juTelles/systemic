@@ -1,5 +1,7 @@
 import { decisions } from '../../../../shared/src/definitions/decisons.js';
 import { getPlayerObject } from '../selectors.js';
+import { decisionHandlers } from './handlers.js';
+import { runDecisionValidators } from './validators.js';
 
 export function getAvailableDecisions(decisionsObject, playerPoints) {
   const decisionsAvailable = [];

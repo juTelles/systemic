@@ -1,4 +1,11 @@
-import { addPointsToPlayerBankByDonation, addPointsToPlayerBankByHolding, resolveBug, applyTest, subtractPointsToPlayer, getPlayerObject } from "../gameHelpers";
+import {
+  addPointsToPlayerBankByDonation,
+  addPointsToPlayerBankByHolding,
+  resolveBug,
+  applyTest,
+  subtractPointsToPlayer,
+} from '../gameHelpers.js';
+import { getPlayerObject } from '../selectors.js';
 
 
 export const decisionHandlers = {
