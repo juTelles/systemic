@@ -3,11 +3,10 @@ import { instructions } from './instructions.js';
 export const steps = Object.freeze({
   SET_READY: {
     name: 'SET_READY',
-    description: instructions?.SET_READY?.description?.pt(),
+    description: instructions().SET_READY?.description?.pt,
     progression: {
       trigger: 'PLAYER_INPUT',
       type: 'PLAYER_INPUT',
-      triggerNext: 'AUTO',
     },
     effects: [
       'CONFIG_COMPONENTS',
@@ -22,12 +21,11 @@ export const steps = Object.freeze({
   },
   GAME_START: {
     name: 'GAME_START',
-    description: instructions?.GAME_START?.description?.pt(),
+    description: instructions().GAME_START?.description?.pt,
     progression: {
       trigger: 'AUTO', //WHEN all players ready
       type: 'TIMEOUT',
       delayMs: 1500,
-      triggerNext: 'AUTO',
     },
     effects: [
       'CONFIG_COMPONENTS',
@@ -41,12 +39,11 @@ export const steps = Object.freeze({
 
   ROUND_START: {
     name: 'ROUND_START',
-    description: instructions?.ROUND_START?.description?.pt(),
+    description: instructions().ROUND_START?.description?.pt,
     progression: {
       trigger: 'AUTO',
       type: 'TIMEOUT',
       delayMs: 1500,
-      triggerNext: 'AUTO',
     },
     effects: ['DEAL_POINTS', 'DEFINE_IS_CRISIS_ROUND', 'TIME_OUT'],
     next: 'TURN_START',
@@ -55,7 +52,7 @@ export const steps = Object.freeze({
 
   TURN_START: {
     name: 'TURN_START',
-    description: instructions?.TURN_START?.description?.pt(),
+    description: instructions().TURN_START?.description?.pt,
     progression: {
       trigger: 'AUTO',
       type: 'AUTO',
@@ -68,7 +65,7 @@ export const steps = Object.freeze({
 
   PLAYER_TURN: {
     name: 'PLAYER_TURN',
-    description: instructions?.PLAYER_TURN?.description?.pt(),
+    description: instructions().PLAYER_TURN?.description?.pt,
     progression: {
       trigger: 'AUTO',
       type: 'TIMEOUT',
@@ -82,7 +79,7 @@ export const steps = Object.freeze({
 
   CHOOSE_DECISION: {
     name: 'CHOOSE_DECISION',
-    description: instructions?.CHOOSE_DECISION?.description?.pt(),
+    description: instructions().CHOOSE_DECISION?.description?.pt,
     progression: {
       trigger: 'AUTO',
       type: 'AUTO',
@@ -101,7 +98,7 @@ export const steps = Object.freeze({
 
   APPLY_DECISION: {
     name: 'APPLY_DECISION',
-    description: instructions?.APPLY_DECISION?.description?.pt(),
+    description: instructions().APPLY_DECISION?.description?.pt,
     progression: {
       trigger: 'PLAYER_INPUT',
       type: 'PLAYER_INPUT',
@@ -122,7 +119,7 @@ export const steps = Object.freeze({
 
   DRAW_CARD: {
     name: 'DRAW_CARD',
-    description: instructions?.DRAW_CARD?.description?.pt(),
+    description: instructions().DRAW_CARD?.description?.pt,
     progression: {
       trigger: 'AUTO',
       type: 'AUTO',
@@ -135,7 +132,7 @@ export const steps = Object.freeze({
 
   SHOW_CARD: {
     name: 'DRAW_CARD',
-    description: instructions?.DRAW_CARD?.description?.pt(),
+    description: instructions().DRAW_CARD?.description?.pt,
     progression: {
       trigger: 'PLAYER_INPUT',
       type: 'TIMEOUT',
@@ -148,7 +145,7 @@ export const steps = Object.freeze({
 
   RESOLVE_CARD: {
     name: 'RESOLVE_CARD',
-    description: instructions?.RESOLVE_CARD?.description?.pt(),
+    description: instructions().RESOLVE_CARD?.description?.pt,
     progression: {
       trigger: 'AUTO',
       type: 'TIMEOUT',
@@ -165,12 +162,11 @@ export const steps = Object.freeze({
 
   END_TURN: {
     name: 'END_TURN',
-    description: instructions?.END_TURN?.description?.pt(),
+    description: instructions().END_TURN?.description?.pt,
     progression: {
       trigger: 'AUTO',
       type: 'TIMEOUT',
       delayMs: 2500,
-      triggerNext: 'AUTO',
     },
     effects: [
       'CHECK_GAME_STATE',
@@ -188,7 +184,7 @@ export const steps = Object.freeze({
 
   END_ROUND: {
     name: 'END_ROUND',
-    description: instructions?.END_ROUND?.description?.pt(),
+    description: instructions().END_ROUND?.description?.pt,
     progression: {
       trigger: 'AUTO',
       type: 'TIMEOUT',
@@ -209,7 +205,7 @@ export const steps = Object.freeze({
 
   END_GAME: {
     name: 'END_GAME',
-    description: instructions?.END_GAME?.description?.pt(),
+    description: instructions().END_GAME?.description?.pt,
     progression: {
       triggerNext: 'AUTO',
       type: 'TIMEOUT',
