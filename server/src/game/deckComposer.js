@@ -28,8 +28,8 @@ export function composeCard(type, cardId, componentType) {
     case 'POINTS':
       card.effect = 'ADD_POINTS';
       card.title = 'Pontos de Tarefa';
-      card.description = `Você ganhou Pontos ${card.pointsWon} de Tarefa adicionais!`;
       card.pointsWon = Math.floor(Math.random() * 2) + 1; // 1 or 2 points
+      card.description = `Você ganhou Pontos ${card.pointsWon} de Tarefa adicionais!`;
       return card;
     case 'EVENT':
       const cardDefinition =
