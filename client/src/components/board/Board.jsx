@@ -119,8 +119,8 @@ function Board({ roomState }) {
             label="Interação"
             type="local"
             bugAmount={nodes?.interaction?.bugAmount}
-            hasTests={false}
-            hasBug={true}
+            hasTests={nodes?.interaction?.hasTests}
+            hasBug={nodes?.interaction?.bugAmount > 0}
           />
         </div>
         <div className={styles.applicationRequests}>
