@@ -58,7 +58,7 @@ export function composeCard(type, cardId, componentType) {
         ];
       card.effect = 'BUG_COMPONENT';
       card.componentsAffected = [cardComponent];
-      card.title = cardComponent.namePT;
+      card.title = components.nodes[cardComponent].namePT;
       card.componentId = cardComponent;
       card.bugType = componentType;
       return card;
