@@ -1,4 +1,5 @@
 import express from 'express';
+import { ERRORS } from '../../../shared/src/constants/errors.js'
 
 export function createRoutes({ rooms, runGameLoop }) {
   const router = express.Router();
