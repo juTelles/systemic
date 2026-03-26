@@ -30,6 +30,7 @@ export function createInitialState({ roomId }) {
       chosen: null,
       target: null,
       selectedAmount: 0,
+      applied: [],
     },
     components: {},
     gameConfig: {
