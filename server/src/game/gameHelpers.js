@@ -6,7 +6,7 @@ export function applyBug(component, amount = 1) {
   return {
     ...component,
     bugAmount: component.bugAmount + amount,
-    saturated: component.bugAmount >= component.saturationLimit,
+    saturated: component.bugAmount + amount >= component.saturationLimit,
   };
 }
 
