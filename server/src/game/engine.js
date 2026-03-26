@@ -235,7 +235,7 @@ export function applyAction(state, action, ctx = {}) {
       throw err;
   }
 }
-// TODO: Think if necessary to have sapate action dor setting phase
+// TODO: Think if necessary to have saparated action for setting phase
 // TODO: Send flag for showing start game dialog from last flag and turning it of after unbloking GAME_START action, to avoid checking the conditions for starting the game in every state update (currently it's only checked when a player sets ready, but it could be checked in other moments in the future, like when a player leaves the room, etc...)
 // function shouldStartGame(state) {
 //   return state.players.length >= MIN_PLAYERS &&
@@ -244,3 +244,7 @@ export function applyAction(state, action, ctx = {}) {
 //     : false;
 // }
 // TODO: Reasherch better way to handle the actions an game flow
+// TODO: review actions contract, payload exists in the shape definition,
+//  but it is not actually used in the current action flow, should we remove
+// it or start using it in the actions? instead of reading action fields
+// directly from the action object?
