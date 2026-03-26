@@ -97,10 +97,9 @@ export function applyAction(state, action, ctx = {}) {
     case ACTION_TYPES.ROUND_START: {
       next.flow.step = steps['ROUND_START'];
       next.flow.blockedUntil = now + 1500;
-      next.players.every(
-        (player) =>
-          (player.handPoints = next.gameConfig.taskPoints.playerPerRound)
-      );
+      next.players.forEach((player) => {
+        player.handPoints = next.gameConfig.taskPoints.playerPerRound;
+      });
       next.flow.round += 1;
       next.flow.turn = 0;
       next.meta.rev += 1;
