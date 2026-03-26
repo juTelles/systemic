@@ -34,7 +34,7 @@ export function applyTest(component) {
 }
 
 export function resolveBug(component, amount = 1) {
-  if (component.bugAmount < 0) {
+  if (component.bugAmount <= 0) {
     console.warn('Invalid action: Component has no bugs to resolve');
     return component;
   }
