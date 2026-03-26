@@ -111,6 +111,9 @@ export function applyAction(state, action, ctx = {}) {
       };
       return next;
     }
+    // TODO:  feature lastEvent has to be dinamic: ROUND_START sets next.log.lastEvent.type to ACTION_TYPES.END_TURN,
+    // which is misleading and will make client-side event handling/debugging
+    // incorrect. This should log ACTION_TYPES.ROUND_START (and similarly TURN_START currently logs END_TURN).
 
     case ACTION_TYPES.TURN_START: {
       next.flow.step = steps['TURN_START'];
@@ -199,6 +202,12 @@ export function applyAction(state, action, ctx = {}) {
       };
       return decisionNext;
     }
+    // In CHOOSE_DECISION, decisionsAvailable is initialized to [] and then
+    // assigned to next.decisions.available even when next.decisions.available
+    //  was already populated. This means any subsequent CHOOSE_DECISION action
+    // will clear the available decisions array unintentionally. Only overwrite
+    // next.decisions.available when you actually recompute it, or default
+    // decisionsAvailable to the current list.
 
     case ACTION_TYPES.END_TURN: {
       next.flow.blockedUntil = now + 1500;

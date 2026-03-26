@@ -31,6 +31,11 @@ export function applyDecisionEffect(action, state) {
 
   return handler(next, context, definition);
 }
+//TODO: Investigate > applyDecisionEffect is currently looking up decision
+// definitions as decisions[action.chosen], but decisions is structured
+// as { options, allIds, forUI }. This means definition will always be undefined
+// and no decision effect will ever apply. Lookup should be against decisions.options
+// (and the action field used for the lookup should match the actual action shape).
 
 function resolveDecisionContext(decisionAction, state) {
   const decisionDefinition = decisions[decisionAction.chosen];

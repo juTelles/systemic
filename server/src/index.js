@@ -48,6 +48,10 @@ export function createApp() {
     console.error(`Error at ${req.method} ${req.url}:`, err.message);
     res.status(500).json({ error: 'Internal Server Error' });
   });
-
+  //TODO: The error-handling middleware always responds with HTTP 500 and a
+  // generic message, ignoring any err.status / err.code set by domain logic
+  //  (e.g., createError). This will make expected 4xx errors indistinguishable
+  //  from server failures for the client. Use err.status ?? 500 and include a
+  // stable code field in the JSON response.
   return app;
 }

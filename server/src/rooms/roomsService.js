@@ -82,6 +82,7 @@ export function createRoomsService() {
       state: room.state,
     };
   }
+  //TODO: ADD OK objects to joinRoom normal return.
 
   function leaveRoom(roomId, playerId) {
     const room = store.get(roomId);

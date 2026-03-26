@@ -35,3 +35,8 @@ export function useRoomsPolling(intervalMs = 2000) {
 
   return { rooms, error };
 }
+//TODO: useRoomsPolling calls setError('FAILED_ROOMS_LIST_LOADING', e.message),
+// but setError only accepts a single value; the second argument is ignored and
+// the stored error becomes just the string (and never the message). Store a
+// structured error (e.g., { code, message }) or concatenate the message into
+// one string.

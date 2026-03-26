@@ -43,3 +43,8 @@ console.log(`Sending action to room ${roomId} from sender ${senderId} with type 
     }),
   });
 }
+// TODO: investigate > sendAction wraps game-specific fields under action.payload,
+// but the server engine reads fields like action.phase / action.decision.* directly
+// (not under payload). As-is, actions like SET_PHASE / APPLY_DECISION will be ignored
+// or mis-processed. Either flatten the request so the server receives the expected shape,
+// or update the engine to consistently read from action.payload.

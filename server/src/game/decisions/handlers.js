@@ -36,6 +36,13 @@ export function handleResolveBugDecision({
 
   return next;
 }
+//TODO: Investigate > applyDecisionEffect calls decision handlers as
+// handler(next, context, definition), but the handlers are defined to take
+// a single object argument with properties like { next, currentPlayer, componentId, ... }.
+// This mismatch means the handler will receive next (the state) as the parameter
+// object and all expected fields will be undefined. Align the handler signature
+// and the call site so they agree on one contract (e.g., handler(next, context, definition)
+// with handlers (state, context, definition)).
 
 export function handleDonatePointsDecision({
   next,

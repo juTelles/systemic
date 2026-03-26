@@ -41,3 +41,7 @@ function getActionForNextStep(step) {
     return { type: step.next };
   }
 }
+// TODO: investigate > runGameLoop passes senderId directly as the ctx argument
+// to rooms.applyRoomAction. When senderId is the default string 'SYSTEM' (e.g.,
+// when called from /rooms/:roomId/state), applyAction later reads ctx.senderId
+// and will get undefined. Normalize this so ctx is always an object like { senderId }.

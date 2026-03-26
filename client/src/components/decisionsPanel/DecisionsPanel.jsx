@@ -33,7 +33,7 @@ function DecisionsPanel({ roomState, isPreGame, localPlayerId }) {
     </div>
   )
 }
-
+// TODO: Adress the decisionsPanelWrapper class mismatch
 export default DecisionsPanel;
 
 // TODO: Change categoryColor to be defined in the color css variables, and then use the variable name in the decisionsTxt, instead of the hex color directly. This way we can keep all colors in one place and make it easier to update them in the future.
