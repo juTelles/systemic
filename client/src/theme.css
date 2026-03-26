@@ -1,10 +1,4 @@
 :root {
-  /* O texto terá 2% da altura da tela, não importa a resolução */
-  --font-xs: 1.6vh;
-  --font-sm: 1.8vh;
-  --font-md: 2vh;
-  --font-lg: 2.5vh;
-  --font-xl: 3.5vh;
 
   --font-xs: clamp(10px, 1.6vh, 18px);
   --font-sm: clamp(12px, 1.8vh, 20px);
