@@ -10,9 +10,8 @@ function LobbyScreen({ onJoinSuccess }) {
   const { rooms } = useRoomsPolling(2000);
 
   async function handleCreateRoom() {
-    console.log('handleCreateRoom called');
     try {
-      createRoom();
+      await createRoom();
     } catch (err) {
       console.error('Failed to createRoom:', err);
     }
