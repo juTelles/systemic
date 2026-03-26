@@ -18,9 +18,6 @@ export default function App() {
   );
 
   const onJoinSuccess = (roomId, localPlayerId) => {
-    console.log(
-      `Player joined room successfully: roomId=${roomId}, localPlayerId=${localPlayerId}`
-    );
     //TO DO: make custom hook to manage session and localStorage
     localStorage.setItem(STORAGE_KEYS.roomId, roomId);
     localStorage.setItem(STORAGE_KEYS.localPlayerId, localPlayerId);

@@ -49,12 +49,6 @@ function Board({ roomState }) {
 
       next.push({ key: `${a}-${b}`, x1, y1, x2, y2 });
     }
-    // console.log(
-    //   'board?',
-    //   !!boardRef.current,
-    //   'refs:',
-    //   Object.keys(nodeRefs.current)
-    // );
     setLines(next);
   };
 

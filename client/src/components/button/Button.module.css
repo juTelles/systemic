@@ -1,8 +1,6 @@
 .button {
   width: 7rem;
   height: 2rem;
-  /* margin: 1rem 2rem;
-  padding: 8px 20px; */
   background: var(--bg-button);
   color: var(--color-ciano-neon);
   font-family: 'JetBrains Mono', monospace;
@@ -14,7 +12,6 @@
   border-radius: 5px;
   border: 2px solid var(--color-ciano-neon);
   transition: all 0.2s ease;
-  /* box-shadow: 0 0 4px var(--color-ciano-neon); */
 }
 .button:hover {
   background: var(--color-ciano-neon);

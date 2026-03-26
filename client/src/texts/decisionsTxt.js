@@ -41,4 +41,4 @@ export const decisionsTxt = {
       },
       categoryColor: '#00FF9F'
     },
-  }
+  };

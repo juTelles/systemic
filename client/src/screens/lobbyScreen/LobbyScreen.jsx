@@ -35,7 +35,6 @@ function LobbyScreen({ onJoinSuccess }) {
 
   return (
     <div className={styles.pageContainer}>
-      {console.log('room', rooms)}
       <LobbyHeader title="Systemic" />
       <div className={styles.lobbyWrapper}>
         <RoomList rooms={rooms} onJoinRoom={handleJoinRoom} />

@@ -18,7 +18,6 @@ export function createRoutes({ rooms, runGameLoop }) {
   router.post('/rooms/createRoom', (req, res) => {
     try {
       const result = rooms.createRoom();
-      console.log('Creating room', result);
       res.json(result);
     } catch (err) {
       console.error(err);
@@ -34,7 +33,6 @@ export function createRoutes({ rooms, runGameLoop }) {
       const { nickname } = req.body;
 
       const result = rooms.joinRoom(roomId, nickname);
-      console.log('Joining room', roomId, 'with nickname', nickname);
       res.json(result);
     } catch (err) {
       console.error(err);
@@ -50,7 +48,6 @@ export function createRoutes({ rooms, runGameLoop }) {
       const { playerId } = req.body;
 
       const result = rooms.leaveRoom(roomId, playerId);
-      console.log('Leaving room', roomId);
       res.json(result);
     } catch (err) {
       console.error(err);
@@ -69,7 +66,7 @@ export function createRoutes({ rooms, runGameLoop }) {
       let roomState = rooms.getState(roomId);
 
       if (!roomState) {
-        return res.status(404).json({ error: 'Room not found' });
+        return res.status(404).json({ code: ERRORS.ROOM_NOT_FOUND });
       }
 
       roomState = runGameLoop(roomState, roomId);

@@ -1,5 +1,4 @@
 // eslint-disable-next-line no-unused-vars
-// import react, { Children, useEffect, useState } from 'react';
 import styles from './RoomList.module.css';
 import RoomListPlayers from '../roomListPlayers/RoomListPlayers';
 import RoomPlayerForm from '../roomPlayerForm/RoomPlayerForm';
@@ -30,16 +29,8 @@ function RoomList({ rooms, onJoinRoom }) {
                   room={room}
                   onJoinRoom={onJoinRoom}
                 />
-              ) : ( ''
-              //   <Button
-              //   label={'Entrar na sala'}
-              //   reversed={true}
-              //   width="100%"
-              //   height="1.5rem"
-              //   inverted={true}
-              //   fontSize={'0.8rem'}
-              //   margin={'0.5rem 0 0 0.5rem'}
-              // />
+              ) : (
+                ''
               )}
             </div>
           ))

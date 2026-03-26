@@ -1,5 +1,4 @@
 // eslint-disable-next-line no-unused-vars
-import react from 'react';
 import styles from './Player.module.css';
 import Button from '../button/Button';
 import { GiCheckMark } from "react-icons/gi";

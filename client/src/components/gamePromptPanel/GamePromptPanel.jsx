@@ -1,5 +1,4 @@
 // eslint-disable-next-line no-unused-vars
-import react, { Children, useEffect, useState } from 'react';
 import styles from './GamePromptPanel.module.css';
 import { instructions } from '../../../../shared/src/definitions/instructions';
 

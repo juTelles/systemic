@@ -1,7 +1,6 @@
 import { apiFetch } from "./apiClient";
 
 export async function joinRoom(roomId, nickname) {
-  console.log(`Joining room ${roomId} with nickname ${nickname}`);
   return apiFetch(`/rooms/${roomId}/join`, {
     method: "POST",
     body: JSON.stringify({ nickname })
@@ -9,7 +8,6 @@ export async function joinRoom(roomId, nickname) {
 }
 
 export async function leaveRoom(roomId, playerId) {
-  console.log(`Leaving room ${roomId} with playerId ${playerId}`);
   return apiFetch(`/rooms/${roomId}/leave`, {
     method: "POST",
     body: JSON.stringify({ playerId })

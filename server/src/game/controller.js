@@ -18,7 +18,6 @@ export function createRunGameLoop({ rooms }) {
       currenteStepProgType === 'PLAYER_INPUT'
     ) {
       state = rooms.applyRoomAction(currentRoomId, playerAction, senderId);
-      console.log('Applied player action:', playerAction, state);
     }
 
     while (iterations < MAX_ITERATIONS) {
@@ -29,7 +28,6 @@ export function createRunGameLoop({ rooms }) {
       if (!autoAction?.type) break;
 
       state = rooms.applyRoomAction(currentRoomId, autoAction, senderId);
-      console.log('Applied auto action:', autoAction, state);
       iterations++;
     }
     return state;
