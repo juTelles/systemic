@@ -8,17 +8,6 @@
   justify-content: space-between;
   gap: 1.2rem;
 }
-.SideBarContainer {
-  width: 5%;
-  height: 100vh;
-  z-index: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  background-color: var(--bg-);
-  flex-grow: 1;
-}
 .mainContainer {
   width: 82%;
   height: 95%;
