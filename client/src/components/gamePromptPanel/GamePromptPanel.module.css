@@ -29,4 +29,5 @@
   font-family: var(--font-family);
   font-size: var(--font-sm);
   margin: 0.3rem 0;
+  white-space: pre-line;
 }
