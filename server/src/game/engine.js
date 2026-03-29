@@ -2,9 +2,9 @@ import { ACTION_TYPES } from '../../../shared/src/constants/actionsTypes.js';
 import { PLAYER_STATUS } from '../../../shared/src/constants/playerStatus.js';
 import { steps } from '../../../shared/src/definitions/steps.js';
 import { composeDeck } from './deckComposer.js';
-import { gameConfigs } from './gameConfigs.js';
 import { components } from '../../../shared/src/definitions/components.js';
 import { applyGameStartBugs } from './gameHelpers.js';
+import { transitionResolvers } from './transitionResolvers.js';
 
 import {
   getAvailableDecisions,
@@ -41,12 +41,7 @@ export function applyAction(state, action, ctx = {}) {
       }
       player.status = PLAYER_STATUS.READY;
 
-      const allPlayersReady = next.players.every(
-        (player) => player.status === PLAYER_STATUS.READY
-      );
-      if (allPlayersReady) {
-        next.flow.step.next = 'GAME_START';
-      }
+      next.flow.step.flowControl.nextTransition = transitionResolvers['WAITING_PLAYERS_READY'](next);
       next.meta.rev += 1;
       next.meta.updatedAt = now;
       next.log.lastEvent = {
@@ -58,8 +53,10 @@ export function applyAction(state, action, ctx = {}) {
     }
 
     case ACTION_TYPES.START_GAME: {
+      // const gameConfig = structuredClone(next.gameConfig);
+      // TODO: add feat to change config possibilities
 
-      if (!isGameReadyToStart(gameConfig, next, 'LOBBY', PLAYER_STATUS.READY)) {
+      if (!isGameReadyToStart(next, 'LOBBY', PLAYER_STATUS.READY)) {
         //TODO: Fix this log, applyRoomAction returns only the new state, so we passing
         // would means nothing without refactoring the applyRoomAction to return both
         // the new state and the log of what happened, throwing an error or something
@@ -70,10 +67,9 @@ export function applyAction(state, action, ctx = {}) {
       }
       next.flow.blockedUntil = now + 1500;
       next.flow.step = steps['GAME_START'];
-      next.gameConfig = gameConfig;
       next.components = structuredClone(components);
       next.components = applyGameStartBugs(next.components);
-      const deck = composeDeck(gameConfigs.regularMode.deck.composition);
+      const deck = composeDeck(next.gameConfig.deck.composition);
       next.deck = deck;
       next.phase = 'IN_GAME';
       next.meta.rev += 1;
