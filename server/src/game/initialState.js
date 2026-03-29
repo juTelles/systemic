@@ -12,14 +12,16 @@ export function createInitialState({ roomId }) {
       isCrisisRound: false,
       blockedUntil: null,
       step: {
-        name: 'SET_READY',
-        progression: {
-          trigger: 'PLAYER_INPUT',
-          type: 'PLAYER_INPUT',
-          triggerNext: 'AUTO',
+        name: 'WAITING_PLAYERS_READY',
+        flowControl: {
+          current: {
+            accepts: 'PLAYER_INPUT',
+          },
+          nextTransition: {
+            actionType: null,
+            trigger: null,
+          },
         },
-        next: null,
-        dataDefaults: {},
       },
     },
     deck: [],
@@ -32,6 +34,8 @@ export function createInitialState({ roomId }) {
       selectedAmount: 0,
       applied: [],
     },
+    systemSate: 'HEALTHY', // 'HEALTHY', 'WARRNING', 'CRITICAL'
+    isCrisisRound: false,
     components: {},
     gameConfig: {
       maxPlayers: 4,
