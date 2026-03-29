@@ -22,7 +22,7 @@ export function applyAction(state, action, ctx = {}) {
 
   switch (action?.type) {
     case ACTION_TYPES.SET_READY: {
-      const localPlayerId = action.senderId ?? ctx.senderId;
+      const localPlayerId = action.payload.senderId;
 
       if (!localPlayerId) {
         const err = new Error('Player ID is required for SET_READY action');
@@ -86,7 +86,7 @@ export function applyAction(state, action, ctx = {}) {
       }));
       next.log.lastEvent = {
         type: ACTION_TYPES.START_GAME,
-        by: action.senderId ?? null,
+        by: action.payload.senderId ?? null,
         at: now,
         data: { phase: action.phase },
       };
@@ -105,7 +105,7 @@ export function applyAction(state, action, ctx = {}) {
       next.meta.updatedAt = now;
       next.log.lastEvent = {
         type: ACTION_TYPES.START_ROUND,
-        by: action.senderId ?? null,
+        by: action.payload.senderId ?? null,
         at: now,
       };
       return next;
@@ -121,7 +121,7 @@ export function applyAction(state, action, ctx = {}) {
       next.meta.updatedAt = now;
       next.log.lastEvent = {
         type: ACTION_TYPES.START_TURN,
-        by: action.senderId ?? null,
+        by: action.payload.senderId ?? null,
         at: now,
       };
       return next;
@@ -134,7 +134,7 @@ export function applyAction(state, action, ctx = {}) {
       next.meta.updatedAt = now;
       next.log.lastEvent = {
         type: ACTION_TYPES.START_PLAYER_TURN,
-        by: action.senderId ?? null,
+        by: action.payload.senderId ?? null,
         at: now,
       };
       return next;
@@ -157,7 +157,7 @@ export function applyAction(state, action, ctx = {}) {
       next.meta.updatedAt = now;
       next.log.lastEvent = {
         type: ACTION_TYPES.ASK_FOR_DECISION,
-        by: action.senderId ?? null,
+        by: action.payload.senderId ?? null,
         at: now,
       };
       return next;
@@ -195,7 +195,7 @@ export function applyAction(state, action, ctx = {}) {
       decisionNext.meta.updatedAt = now;
       decisionNext.log.lastEvent = {
         type: ACTION_TYPES.APPLY_DECISION,
-        by: action.senderId ?? null,
+        by: action.payload.senderId ?? null,
         at: now,
       };
       return decisionNext;
@@ -214,7 +214,7 @@ export function applyAction(state, action, ctx = {}) {
       next.meta.updatedAt = now;
       next.log.lastEvent = {
         type: ACTION_TYPES.FINISH_TURN,
-        by: action.senderId ?? null,
+        by: action.payload.senderId ?? null,
         at: now,
       };
       return next;
@@ -227,7 +227,7 @@ export function applyAction(state, action, ctx = {}) {
       next.meta.updatedAt = now;
       next.log.lastEvent = {
         type: ACTION_TYPES.SET_PHASE,
-        by: action.senderId ?? null,
+        by: action.payload.senderId ?? null,
         at: now,
         data: { phase: action.phase },
       };
@@ -249,8 +249,3 @@ export function applyAction(state, action, ctx = {}) {
 //     ? true
 //     : false;
 // }
-// TODO: Reasherch better way to handle the actions an game flow
-// TODO: review actions contract, payload exists in the shape definition,
-//  but it is not actually used in the current action flow, should we remove
-// it or start using it in the actions? instead of reading action fields
-// directly from the action object?
