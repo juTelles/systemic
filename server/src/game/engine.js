@@ -57,8 +57,7 @@ export function applyAction(state, action, ctx = {}) {
       return next;
     }
 
-    case ACTION_TYPES.GAME_START: {
-      const gameConfig = structuredClone(gameConfigs.regularMode);
+    case ACTION_TYPES.START_GAME: {
 
       if (!isGameReadyToStart(gameConfig, next, 'LOBBY', PLAYER_STATUS.READY)) {
         //TODO: Fix this log, applyRoomAction returns only the new state, so we passing
@@ -86,7 +85,7 @@ export function applyAction(state, action, ctx = {}) {
         bankPoints: 0,
       }));
       next.log.lastEvent = {
-        type: ACTION_TYPES.GAME_START,
+        type: ACTION_TYPES.START_GAME,
         by: action.senderId ?? null,
         at: now,
         data: { phase: action.phase },
@@ -94,7 +93,7 @@ export function applyAction(state, action, ctx = {}) {
       return next;
     }
 
-    case ACTION_TYPES.ROUND_START: {
+    case ACTION_TYPES.START_ROUND: {
       next.flow.step = steps['ROUND_START'];
       next.flow.blockedUntil = now + 1500;
       next.players.forEach((player) => {
@@ -105,7 +104,7 @@ export function applyAction(state, action, ctx = {}) {
       next.meta.rev += 1;
       next.meta.updatedAt = now;
       next.log.lastEvent = {
-        type: ACTION_TYPES.END_TURN,
+        type: ACTION_TYPES.START_ROUND,
         by: action.senderId ?? null,
         at: now,
       };
@@ -115,26 +114,26 @@ export function applyAction(state, action, ctx = {}) {
     // which is misleading and will make client-side event handling/debugging
     // incorrect. This should log ACTION_TYPES.ROUND_START (and similarly TURN_START currently logs END_TURN).
 
-    case ACTION_TYPES.TURN_START: {
+    case ACTION_TYPES.START_TURN: {
       next.flow.step = steps['TURN_START'];
       next.flow.currentPlayerId = next.players[next.flow.turn].id;
       next.meta.rev += 1;
       next.meta.updatedAt = now;
       next.log.lastEvent = {
-        type: ACTION_TYPES.END_TURN,
+        type: ACTION_TYPES.START_TURN,
         by: action.senderId ?? null,
         at: now,
       };
       return next;
     }
 
-    case ACTION_TYPES.PLAYER_TURN: {
+    case ACTION_TYPES.START_PLAYER_TURN: {
       next.flow.step = steps['PLAYER_TURN'];
       next.flow.blockedUntil = now + 1500;
       next.meta.rev += 1;
       next.meta.updatedAt = now;
       next.log.lastEvent = {
-        type: ACTION_TYPES.PLAYER_TURN,
+        type: ACTION_TYPES.START_PLAYER_TURN,
         by: action.senderId ?? null,
         at: now,
       };
@@ -142,8 +141,8 @@ export function applyAction(state, action, ctx = {}) {
     }
 // TODO: Rethink if it is a necessary action to have
 
-    case ACTION_TYPES.CHOOSE_DECISION: {
-      next.flow.step = steps['CHOOSE_DECISION'];
+    case ACTION_TYPES.ASK_FOR_DECISION: {
+      next.flow.step = steps['AWAIT_DECISION'];
 
       let decisionsAvailable = [];
       const player = getPlayerObject(next.flow.currentPlayerId, next.players);
@@ -157,7 +156,7 @@ export function applyAction(state, action, ctx = {}) {
       next.meta.rev += 1;
       next.meta.updatedAt = now;
       next.log.lastEvent = {
-        type: ACTION_TYPES.APPLY_DECISION,
+        type: ACTION_TYPES.ASK_FOR_DECISION,
         by: action.senderId ?? null,
         at: now,
       };
@@ -165,7 +164,7 @@ export function applyAction(state, action, ctx = {}) {
     }
 
     case ACTION_TYPES.APPLY_DECISION: {
-      next.flow.step = steps['APPLY_DECISION'];
+      next.flow.step = steps['PROCESSING_DECISION'];
 
       const currentPlayer = getPlayerObject(
         next.flow.currentPlayerId,
@@ -195,7 +194,7 @@ export function applyAction(state, action, ctx = {}) {
       decisionNext.meta.rev += 1;
       decisionNext.meta.updatedAt = now;
       decisionNext.log.lastEvent = {
-        type: ACTION_TYPES.PLAYER_TURN,
+        type: ACTION_TYPES.APPLY_DECISION,
         by: action.senderId ?? null,
         at: now,
       };
@@ -208,13 +207,13 @@ export function applyAction(state, action, ctx = {}) {
     // next.decisions.available when you actually recompute it, or default
     // decisionsAvailable to the current list.
 
-    case ACTION_TYPES.END_TURN: {
+    case ACTION_TYPES.FINISH_TURN: {
       next.flow.blockedUntil = now + 1500;
       next.flow.turn += 1;
       next.meta.rev += 1;
       next.meta.updatedAt = now;
       next.log.lastEvent = {
-        type: ACTION_TYPES.END_TURN,
+        type: ACTION_TYPES.FINISH_TURN,
         by: action.senderId ?? null,
         at: now,
       };

@@ -11,7 +11,7 @@ export function useRoomActions(roomId, localPlayerId) {
   }
 
   async function endTurn() {
-    return sendAction(roomId, localPlayerId, ACTION_TYPES.END_TURN);
+    return sendAction(roomId, localPlayerId, ACTION_TYPES.FINISH_TURN);
   }
 
   return {
