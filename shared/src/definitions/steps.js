@@ -1,4 +1,3 @@
-import { instructions } from './instructions.js';
 import { ACTION_TYPES } from '../constants/actionsTypes.js';
 
 export const steps = Object.freeze({

@@ -34,8 +34,6 @@ export function createInitialState({ roomId }) {
       selectedAmount: 0,
       applied: [],
     },
-    systemSate: 'HEALTHY', // 'HEALTHY', 'WARRNING', 'CRITICAL'
-    isCrisisRound: false,
     components: {},
     gameConfig: {
       maxPlayers: 4,

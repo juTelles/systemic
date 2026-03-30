@@ -21,7 +21,7 @@ export const instructions = ({
   ROUND_START: {
     title: 'Start of Turn',
     description: {
-      pt: `Inicio do turno! O Time recebe ${points} Pontos de Tarefa a serem dividos igualmente entre os jogadores para gastar em Decisões Tecnicas.`,
+      pt: `Inicio do turno! O Time recebe ${points} Pontos de Tarefa a serem divididos igualmente entre os jogadores para gastar em Decisões Tecnicas.`,
       in: `Start of turn! The team receives ${points} "Task Points" to be divided equally among the players to spend on Technical Decisions.`,
     },
   },

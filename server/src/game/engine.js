@@ -123,20 +123,6 @@ export function applyAction(state, action, ctx = {}) {
       return next;
     }
 
-    case ACTION_TYPES.START_PLAYER_TURN: {
-      next.flow.step = steps['PLAYER_TURN'];
-      next.flow.blockedUntil = now + 1500;
-      next.meta.rev += 1;
-      next.meta.updatedAt = now;
-      next.log.lastEvent = {
-        type: ACTION_TYPES.START_PLAYER_TURN,
-        by: action.payload.senderId ?? null,
-        at: now,
-      };
-      return next;
-    }
-// TODO: Rethink if it is a necessary action to have
-
     case ACTION_TYPES.ASK_FOR_DECISION: {
       next.flow.step = steps['AWAIT_DECISION'];
 
@@ -216,20 +202,6 @@ export function applyAction(state, action, ctx = {}) {
       return next;
     }
 // TODO: Fix, remenber to zero the turn count
-
-    case ACTION_TYPES.SET_PHASE: {
-      next.phase = action.phase;
-      next.meta.rev += 1;
-      next.meta.updatedAt = now;
-      next.log.lastEvent = {
-        type: ACTION_TYPES.SET_PHASE,
-        by: action.payload.senderId ?? null,
-        at: now,
-        data: { phase: action.phase },
-      };
-      return next;
-    }
-
     default:
       const err = new Error('Unknown action type');
       err.code = 'UNKNOWN_ACTION_TYPE';

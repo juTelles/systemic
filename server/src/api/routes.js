@@ -103,7 +103,7 @@ export function createRoutes({ rooms, runGameLoop }) {
         return res.status(404).json({ error: 'Room not found' });
       }
 
-      roomState = runGameLoop(roomState, roomId, action, action.payload.senderId);
+      roomState = runGameLoop(roomState, roomId, action);
 
       res.json({ roomState });
     } catch (err) {
