@@ -2,9 +2,9 @@ import { ACTION_TYPES } from '../../../shared/src/constants/actionsTypes.js';
 import { PLAYER_STATUS } from '../../../shared/src/constants/playerStatus.js';
 import { steps } from '../../../shared/src/definitions/steps.js';
 import { composeDeck } from './deckComposer.js';
-import { gameConfigs } from './gameConfigs.js';
 import { components } from '../../../shared/src/definitions/components.js';
 import { applyGameStartBugs } from './gameHelpers.js';
+import { transitionResolvers } from './transitionResolvers.js';
 
 import {
   getAvailableDecisions,
@@ -22,7 +22,7 @@ export function applyAction(state, action, ctx = {}) {
 
   switch (action?.type) {
     case ACTION_TYPES.SET_READY: {
-      const localPlayerId = action.senderId ?? ctx.senderId;
+      const localPlayerId = action.payload?.senderId;
 
       if (!localPlayerId) {
         const err = new Error('Player ID is required for SET_READY action');
@@ -41,12 +41,7 @@ export function applyAction(state, action, ctx = {}) {
       }
       player.status = PLAYER_STATUS.READY;
 
-      const allPlayersReady = next.players.every(
-        (player) => player.status === PLAYER_STATUS.READY
-      );
-      if (allPlayersReady) {
-        next.flow.step.next = 'GAME_START';
-      }
+      next.flow.step.flowControl.nextTransition = transitionResolvers['WAITING_PLAYERS_READY'](next);
       next.meta.rev += 1;
       next.meta.updatedAt = now;
       next.log.lastEvent = {
@@ -57,10 +52,11 @@ export function applyAction(state, action, ctx = {}) {
       return next;
     }
 
-    case ACTION_TYPES.GAME_START: {
-      const gameConfig = structuredClone(gameConfigs.regularMode);
+    case ACTION_TYPES.START_GAME: {
+      // const gameConfig = structuredClone(next.gameConfig);
+      // TODO: add feat to change config possibilities
 
-      if (!isGameReadyToStart(gameConfig, next, 'LOBBY', PLAYER_STATUS.READY)) {
+      if (!isGameReadyToStart(next, 'LOBBY', PLAYER_STATUS.READY)) {
         //TODO: Fix this log, applyRoomAction returns only the new state, so we passing
         // would means nothing without refactoring the applyRoomAction to return both
         // the new state and the log of what happened, throwing an error or something
@@ -71,10 +67,9 @@ export function applyAction(state, action, ctx = {}) {
       }
       next.flow.blockedUntil = now + 1500;
       next.flow.step = steps['GAME_START'];
-      next.gameConfig = gameConfig;
       next.components = structuredClone(components);
       next.components = applyGameStartBugs(next.components);
-      const deck = composeDeck(gameConfigs.regularMode.deck.composition);
+      const deck = composeDeck(next.gameConfig.deck.composition);
       next.deck = deck;
       next.phase = 'IN_GAME';
       next.meta.rev += 1;
@@ -86,15 +81,15 @@ export function applyAction(state, action, ctx = {}) {
         bankPoints: 0,
       }));
       next.log.lastEvent = {
-        type: ACTION_TYPES.GAME_START,
-        by: action.senderId ?? null,
+        type: ACTION_TYPES.START_GAME,
+        by: action.payload.senderId ?? null,
         at: now,
-        data: { phase: action.phase },
+        data: { phase: next.phase },
       };
       return next;
     }
 
-    case ACTION_TYPES.ROUND_START: {
+    case ACTION_TYPES.START_ROUND: {
       next.flow.step = steps['ROUND_START'];
       next.flow.blockedUntil = now + 1500;
       next.players.forEach((player) => {
@@ -105,8 +100,8 @@ export function applyAction(state, action, ctx = {}) {
       next.meta.rev += 1;
       next.meta.updatedAt = now;
       next.log.lastEvent = {
-        type: ACTION_TYPES.END_TURN,
-        by: action.senderId ?? null,
+        type: ACTION_TYPES.START_ROUND,
+        by: action.payload.senderId ?? null,
         at: now,
       };
       return next;
@@ -115,35 +110,21 @@ export function applyAction(state, action, ctx = {}) {
     // which is misleading and will make client-side event handling/debugging
     // incorrect. This should log ACTION_TYPES.ROUND_START (and similarly TURN_START currently logs END_TURN).
 
-    case ACTION_TYPES.TURN_START: {
+    case ACTION_TYPES.START_TURN: {
       next.flow.step = steps['TURN_START'];
       next.flow.currentPlayerId = next.players[next.flow.turn].id;
       next.meta.rev += 1;
       next.meta.updatedAt = now;
       next.log.lastEvent = {
-        type: ACTION_TYPES.END_TURN,
-        by: action.senderId ?? null,
+        type: ACTION_TYPES.START_TURN,
+        by: action.payload.senderId ?? null,
         at: now,
       };
       return next;
     }
 
-    case ACTION_TYPES.PLAYER_TURN: {
-      next.flow.step = steps['PLAYER_TURN'];
-      next.flow.blockedUntil = now + 1500;
-      next.meta.rev += 1;
-      next.meta.updatedAt = now;
-      next.log.lastEvent = {
-        type: ACTION_TYPES.PLAYER_TURN,
-        by: action.senderId ?? null,
-        at: now,
-      };
-      return next;
-    }
-// TODO: Rethink if it is a necessary action to have
-
-    case ACTION_TYPES.CHOOSE_DECISION: {
-      next.flow.step = steps['CHOOSE_DECISION'];
+    case ACTION_TYPES.ASK_FOR_DECISION: {
+      next.flow.step = steps['AWAIT_DECISION'];
 
       let decisionsAvailable = [];
       const player = getPlayerObject(next.flow.currentPlayerId, next.players);
@@ -157,15 +138,15 @@ export function applyAction(state, action, ctx = {}) {
       next.meta.rev += 1;
       next.meta.updatedAt = now;
       next.log.lastEvent = {
-        type: ACTION_TYPES.APPLY_DECISION,
-        by: action.senderId ?? null,
+        type: ACTION_TYPES.ASK_FOR_DECISION,
+        by: action.payload.senderId ?? null,
         at: now,
       };
       return next;
     }
 
     case ACTION_TYPES.APPLY_DECISION: {
-      next.flow.step = steps['APPLY_DECISION'];
+      next.flow.step = steps['PROCESSING_DECISION'];
 
       const currentPlayer = getPlayerObject(
         next.flow.currentPlayerId,
@@ -195,8 +176,8 @@ export function applyAction(state, action, ctx = {}) {
       decisionNext.meta.rev += 1;
       decisionNext.meta.updatedAt = now;
       decisionNext.log.lastEvent = {
-        type: ACTION_TYPES.PLAYER_TURN,
-        by: action.senderId ?? null,
+        type: ACTION_TYPES.APPLY_DECISION,
+        by: action.payload.senderId ?? null,
         at: now,
       };
       return decisionNext;
@@ -208,33 +189,19 @@ export function applyAction(state, action, ctx = {}) {
     // next.decisions.available when you actually recompute it, or default
     // decisionsAvailable to the current list.
 
-    case ACTION_TYPES.END_TURN: {
+    case ACTION_TYPES.FINISH_TURN: {
       next.flow.blockedUntil = now + 1500;
       next.flow.turn += 1;
       next.meta.rev += 1;
       next.meta.updatedAt = now;
       next.log.lastEvent = {
-        type: ACTION_TYPES.END_TURN,
-        by: action.senderId ?? null,
+        type: ACTION_TYPES.FINISH_TURN,
+        by: action.payload.senderId ?? null,
         at: now,
       };
       return next;
     }
 // TODO: Fix, remenber to zero the turn count
-
-    case ACTION_TYPES.SET_PHASE: {
-      next.phase = action.phase;
-      next.meta.rev += 1;
-      next.meta.updatedAt = now;
-      next.log.lastEvent = {
-        type: ACTION_TYPES.SET_PHASE,
-        by: action.senderId ?? null,
-        at: now,
-        data: { phase: action.phase },
-      };
-      return next;
-    }
-
     default:
       const err = new Error('Unknown action type');
       err.code = 'UNKNOWN_ACTION_TYPE';
@@ -250,8 +217,3 @@ export function applyAction(state, action, ctx = {}) {
 //     ? true
 //     : false;
 // }
-// TODO: Reasherch better way to handle the actions an game flow
-// TODO: review actions contract, payload exists in the shape definition,
-//  but it is not actually used in the current action flow, should we remove
-// it or start using it in the actions? instead of reading action fields
-// directly from the action object?

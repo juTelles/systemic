@@ -1,12 +1,16 @@
-import { instructions } from './instructions.js';
+import { ACTION_TYPES } from '../constants/actionsTypes.js';
 
 export const steps = Object.freeze({
-  SET_READY: {
-    name: 'SET_READY',
-    description: instructions().SET_READY?.description?.pt,
-    progression: {
-      trigger: 'PLAYER_INPUT',
-      type: 'PLAYER_INPUT',
+  WAITING_PLAYERS_READY: {
+    name: 'WAITING_PLAYERS_READY',
+    flowControl: {
+      current: {
+        accepts: 'PLAYER_INPUT',
+      },
+      nextTransition: {
+        actionType: null,
+        trigger: null,
+      },
     },
     effects: [
       'CONFIG_COMPONENTS',
@@ -15,17 +19,19 @@ export const steps = Object.freeze({
       'TIME_OUT',
       'UPDATE_NEXT_VALID_STEP',
     ],
-    next: null,
     // IF all players ready -> 'GAME_START' ELSE null
-    dataDefaults: {},
   },
   GAME_START: {
     name: 'GAME_START',
-    description: instructions().GAME_START?.description?.pt,
-    progression: {
-      trigger: 'AUTO', //WHEN all players ready
-      type: 'TIMEOUT',
-      delayMs: 1500,
+    flowControl: {
+      current: {
+        accepts: 'AUTO',
+        delayMs: 1500,
+      },
+      nextTransition: {
+        actionType: ACTION_TYPES.START_ROUND,
+        trigger: 'AUTO',
+      },
     },
     effects: [
       'CONFIG_COMPONENTS',
@@ -33,140 +39,109 @@ export const steps = Object.freeze({
       'COMPOSE_DECK',
       'TIME_OUT',
     ],
-    next: 'ROUND_START',
-    dataDefaults: {},
   },
-
   ROUND_START: {
     name: 'ROUND_START',
-    description: instructions().ROUND_START?.description?.pt,
-    progression: {
-      trigger: 'AUTO',
-      type: 'TIMEOUT',
-      delayMs: 1500,
+    flowControl: {
+      current: {
+        accepts: 'AUTO',
+        delayMs: 1500,
+      },
+      nextTransition: {
+        actionType: ACTION_TYPES.START_TURN,
+        trigger: 'AUTO',
+      },
     },
     effects: ['DEAL_POINTS', 'DEFINE_IS_CRISIS_ROUND', 'TIME_OUT'],
-    next: 'TURN_START',
-    dataDefaults: {},
   },
-
   TURN_START: {
     name: 'TURN_START',
-    description: instructions().TURN_START?.description?.pt,
-    progression: {
-      trigger: 'AUTO',
-      type: 'AUTO',
-      triggerNext: 'AUTO',
+    flowControl: {
+      current: {
+        accepts: 'AUTO',
+        delayMs: 1500,
+      },
+      nextTransition: {
+        actionType: ACTION_TYPES.ASK_FOR_DECISION,
+        trigger: 'AUTO',
+      },
     },
-    effects: ['CONFIG_CURRENT_PLAYER', 'TIME_OUT'],
-    next: 'PLAYER_TURN',
-    dataDefaults: {},
+    effects: ['CONFIG_CURRENT_PLAYER', 'SHOW_PLAYER_TURN','TIME_OUT'],
   },
-
-  PLAYER_TURN: {
-    name: 'PLAYER_TURN',
-    description: instructions().PLAYER_TURN?.description?.pt,
-    progression: {
-      trigger: 'AUTO',
-      type: 'TIMEOUT',
-      delayMs: 1200,
-      triggerNext: 'AUTO',
-    },
-    effects: ['SHOW_PLAYER_TURN', 'TIME_OUT'],
-    next: 'CHOOSE_DECISION',
-    dataDefaults: {},
-  },
-
-  CHOOSE_DECISION: {
-    name: 'CHOOSE_DECISION',
-    description: instructions().CHOOSE_DECISION?.description?.pt,
-    progression: {
-      trigger: 'AUTO',
-      type: 'AUTO',
-      triggerNext: 'PLAYER_INPUT',
+  AWAIT_DECISION: {
+    name: 'AWAIT_DECISION',
+    flowControl: {
+      current: {
+        accepts: 'PLAYER_INPUT',
+      },
+      nextTransition: {
+        actionType: ACTION_TYPES.APPLY_DECISION,
+        trigger: 'PLAYER_INPUT',
+      },
     },
     effects: [
       'CHECK_VALID_DECISIONS',
       'SHOW_VALID_DECISIONS',
       'WAIT_FOR_DECISION',
     ],
-    next: 'APPLY_DECISION',
-    dataDefaults: {
-      actionsRemaining: 0,
-    },
   },
-
-  APPLY_DECISION: {
-    name: 'APPLY_DECISION',
-    description: instructions().APPLY_DECISION?.description?.pt,
-    progression: {
-      trigger: 'PLAYER_INPUT',
-      type: 'PLAYER_INPUT',
-      triggerNext: 'AUTO',
+  PROCESSING_DECISION: {
+    name: 'PROCESSING_DECISION',
+    flowControl: {
+      current: {
+        accepts: 'AUTO',
+        delayMs: 1500,
+      },
+      nextTransition: {
+        actionType: null,
+        trigger: null,
+      },
     },
     effects: [
       'APPLY_DECISION',
-      'CALCULATE_POINTS',
+      'UPDATE_POINTS',
       'CHECK_VALID_DECISIONS',
       'UPDATE_NEXT_VALID_STEP',
     ],
-    next: null,
-    // IF actionsRemaining > 0 -> 'CHOOSE_DECISION' ELSE 'DRAW_CARD'
-    dataDefaults: {
-      actionsRemaining: 0,
-    },
+    // IF allComponentsTested -> 'FINISH_GAME' with win ELSE actionsRemaining > 0 -> 'ASK_FOR_DECISION' ELSE 'DRAW_CARD'
   },
-
-  DRAW_CARD: {
-    name: 'DRAW_CARD',
-    description: instructions().DRAW_CARD?.description?.pt,
-    progression: {
-      trigger: 'AUTO',
-      type: 'AUTO',
-      triggerNext: 'PLAYER_INPUT',
+  AWAIT_CARD_DRAW: {
+    name: 'AWAIT_CARD_DRAW',
+    flowControl: {
+      current: {
+        accepts: 'PLAYER_INPUT',
+      },
+      nextTransition: {
+        actionType: ACTION_TYPES.APPLY_CARD,
+        trigger: 'PLAYER_INPUT',
+      },
     },
-    effects: ['WAIT_FOR_DRAW'],
-    next: 'RESOLVE_CARD',
-    dataDefaults: {},
+    effects: ['WAIT_FOR_DRAW', 'SHOW_DRAWN_CARD'],
   },
-
-  SHOW_CARD: {
-    name: 'DRAW_CARD',
-    description: instructions().DRAW_CARD?.description?.pt,
-    progression: {
-      trigger: 'PLAYER_INPUT',
-      type: 'TIMEOUT',
-      triggerNext: 'AUTO',
+  PROCESSING_CARD: {
+    name: 'PROCESSING_CARD',
+    flowControl: {
+      current: {
+        accepts: 'AUTO',
+      },
+      nextTransition: {
+        actionType: null,
+        trigger: null,
+      },
     },
-    effects: ['SHOW_CARD', 'TIME_OUT'],
-    next: 'RESOLVE_CARD',
-    dataDefaults: {},
+    effects: ['APPLY_CARD_EFFECT', 'PROCESSING_STATE_CHANGE', 'TIME_OUT'],
+    // IF criticalState > 'FINISH_TURN' with startCriticalRoundFlag ELSE IF cardsToDrawRemaining > 0> 'DRAW_CARD' ELSE 'FINISH_TURN'
   },
-
-  RESOLVE_CARD: {
-    name: 'RESOLVE_CARD',
-    description: instructions().RESOLVE_CARD?.description?.pt,
-    progression: {
-      trigger: 'AUTO',
-      type: 'TIMEOUT',
-      delayMs: 2500,
-      triggerNext: 'AUTO',
-    },
-    effects: ['APPLY_CARD_EFFECT', 'TIME_OUT', 'UPDATE_NEXT_VALID_STEP'],
-    next: null,
-    // IF actionsRemaining > 0 -> 'DRAW_CARD' ELSE 'END_TURN'
-    dataDefaults: {
-      actionsRemaining: 0,
-    },
-  },
-
   END_TURN: {
     name: 'END_TURN',
-    description: instructions().END_TURN?.description?.pt,
-    progression: {
-      trigger: 'AUTO',
-      type: 'TIMEOUT',
-      delayMs: 2500,
+    flowControl: {
+      current: {
+        accepts: 'AUTO',
+      },
+      nextTransition: {
+        actionType: null,
+        trigger: null,
+      },
     },
     effects: [
       'CHECK_GAME_STATE',
@@ -177,19 +152,18 @@ export const steps = Object.freeze({
       'TIME_OUT',
       'UPDATE_NEXT_VALID_STEP',
     ],
-    next: null,
-    // IF END_GAME -> 'END_GAME' ELSE IF END_ROUND -> 'END_ROUND' ELSE 'TURN_START'
-    dataDefaults: {},
+    // IF  criticalState -> 'FINISH_ROUND' with startCriticalRoundFlag ELSE islastRoundTurn -> 'FINISH_ROUND' ELSE 'START_TURN'
   },
-
   END_ROUND: {
     name: 'END_ROUND',
-    description: instructions().END_ROUND?.description?.pt,
-    progression: {
-      trigger: 'AUTO',
-      type: 'TIMEOUT',
-      delayMs: 2500,
-      triggerNext: 'AUTO',
+    flowControl: {
+      current: {
+        accepts: 'AUTO',
+      },
+      nextTransition: {
+        actionType: null,
+        trigger: null,
+      },
     },
     effects: [
       'CHECK_GAME_STATE',
@@ -198,22 +172,19 @@ export const steps = Object.freeze({
       'TIME_OUT',
       'UPDATE_NEXT_VALID_STEP'
     ],
-    next: null,
-    // IF END_GAME -> 'END_GAME' ELSE 'ROUND_START'
-    dataDefaults: {},
+    // IF  isCriticalRound & isCriticalState -> 'FINISH_GAME' with lost ELSE startCriticalRoundFlag ->'START_ROUND' with isCriticalRound true ELSE -> 'START_ROUND'
   },
-
   END_GAME: {
     name: 'END_GAME',
-    description: instructions().END_GAME?.description?.pt,
-    progression: {
-      triggerNext: 'AUTO',
-      type: 'TIMEOUT',
-      delayMs: 2500,
+    flowControl: {
+      current: {
+        accepts: 'AUTO',
+      },
+      nextTransition: {
+        actionType: null,
+        trigger: null,
+      },
     },
     effects: ['SHOW_GAME_RESULT'],
-    next: null,
-    dataDefaults: {},
   },
 });
-//TODO: solve instructions feature.

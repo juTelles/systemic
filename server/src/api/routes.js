@@ -95,7 +95,7 @@ export function createRoutes({ rooms, runGameLoop }) {
   router.post('/rooms/:roomId/action', (req, res) => {
     try {
       const { roomId } = req.params;
-      const { action, senderId, payload } = req.body;
+      const { action } = req.body;
 
       let roomState = rooms.getState(roomId);
 
@@ -103,7 +103,7 @@ export function createRoutes({ rooms, runGameLoop }) {
         return res.status(404).json({ error: 'Room not found' });
       }
 
-      roomState = runGameLoop(roomState, roomId, action, { senderId });
+      roomState = runGameLoop(roomState, roomId, action);
 
       res.json({ roomState });
     } catch (err) {
