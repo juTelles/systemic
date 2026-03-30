@@ -22,7 +22,7 @@ export function applyAction(state, action, ctx = {}) {
 
   switch (action?.type) {
     case ACTION_TYPES.SET_READY: {
-      const localPlayerId = action.payload.senderId;
+      const localPlayerId = action.payload?.senderId;
 
       if (!localPlayerId) {
         const err = new Error('Player ID is required for SET_READY action');
@@ -84,7 +84,7 @@ export function applyAction(state, action, ctx = {}) {
         type: ACTION_TYPES.START_GAME,
         by: action.payload.senderId ?? null,
         at: now,
-        data: { phase: action.phase },
+        data: { phase: next.phase },
       };
       return next;
     }

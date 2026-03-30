@@ -6,13 +6,13 @@ export function createRunGameLoop({ rooms }) {
   ) {
     let state = structuredClone(currentRoomState);
 
-    let currentStepAcceptionRule =
+    let currentStepAcceptanceRule =
       state?.flow?.step?.flowControl?.current?.accepts ?? null;
 
     if (
       playerAction &&
       !isBlockedState(state) &&
-      currentStepAcceptionRule === 'PLAYER_INPUT'
+      currentStepAcceptanceRule === 'PLAYER_INPUT'
     ) {
       state = rooms.applyRoomAction(currentRoomId, playerAction);
     }
@@ -43,3 +43,8 @@ function isBlockedState(state) {
   const now = Date.now();
   return !!state.flow?.blockedUntil && now < state.flow.blockedUntil;
 }
+
+//TODO: Add type verification and validation for the player actions, to avoid applying
+//  invalid actions to the game state, which can cause bugs and inconsistencies in the game flow.
+// This can be done by defining a schema for each action type and validating the incoming actions
+//  against these schemas before applying them to the state.

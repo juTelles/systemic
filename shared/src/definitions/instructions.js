@@ -7,7 +7,7 @@ export const instructions = ({
   WAITING_PLAYERS_READY: {
     title: 'Ready Up',
     description: {
-      pt: `Bem vindos ao Systemic! \nTodos os jogadores devem clicar no botão "Pronto" para iniciar o jogo! O jogo só começará quando todos estiverem prontos.`,
+      pt: `Bem-vindos ao Systemic! \nTodos os jogadores devem clicar no botão "Pronto" para iniciar o jogo! O jogo só começará quando todos estiverem prontos.`,
       in: 'All players must click the "Ready" button to start the game! The game will only start when everyone is ready.',
     },
   },
