@@ -31,7 +31,24 @@ export function getAvailableDecisions(state, decisionsDefinitions) {
   });
   return decisionsAvailable;
 }
-// TODO: Missing checking specifically for tests and component types
+
+function resolveAvailableDecisionContext(state, decisionDefinition) {
+  const usedPointsDonation = state.decisionState.appliedTotals.DONATE_POINTS;
+  const usedPointsHold = state.decisionState.appliedTotals.HOLD_POINTS;
+  const donationTurnLimit = state.gameConfig.decisionCosts.DONATE_POINTS;
+  const holdTurnLimit = state.gameConfig.decisionCosts.HOLD_POINTS;
+  const components = state.components;
+  const componentType = decisionDefinition.componentType ?? null;
+
+  return {
+    componentType,
+    usedPointsDonation,
+    usedPointsHold,
+    donationTurnLimit,
+    holdTurnLimit,
+    components,
+  };
+}
 
 export function applyDecisionEffect(action, state) {
   let next = structuredClone(state);
