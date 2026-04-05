@@ -3,14 +3,32 @@ import { getPlayerObject } from '../selectors.js';
 import { decisionHandlers } from './handlers.js';
 import { runDecisionValidators } from './validators.js';
 
-export function getAvailableDecisions(decisionsObject, playerPoints) {
-  const decisionsAvailable = [];
+export function getAvailableDecisions(state, decisionsDefinitions) {
+  const player = getPlayerObject(state.flow.currentPlayerId, state.players);
+  const playerPoints = getTotalPlayersPoints(player);
 
-  for (const [decisionType, cost] of Object.entries(decisionsObject)) {
-    if (cost <= playerPoints) {
-      decisionsAvailable.push(decisionType);
-    }
+  let availableByCost = [];
+  let decisionsAvailable = [];
+
+  for (const [decisionsConfig, cost] of Object.entries(
+    state.gameConfig.decisionCosts
+  )) {
+    if (cost <= playerPoints) availableByCost.push(decisionsConfig);
   }
+  availableByCost.forEach((decisionAvailable) => {
+    const decisionAvailableDef = decisionsDefinitions.options[decisionAvailable];
+    if (!decisionAvailableDef) return;
+
+    const context = resolveAvailableDecisionContext(
+      state,
+      decisionAvailableDef
+    );
+    const isValid = runDecisionsAvailabilityRules(
+      decisionAvailableDef.availabilityRules,
+      context
+    );
+    if (isValid) decisionsAvailable.push(decisionAvailable);
+  });
   return decisionsAvailable;
 }
 // TODO: Missing checking specifically for tests and component types
