@@ -1,3 +1,5 @@
+import { isComponentEligibleForTests } from '../../../../shared/src/game/helpers.js';
+import { getPlayerObject } from '../selectors.js';
 import {
   addPointsToPlayerBankByDonation,
   addPointsToPlayerBankByHolding,
@@ -5,8 +7,6 @@ import {
   applyTest,
   subtractPointsToPlayer,
 } from '../gameHelpers.js';
-import { getPlayerObject } from '../selectors.js';
-
 
 export const decisionHandlers = {
   RESOLVE_BUG: handleResolveBugDecision,
@@ -15,47 +15,37 @@ export const decisionHandlers = {
   DEVELOP_TESTS: handleDevelopTestsDecision,
 };
 
-export function handleResolveBugDecision({
-  next,
-  currentPlayer,
-  component,
-  componentId,
-  decisionDefinition,
-}) {
-  if (!component) return next;
+export function handleResolveBugDecision(next, context) {
+  const {
+    currentPlayer,
+    selectedComponent,
+    decisionDefinition,
+  } = context;
 
-  const updatedComponent = resolveBug(component);
+  if (!selectedComponent) return next;
 
-  const cost = next.gameConfig.decisionCosts[decisionDefinition.costType];
+  const updatedComponent = resolveBug(selectedComponent);
+
+  const cost = next.gameConfig.decisionCosts[decisionDefinition.id];
   const updatedCurrentPlayer = subtractPointsToPlayer(currentPlayer, cost);
 
-  next.components.nodes[componentId] = updatedComponent;
+  next.components.nodes[selectedComponent.id] = updatedComponent;
   next.players = next.players.map((player) =>
     player.id === currentPlayer.id ? updatedCurrentPlayer : player
   );
 
   return next;
 }
-//TODO: Investigate > applyDecisionEffect calls decision handlers as
-// handler(next, context, definition), but the handlers are defined to take
-// a single object argument with properties like { next, currentPlayer, componentId, ... }.
-// This mismatch means the handler will receive next (the state) as the parameter
-// object and all expected fields will be undefined. Align the handler signature
-// and the call site so they agree on one contract (e.g., handler(next, context, definition)
-// with handlers (state, context, definition)).
 
-export function handleDonatePointsDecision({
-  next,
-  currentPlayer,
-  amount,
-  target,
-}) {
-  const targetPlayer = getPlayerObject(target, next.players);
+export function handleDonatePointsDecision(next, context) {
+  const { currentPlayer, selectedAmount, selectedTarget } = context;
+
+  const targetPlayer = getPlayerObject(selectedTarget, next.players);
   if (!targetPlayer) return next;
 
   const updatedTargetPlayer = addPointsToPlayerBankByDonation(
     targetPlayer,
-    amount,
+    selectedAmount,
     next.gameConfig.maxPlayerPoints
   );
   const updatedCurrentPlayer = subtractPointsToPlayer(currentPlayer, amount);
@@ -70,10 +60,12 @@ export function handleDonatePointsDecision({
   return next;
 }
 
-export function handleHoldPointsDecision({ next, currentPlayer, amount }) {
+export function handleHoldPointsDecision(next, context) {
+  const { currentPlayer, selectedAmount } = context;
+
   const updatedCurrentPlayer = addPointsToPlayerBankByHolding(
     currentPlayer,
-    amount
+    selectedAmount
   );
 
   next.players = next.players.map((player) =>
@@ -83,21 +75,26 @@ export function handleHoldPointsDecision({ next, currentPlayer, amount }) {
   return next;
 }
 
-export function handleDevelopTestsDecision({
-  next,
-  currentPlayer,
-  component,
-  componentId,
-  decisionDefinition,
-}) {
+export function handleDevelopTestsDecision(next, context) {
+  const {
+    currentPlayer,
+    selectedComponent,
+    decisionDefinition,
+  } = context;
+
   if (!component) return next;
 
-  const updatedComponent = applyTest(component);
+  checkForChildren = selectedComponent.type === 'LOCAL' ? true : false;
 
-  const cost = next.gameConfig.decisionCosts[decisionDefinition.costType];
+  if (!isComponentEligibleForTests(selectedComponent, next.components))
+    return next;
+
+  const updatedComponent = applyTest(selectedComponent);
+
+  const cost = next.gameConfig.decisionCosts[decisionDefinition.id];
   const updatedCurrentPlayer = subtractPointsToPlayer(currentPlayer, cost);
 
-  next.components.nodes[componentId] = updatedComponent;
+  next.components.nodes[selectedComponent.id] = updatedComponent;
   next.players = next.players.map((player) =>
     player.id === currentPlayer.id ? updatedCurrentPlayer : player
   );
