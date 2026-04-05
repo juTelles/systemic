@@ -27,12 +27,17 @@ export function createInitialState({ roomId }) {
     deck: [],
     log: { lastEvent: null },
     system: { globalStatus: 'HEALTHY' },
-    decisions: {
+    decisionState: {
       available: [],
-      chosen: null,
-      target: null,
-      selectedAmount: 0,
-      applied: [],
+      currentDecision: {
+        decisionId: null,
+        target: null,
+        selectedAmount: 0,
+      },
+      appliedTotals: {
+        DONATE_POINTS: 0,
+        HOLD_POINTS: 0,
+      },
     },
     components: {},
     gameConfig: {
