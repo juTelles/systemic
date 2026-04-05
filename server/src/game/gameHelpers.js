@@ -30,6 +30,17 @@ export function existsComponentEligibleForTests(components) {
     );
   return exists;
 }
+
+export function applyBug(component, components, amount = 1) {
+  const saturated = component.bugAmount + amount >= component.saturationLimit;
+
+  if (saturated && component.type !== 'REQUESTS') {
+    components.parentIds.forEach((parentId) => {
+      const parentComponent = components.nodes[parentId];
+      components.nodes[parentId] = applyBug(parentComponent, components);
+    });
+    return { ...component, bugAmount: 0, saturated: false };
+  }
   return {
     ...component,
     bugAmount: component.bugAmount + amount,
@@ -40,8 +51,11 @@ export function existsComponentEligibleForTests(components) {
 export function applyGameStartBugs(stateComponents, amount = 5) {
   const updatedNodes = { ...stateComponents.nodes };
   for (let i = 0; i < amount; i++) {
-    let randomComponentId = components.allIds[Math.floor(Math.random() * components.allIds.length)];
-    updatedNodes[randomComponentId] = applyBug(updatedNodes[randomComponentId]);
+    let randomComponentId =
+      stateComponents.allIds[
+        Math.floor(Math.random() * stateComponents.allIds.length)
+      ];
+    updatedNodes[randomComponentId] = applyBug(updatedNodes[randomComponentId], stateComponents);
   }
   return {
     ...stateComponents,
