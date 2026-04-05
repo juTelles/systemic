@@ -1,8 +1,35 @@
 import { components } from '../../../shared/src/definitions/components.js';
 import { getTotalPlayersPoints } from './selectors.js';
+import { isComponentEligibleForTests } from '../../../shared/src/game/helpers.js';
 
+export function existsComponentEligibleForBugResolvByType(
+  components,
+  componentType,
+  withTests = false
+) {
+  const componentsByTypeArray = components.byType?.[componentType] ?? [];
+  const exists = componentsByTypeArray.some((component) => {
+    const componentObj = components.nodes[component];
+    if (componentObj.bugAmount <= 0) return false;
+    return withTests ? componentObj.hasTests : !componentObj.hasTests;
+  });
+  return exists;
+}
 
-export function applyBug(component, amount = 1) {
+export function existsComponentEligibleForTests(components) {
+  const { byType } = components;
+  const exists =
+    byType.LOCAL.some((component) =>
+      isComponentEligibleForTests(components.nodes[component], components)
+    ) ||
+    byType.STRUCTURAL.Array.some((component) =>
+      isComponentEligibleForTests(components.nodes[component], components)
+    ) ||
+    byType.REQUESTS.Array.some((component) =>
+      isComponentEligibleForTests(components.nodes[component], components)
+    );
+  return exists;
+}
   return {
     ...component,
     bugAmount: component.bugAmount + amount,
