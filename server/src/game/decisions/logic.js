@@ -50,15 +50,18 @@ function resolveAvailableDecisionContext(state, decisionDefinition) {
   };
 }
 
-export function applyDecisionEffect(action, state) {
+export function applyDecisionEffect(action, state, decisionsDefinitions) {
   let next = structuredClone(state);
 
-  const definition = decisions[action.chosen];
+  const definition = decisionsDefinitions.options[action.chosen];
   if (!definition) return next;
 
-  const context = resolveDecisionContext(action, next, definition);
+  const context = resolveApplyDecisionContext(action, next, decisionsDefinitions);
 
-  const isValid = runDecisionValidators(definition.validators, context);
+  const isValid = runDecisionsApplicationValidators(
+    definition.applicationValidators,
+    context
+  );
   if (!isValid) return next;
 
   const handler = decisionHandlers[definition.effect];
@@ -66,31 +69,23 @@ export function applyDecisionEffect(action, state) {
 
   return handler(next, context, definition);
 }
-//TODO: Investigate > applyDecisionEffect is currently looking up decision
-// definitions as decisions[action.chosen], but decisions is structured
-// as { options, allIds, forUI }. This means definition will always be undefined
-// and no decision effect will ever apply. Lookup should be against decisions.options
-// (and the action field used for the lookup should match the actual action shape).
 
-function resolveDecisionContext(decisionAction, state) {
-  const decisionDefinition = decisions[decisionAction.chosen];
+function resolveApplyDecisionContext(decisionAction, state, decisionsDefinitions) {
   const currentPlayerId = state.flow.currentPlayerId;
-  const target = decisionAction.target;
+  const selectedTarget = decisionAction.target;
   const selectedAmount = decisionAction.selectedAmount;
-  const selectedComponentId = decisionAction.component;
 
   const currentPlayer = getPlayerObject(currentPlayerId, state.players);
 
-  const selectedComponent = selectedComponentId
-    ? { ...state.components.nodes[selectedComponentId] }
+  const selectedComponent = state?.components?.nodes[selectedTarget]
+    ? { ...state.components.nodes[selectedTarget] }
     : null;
 
   return {
-    decisionDefinition,
+    decisionsDefinitions,
     currentPlayer,
-    target,
-    selectedComponentId,
+    selectedTarget,
     selectedComponent,
-    selectedAmount
+    selectedAmount,
   };
 }
