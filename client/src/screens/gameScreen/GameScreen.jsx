@@ -14,6 +14,7 @@ function GameScreen({ roomId, localPlayerId, onSessionInvalid }) {
   const isPreGame = roomState?.phase === 'LOBBY';
   const [selectedDecisionUIId, setSelectedDecisionUIId] = useState(null);
   // const [selectedTargetComponent, setSelectedTargetComponent] = useState(null);
+  // const [selectedAmount, setSelectedAmount] = useState(null);
 
   const handleDecisionMade = (decison, decisionInstructionKey) => {
     setSelectedDecisionUIId(decison)
@@ -72,6 +73,9 @@ function GameScreen({ roomId, localPlayerId, onSessionInvalid }) {
           roomState={roomState}
           localPlayerId={localPlayerId}
           roomId={roomId}
+          selectedDecisionUIId={selectedDecisionUIId}
+          isReadOnly={isReadOnlyTurn}
+          instructionKey={instructionKey}
         />
         <TableTop
           isPreGame={isPreGame}
