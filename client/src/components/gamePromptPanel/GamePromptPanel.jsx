@@ -9,7 +9,7 @@ function GamePromptPanel({ step, instructionKey, roomState, txt }) {
     : gameInstructions[step]?.description?.pt;
   return (
     <div className={styles.gamePromptPanelContainer}>
-      <h2 className={styles.gamePromptPanelTitle}>Instruções</h2>
+      <h2 className={styles.gamePromptPanelTitle}>{txt.instructionsTitle['pt']}</h2>
       <div className={styles.gamePromptPanel}>
         <p className={styles.gamePromptPanelText}>{currentInstruction}</p>
       </div>
