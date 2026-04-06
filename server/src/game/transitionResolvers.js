@@ -10,7 +10,7 @@ export const transitionResolvers = {
       : null;
   },
   PROCESSING_DECISION: (state) => {
-    return state.decisions.available.length > 0
+    return state.decisionState.available.length > 0
       ? { actionType: ACTION_TYPES.ASK_FOR_DECISION, trigger: 'AUTO' }
       : { actionType: ACTION_TYPES.DRAW_CARD, trigger: 'AUTO' };
   },

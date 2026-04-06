@@ -133,9 +133,9 @@ export function createRoomsService() {
     if (!room) {
       throw createError(ERRORS.ROOM_NOT_FOUND, 404);
     }
-    console.log(`Applying action to room ${roomId} with action:`, action, 'and context:', ctx);
 
     let nextState = applyAction(room.state, action, ctx);
+    console.log(`Applied action to room ${roomId} with action:`, action, 'and context:', ctx);
 
     room.state = nextState;
     return room.state;

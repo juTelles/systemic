@@ -36,7 +36,7 @@ export const gameConfigs = Object.freeze({
         },
         {
           cardType: 'BUG',
-          componentType: 'REQUEST',
+          componentType: 'REQUESTS',
           quantity: 10,
         },
         {

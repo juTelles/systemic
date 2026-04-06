@@ -1,4 +1,3 @@
-import { components } from '../../../shared/src/definitions/components.js';
 import { getTotalPlayersPoints } from './selectors.js';
 import { isComponentEligibleForTests } from '../../../shared/src/game/helpers.js';
 
@@ -121,10 +120,7 @@ export function addPointsToPlayerBankByDonation(
   };
 }
 
-export function addPointsToPlayerBankByHolding(
-  player,
-  pointsToAdd
-) {
+export function addPointsToPlayerBankByHolding(player, pointsToAdd) {
   if (player.handPoints < pointsToAdd) {
     console.warn(
       'Invalid action: Not have enough points in hand to add to bank'

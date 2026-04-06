@@ -5,6 +5,7 @@ import { composeDeck } from './deckComposer.js';
 import { components } from '../../../shared/src/definitions/components.js';
 import { applyGameStartBugs } from './gameHelpers.js';
 import { transitionResolvers } from './transitionResolvers.js';
+import { decisions as decisionsDefinitions } from '../../../shared/src/definitions/decisions.js';
 
 import {
   getAvailableDecisions,
@@ -41,7 +42,8 @@ export function applyAction(state, action, ctx = {}) {
       }
       player.status = PLAYER_STATUS.READY;
 
-      next.flow.step.flowControl.nextTransition = transitionResolvers['WAITING_PLAYERS_READY'](next);
+      next.flow.step.flowControl.nextTransition =
+        transitionResolvers['WAITING_PLAYERS_READY'](next);
       next.meta.rev += 1;
       next.meta.updatedAt = now;
       next.log.lastEvent = {
@@ -61,7 +63,8 @@ export function applyAction(state, action, ctx = {}) {
         // would means nothing without refactoring the applyRoomAction to return both
         // the new state and the log of what happened, throwing an error or something
         // triggers the cleanUp function in the client, which is not what we want in this case,
-        // since it's not an error from the user, but from the game state, so we should just log it and return the next state without applying the GAME_START action
+        // since it's not an error from the user, but from the game state, so we should just log
+        //  it and return the next state without applying the GAME_START action
         console.warn('[GAME_START] skipped: conditions not met');
         return next;
       }
@@ -125,12 +128,12 @@ export function applyAction(state, action, ctx = {}) {
 
     case ACTION_TYPES.ASK_FOR_DECISION: {
       next.flow.step = steps['AWAIT_DECISION'];
-
       let decisionsAvailable = [];
+
       if (next.decisionState.available.length === 0) {
         decisionsAvailable = getAvailableDecisions(next, decisionsDefinitions);
       }
-      next.decisions.available = decisionsAvailable;
+      next.decisionState.available = decisionsAvailable;
       next.meta.rev += 1;
       next.meta.updatedAt = now;
       next.log.lastEvent = {
@@ -152,23 +155,23 @@ export function applyAction(state, action, ctx = {}) {
       const decisionNext = applyDecisionEffect(action, next, currentPlayer.id);
 
       let decisionsAvailable = getAvailableDecisions(
-        decisionNext.gameConfig.decisionCosts,
-        getTotalPlayersPoints(currentPlayer)
+        decisionNext,
+        decisionsDefinitions
       );
       if (decisionsAvailable.length === 0) {
         decisionNext.flow.step.next = 'DRAW_CARD';
       } else {
         decisionNext.flow.step.next = 'CHOOSE_DECISION';
       }
-      decisionNext.decisions.applied.push({
+      decisionNext.decisionState.applied.push({
         chosen: action.decision.chosen,
         target: action.decision.target,
         selectedAmount: action.decision.selectedAmount,
       });
-      decisionNext.decisions.available = decisionsAvailable;
-      decisionNext.decisions.chosen = null;
-      decisionNext.decisions.target = null;
-      decisionNext.decisions.selectedAmount = 0;
+      decisionNext.decisionState.available = decisionsAvailable;
+      decisionNext.decisionState.chosen = null;
+      decisionNext.decisionState.target = null;
+      decisionNext.decisionState.selectedAmount = 0;
       decisionNext.meta.rev += 1;
       decisionNext.meta.updatedAt = now;
       decisionNext.log.lastEvent = {
@@ -197,7 +200,7 @@ export function applyAction(state, action, ctx = {}) {
       };
       return next;
     }
-// TODO: Fix, remenber to zero the turn count
+    // TODO: Fix, remenber to zero the turn count
     default:
       const err = new Error('Unknown action type');
       err.code = 'UNKNOWN_ACTION_TYPE';

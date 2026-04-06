@@ -74,7 +74,7 @@ export function createInitialState({ roomId }) {
           },
           {
             cardType: 'BUG',
-            componentType: 'REQUEST',
+            componentType: 'REQUESTS',
             quantity: 10,
           },
           {
