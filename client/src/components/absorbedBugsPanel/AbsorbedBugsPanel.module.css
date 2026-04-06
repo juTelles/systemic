@@ -27,6 +27,7 @@
 /* Custom Scrollbar para Chrome/Edge/Safari */
 .absorbedBugsContainer::-webkit-scrollbar {
   width: 6px;
+  height: 9px;
 }
 .absorbedBugsContainer::-webkit-scrollbar-track {
   background: #020202;

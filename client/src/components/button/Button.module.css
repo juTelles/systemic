@@ -1,6 +1,9 @@
 .button {
-  width: 7rem;
-  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
   background: var(--bg-button);
   color: var(--color-ciano-neon);
   font-family: 'JetBrains Mono', monospace;
@@ -17,11 +20,11 @@
   background: var(--color-ciano-neon);
   color: #000;
   letter-spacing: 0.05rem;
-  box-shadow: 0 0 20px var(--color-ciano-neon);
+  box-shadow: 0 0 10px var(--color-ciano-neon);
 }
 .invertedButton {
-  width: 10rem;
-  height: 4rem;
+  width: 100%;
+  height: 100%;
   font-family: 'JetBrains Mono', monospace;
   text-transform: uppercase;
   font-weight: 600;

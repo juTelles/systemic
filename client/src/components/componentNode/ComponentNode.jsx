@@ -8,8 +8,8 @@ function ComponentNode({ anchorRef, ...props }) {
   const handleClick = () => {
     // Lógica para lidar com o clique no componente
     console.log(`Componente ${label} clicado!`);
-  }
-  
+  };
+
   return (
     <div className={styles.ComponentNodeWrapper}>
       {type === 'local' ? (
@@ -31,11 +31,14 @@ function ComponentNode({ anchorRef, ...props }) {
             : ''
         }`}
         data-status={type}
-        title={`${label}\n${hasTests ? 'Testado' : 'Sem Testes'}\n${hasBug ? 'Com Bugs' : 'Sem Bugs'}`}
-
+        title={`${label}\n${hasTests ? 'Testado' : 'Sem Testes'}\n${
+          hasBug ? 'Com Bugs' : 'Sem Bugs'
+        }`}
       >
-         <Tooltip id="my-btn" place="top" variant="dark" />
-        <span className={styles.bugQntLed}>{bugAmount !== 0 ? bugAmount : ''}</span>
+        <Tooltip id="my-btn" place="top" variant="dark" />
+        <span className={styles.bugQntLed}>
+          {bugAmount !== 0 ? bugAmount : ''}
+        </span>
       </div>
       {type !== 'local' ? (
         <label className={styles.labelDown}>{label}</label>
