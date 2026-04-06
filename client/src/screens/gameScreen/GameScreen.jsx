@@ -12,6 +12,13 @@ function GameScreen({ roomId, localPlayerId, onSessionInvalid }) {
   const previousPhaseRef = useRef(null);
   const { roomState, isLoading, errorCode } = useStatePolling(roomId);
   const isPreGame = roomState?.phase === 'LOBBY';
+  const [selectedDecisionUIId, setSelectedDecisionUIId] = useState(null);
+  // const [selectedTargetComponent, setSelectedTargetComponent] = useState(null);
+
+  const handleDecisionMade = (decison, decisionInstructionKey) => {
+    setSelectedDecisionUIId(decison)
+    setInstructionKey(decisionInstructionKey);
+  };
 
   useEffect(() => {
     if (isLoading) return;
@@ -75,6 +82,9 @@ function GameScreen({ roomId, localPlayerId, onSessionInvalid }) {
           isPreGame={isPreGame}
           roomState={roomState}
           localPlayerId={localPlayerId}
+          handleDecisionMade={handleDecisionMade}
+          selectedDecisionUIId={selectedDecisionUIId}
+          isReadOnly={isReadOnlyTurn}
         />
       </div>
       <div className={styles.lateralBarContainer}>
