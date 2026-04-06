@@ -3,7 +3,7 @@ import { Tooltip } from 'react-tooltip';
 import styles from './ComponentNode.module.css';
 
 function ComponentNode({ anchorRef, ...props }) {
-  const { type, bugAmount, label, hasTests, hasBug } = props;
+  const { type, bugAmount, label, hasTests, hasBug, isDisabled } = props;
 
   const handleClick = () => {
     // Lógica para lidar com o clique no componente
@@ -21,7 +21,9 @@ function ComponentNode({ anchorRef, ...props }) {
         onClick={handleClick}
         data-tooltip-id="my-btn"
         ref={anchorRef}
-        className={`${styles.ComponentNode} ${
+        className={`${
+          isDisabled ? styles.ComponentDisabled : styles.ComponentNode
+        } ${
           hasTests
             ? styles.testedComponent
             : hasBug

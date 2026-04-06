@@ -1,7 +1,9 @@
 // eslint-disable-next-line no-unused-vars
 import { useEffect, useRef, useState, useLayoutEffect } from 'react';
+import { decisions as decisionsDefinitions } from '../../../../shared/src/definitions/decisions.js';
 import ComponentNode from '../componentNode/ComponentNode';
 import styles from './Board.module.css';
+import { isBoardNodeDisabled } from '../../helpers/boardTargetRules.js';
 
 const EDGES = [
   ['L1', 'S1'],
@@ -16,12 +18,22 @@ const EDGES = [
   ['S3', 'R2'],
 ];
 
-function Board({ roomState }) {
+function Board({ roomState, selectedDecisionUIId }) {
   const boardRef = useRef(null);
   const nodeRefs = useRef({});
   const [lines, setLines] = useState([]);
 
   const nodes = roomState?.components.nodes;
+
+  const decisionsAvailable = roomState?.decisionState?.available ?? [];
+  const chosenButtonDecisionIds =
+    decisionsDefinitions?.forUI[selectedDecisionUIId]?.decisionIds ?? [];
+
+  const availableChosen = chosenButtonDecisionIds.filter(
+    (id) => decisionsAvailable?.includes(id)
+  );
+
+  //   const selectDecisionId = roomState?.decisionState?.available;
 
   const registerNode = (id) => (el) => {
     if (el) nodeRefs.current[id] = el;
@@ -99,6 +111,7 @@ function Board({ roomState }) {
             bugAmount={nodes?.interface?.bugAmount}
             hasTests={nodes?.interface?.hasTests}
             hasBug={nodes?.interface?.bugAmount > 0}
+            isDisabled={isBoardNodeDisabled('interface', availableChosen, roomState)}
           />
         </div>
         <div className={styles.frontend}>
@@ -110,6 +123,7 @@ function Board({ roomState }) {
             bugAmount={nodes?.frontend?.bugAmount}
             hasTests={nodes?.frontend?.hasTests}
             hasBug={nodes?.frontend?.bugAmount > 0}
+            isDisabled={isBoardNodeDisabled('frontend', availableChosen, roomState)}
           />
         </div>
         <div className={styles.interaction}>
@@ -121,6 +135,7 @@ function Board({ roomState }) {
             bugAmount={nodes?.interaction?.bugAmount}
             hasTests={nodes?.interaction?.hasTests}
             hasBug={nodes?.interaction?.bugAmount > 0}
+            isDisabled={isBoardNodeDisabled('interaction', availableChosen, roomState)}
           />
         </div>
         <div className={styles.applicationRequests}>
@@ -132,6 +147,7 @@ function Board({ roomState }) {
             bugAmount={nodes?.applicationRequests?.bugAmount}
             hasTests={nodes?.applicationRequests?.hasTests}
             hasBug={nodes?.applicationRequests?.bugAmount > 0}
+            isDisabled={isBoardNodeDisabled('applicationRequests', availableChosen, roomState)}
           />
         </div>
         <div className={styles.logic}>
@@ -143,6 +159,7 @@ function Board({ roomState }) {
             bugAmount={nodes?.logic?.bugAmount}
             hasTests={nodes?.logic?.hasTests}
             hasBug={nodes?.logic?.bugAmount > 0}
+            isDisabled={isBoardNodeDisabled('logic', availableChosen, roomState)}
           />
         </div>
         <div className={styles.backend}>
@@ -154,6 +171,7 @@ function Board({ roomState }) {
             bugAmount={nodes?.backend?.bugAmount}
             hasTests={nodes?.backend?.hasTests}
             hasBug={nodes?.backend?.bugAmount > 0}
+            isDisabled={isBoardNodeDisabled('backend', availableChosen, roomState)}
           />
         </div>
         <div className={styles.integrations}>
@@ -165,6 +183,7 @@ function Board({ roomState }) {
             bugAmount={nodes?.integrations?.bugAmount}
             hasTests={nodes?.integrations?.hasTests}
             hasBug={nodes?.integrations?.bugAmount > 0}
+            isDisabled={isBoardNodeDisabled('integrations', availableChosen, roomState)}
           />
         </div>
         <div className={styles.dataRequests}>
@@ -176,6 +195,7 @@ function Board({ roomState }) {
             bugAmount={nodes?.dataRequests?.bugAmount}
             hasTests={nodes?.dataRequests?.hasTests}
             hasBug={nodes?.dataRequests?.bugAmount > 0}
+            isDisabled={isBoardNodeDisabled('dataRequests', availableChosen, roomState)}
           />
         </div>
         <div className={styles.data}>
@@ -187,6 +207,7 @@ function Board({ roomState }) {
             bugAmount={nodes?.data?.bugAmount}
             hasTests={nodes?.data?.hasTests}
             hasBug={nodes?.data?.bugAmount > 0}
+            isDisabled={isBoardNodeDisabled('data', availableChosen, roomState)}
           />
         </div>
         <div className={styles.database}>
@@ -198,6 +219,7 @@ function Board({ roomState }) {
             bugAmount={nodes?.database?.bugAmount}
             hasTests={nodes?.database?.hasTests}
             hasBug={nodes?.database?.bugAmount > 0}
+            isDisabled={isBoardNodeDisabled('database', availableChosen, roomState)}
           />
         </div>
         <div className={styles.structure}>
@@ -209,6 +231,7 @@ function Board({ roomState }) {
             bugAmount={nodes?.structure?.bugAmount}
             hasTests={nodes?.structure?.hasTests}
             hasBug={nodes?.structure?.bugAmount > 0}
+            isDisabled={isBoardNodeDisabled('structure', availableChosen, roomState)}
           />
         </div>
       </div>
