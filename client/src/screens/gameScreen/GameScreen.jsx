@@ -9,6 +9,7 @@ import LateralBar from '../../components/lateralBar/LateralBar';
 
 function GameScreen({ roomId, localPlayerId, onSessionInvalid }) {
   const [showGameStartDialog, setShowGameStartDialog] = useState(false);
+  const [instructionKey, setInstructionKey] = useState(null);
   const previousPhaseRef = useRef(null);
   const { roomState, isLoading, errorCode } = useStatePolling(roomId);
   const isPreGame = roomState?.phase === 'LOBBY';
