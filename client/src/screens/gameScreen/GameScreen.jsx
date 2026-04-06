@@ -13,6 +13,8 @@ function GameScreen({ roomId, localPlayerId, onSessionInvalid }) {
   const previousPhaseRef = useRef(null);
   const { roomState, isLoading, errorCode } = useStatePolling(roomId);
   const isPreGame = roomState?.phase === 'LOBBY';
+  const isReadOnlyTurn = localPlayerId !== roomState?.flow?.currentPlayerId;
+
   const [selectedDecisionUIId, setSelectedDecisionUIId] = useState(null);
   // const [selectedTargetComponent, setSelectedTargetComponent] = useState(null);
   // const [selectedAmount, setSelectedAmount] = useState(null);
