@@ -77,6 +77,8 @@ function GameScreen({ roomId, localPlayerId, onSessionInvalid }) {
           isPreGame={isPreGame}
           roomState={roomState}
           localPlayerId={localPlayerId}
+          selectedDecisionUIId={selectedDecisionUIId}
+          isReadOnly={isReadOnlyTurn}
         />
         <ActionBar
           isPreGame={isPreGame}
