@@ -16,7 +16,7 @@ function PlayersPanelPreGame({ players, localPlayerId, roomId, txt }) {
 
   return (
     <div className={styles.playersPanelContainer}>
-      <h2 className={styles.playersPanelTitle}>{txt.playerTitle.pt}</h2>
+      <h2 className={styles.playersPanelTitle}>{txt?.preGamePlayersTitle?.pt}</h2>
       <div className={styles.playersItemsContainer}>
         {players?.map((player) => (
           <div className={styles.preGamePanelItemWrapper} key={player.id}>
