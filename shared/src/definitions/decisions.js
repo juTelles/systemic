@@ -101,29 +101,35 @@ export const decisions = Object.freeze({
     HOLD_POINTS: {
       decisionIds: ['HOLD_POINTS'],
       regularDecisionId: 'HOLD_POINTS',
+      instructionKey: 'descriptionChoseToHoldPoints',
     },
     LOCAL: {
       decisionIds: ['RESOLVE_LOCAL_BUG', 'RESOLVE_LOCAL_BUG_TESTED'],
       regularDecisionId: 'RESOLVE_LOCAL_BUG',
       testedDecisionId: 'RESOLVE_LOCAL_BUG_TESTED',
+      instructionKey: 'decriptionChoseToResolveBug',
     },
     STRUCTURAL: {
       decisionIds: ['RESOLVE_STRUCTURAL_BUG', 'RESOLVE_STRUCTURAL_BUG_TESTED'],
       regularDecisionId: 'RESOLVE_STRUCTURAL_BUG',
       testedDecisionId: 'RESOLVE_STRUCTURAL_BUG_TESTED',
+      instructionKey: 'decriptionChoseToResolveBug',
     },
     REQUESTS: {
       decisionIds: ['RESOLVE_REQUESTS_BUG', 'RESOLVE_REQUESTS_BUG_TESTED'],
       regularDecisionId: 'RESOLVE_REQUESTS_BUG',
       testedDecisionId: 'RESOLVE_REQUESTS_BUG_TESTED',
+      instructionKey: 'decriptionChoseToResolveBug',
     },
     'TESTS': {
       decisionIds: ['DEVELOP_TESTS'],
       regularDecisionId: 'DEVELOP_TESTS',
+      instructionKey: 'descriptionChoseToDevelopTest',
     },
     DONATE_POINTS: {
       decisionIds: ['DONATE_POINTS'],
       regularDecisionId: 'DONATE_POINTS',
+      instructionKey: 'descriptionChoseToDonatePoints',
     },
   },
 });
