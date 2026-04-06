@@ -2,31 +2,51 @@
 import react from 'react';
 import styles from './DecisionButton.module.css';
 
-function DecisionButton({ optionDescription, cost, type, categoryColor }) {
-  function handleClick() {
-    console.log(`Option clicked: ${optionDescription} with cost ${cost}`);
-  }
-
+function DecisionButton({
+  categoryColor,
+  isDisabled,
+  isRegularDecisionAvailable,
+  isTestedDecisionAvailable,
+  label,
+  costLabel,
+  costTestedLabel,
+  handleDecisionMade,
+  id,
+  isChosen,
+  isReadOnly,
+  instructionKey,
+  isPreGame,
+}) {
   return (
     <div className={styles.decisionButtonWrapper}>
       <button
-        style={{ '--category-color': categoryColor }}
-        className={styles.decisionButton}
-        onClick={handleClick}
+        className={
+          isChosen ? styles.decisionButton : styles.decisionButtonChosen
+        }
+        style={{
+          '--category-color': categoryColor,
+          cursor: isReadOnly ? 'default' : 'pointer',
+        }}
+        onClick={() => handleDecisionMade(id, instructionKey)}
+        disabled={isDisabled}
       >
-        {optionDescription}
-        <br />
-        {type === 'BUG' ? (
-          <>
-            {`${cost} Pontos`}
-            <br />
-            {`Testado: ${cost} Pontos`}
-          </>
-        ) : type === 'POINTS' ? (
-          <>{`Limite: ${cost} Pontos`}</>
-        ) : (
-          `${cost} Pontos`
-        )}
+        <span>{label}</span>
+        <span
+          className={
+            !isRegularDecisionAvailable && !isPreGame ? styles.grayText : ''
+          }
+        >
+          {costLabel}
+        </span>
+        {costTestedLabel ? (
+          <span
+            className={
+              !isTestedDecisionAvailable && !isPreGame ? styles.grayText : ''
+            }
+          >
+            {costTestedLabel}
+          </span>
+        ) : null}
       </button>
     </div>
   );
