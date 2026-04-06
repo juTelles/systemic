@@ -127,12 +127,8 @@ export function applyAction(state, action, ctx = {}) {
       next.flow.step = steps['AWAIT_DECISION'];
 
       let decisionsAvailable = [];
-      const player = getPlayerObject(next.flow.currentPlayerId, next.players);
-      if (next.decisions.available.length === 0) {
-        decisionsAvailable = getAvailableDecisions(
-          next.gameConfig.decisionCosts,
-          getTotalPlayersPoints(player)
-        );
+      if (next.decisionState.available.length === 0) {
+        decisionsAvailable = getAvailableDecisions(next, decisionsDefinitions);
       }
       next.decisions.available = decisionsAvailable;
       next.meta.rev += 1;

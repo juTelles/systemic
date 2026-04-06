@@ -1,7 +1,7 @@
-import { decisions } from '../../../../shared/src/definitions/decisons.js';
-import { getPlayerObject } from '../selectors.js';
-import { decisionHandlers } from './handlers.js';
-import { runDecisionValidators } from './validators.js';
+import { getPlayerObject, getTotalPlayersPoints } from '../selectors.js';
+import { runDecisionsAvailabilityRules } from './availabilityRules.js';
+import { decisionHandlers } from './applicationHandlers.js';
+import { runDecisionsApplicationValidators } from './applicationValidators.js';
 
 export function getAvailableDecisions(state, decisionsDefinitions) {
   const player = getPlayerObject(state.flow.currentPlayerId, state.players);
