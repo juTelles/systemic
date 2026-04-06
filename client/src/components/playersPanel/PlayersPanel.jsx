@@ -2,7 +2,7 @@
 import Player from '../player/Player';
 import PlayerPointsForm from '../playerPointsForm/PlayerPointsForm';
 import styles from './PlayersPanel.module.css';
-import { useState } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 
 function PlayersPanel({
   players,
@@ -12,16 +12,22 @@ function PlayersPanel({
   isReadOnly,
   txt,
 }) {
+  const [selectedTargetPlayerId, setSelectedTargetPlayerId] = useState(null);
   const currentPlayerId = roomState?.flow?.currentPlayerId;
-  const currentPlayer = selectedDecisionUIId == 'HOLD_POINTS' ? localPlayerId : null;
-  const [selectedTargetPlayerId, setSelectedTargetPlayerId] = useState(currentPlayer);
 
   const targetMode = selectedDecisionUIId == 'DONATE_POINTS' ? true : false;
 
   const handleSelectTargetPlayer = (player) => {
     setSelectedTargetPlayerId(player);
-    console.log('Jogador selecionado:', player);
   };
+
+  const currentPlayer = useMemo(() => {
+    return selectedDecisionUIId == 'HOLD_POINTS' ? currentPlayerId : null;
+  }, [selectedDecisionUIId, currentPlayerId]);
+
+  useEffect(() => {
+    setSelectedTargetPlayerId(currentPlayer);
+  }, [currentPlayer]);
 
   return (
     <div className={styles.playersPanelContainer}>
