@@ -129,11 +129,10 @@ export function applyAction(state, action, ctx = {}) {
     case ACTION_TYPES.ASK_FOR_DECISION: {
       next.flow.step = steps['AWAIT_DECISION'];
       let decisionsAvailable = [];
-
       if (next.decisionState.available.length === 0) {
         decisionsAvailable = getAvailableDecisions(next, decisionsDefinitions);
+        next.decisionState.available = decisionsAvailable;
       }
-      next.decisionState.available = decisionsAvailable;
       next.meta.rev += 1;
       next.meta.updatedAt = now;
       next.log.lastEvent = {
