@@ -3,6 +3,7 @@ import Player from '../player/Player';
 import PlayerPointsForm from '../playerPointsForm/PlayerPointsForm';
 import styles from './PlayersPanel.module.css';
 import { useState, useMemo, useEffect } from 'react';
+import { decisions as decisionsDefinitions } from '../../../../shared/src/definitions/decisions.js';
 
 function PlayersPanel({
   players,
@@ -11,6 +12,7 @@ function PlayersPanel({
   roomState,
   isReadOnly,
   txt,
+  handleDecisionSubmit
 }) {
   const [selectedTargetPlayerId, setSelectedTargetPlayerId] = useState(null);
   const currentPlayerId = roomState?.flow?.currentPlayerId;
@@ -20,7 +22,6 @@ function PlayersPanel({
   const handleSelectTargetPlayer = (player) => {
     setSelectedTargetPlayerId(player);
   };
-
   const currentPlayer = useMemo(() => {
     return selectedDecisionUIId == 'HOLD_POINTS' ? currentPlayerId : null;
   }, [selectedDecisionUIId, currentPlayerId]);
@@ -29,6 +30,9 @@ function PlayersPanel({
     setSelectedTargetPlayerId(currentPlayer);
   }, [currentPlayer]);
 
+
+  const decisionUI = decisionsDefinitions.forUI[selectedDecisionUIId];
+  const targetPlayer = players?.find((p) => p.id === selectedTargetPlayerId);
   return (
     <div className={styles.playersPanelContainer}>
       <div className={`${styles.gridRow} ${styles.playersPanelHeader}`}>
@@ -57,6 +61,8 @@ function PlayersPanel({
               pointsHand={player.handPoints}
               pointsBank={player.bankPoints}
               maxPoints={roomState?.gameConfig?.taskPoints?.maxPlayerPoints}
+              handleDecisionSubmit={handleDecisionSubmit}
+              decisionUI={decisionUI}
               targetPlayer={targetPlayer}
             />
           ) : (

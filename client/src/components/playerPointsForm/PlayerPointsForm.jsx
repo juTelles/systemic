@@ -48,6 +48,7 @@ function PlayerPointsForm({
         margin={'3px 0px 3px 7px'}
         borderRadius={'0px'}
         padding={'0'}
+        onClick={() => handleDecisionSubmit(decisionUI, targetPlayer, value)}
       />
       <input
         id="inputPoints"

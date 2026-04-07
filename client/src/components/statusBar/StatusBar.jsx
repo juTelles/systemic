@@ -12,10 +12,9 @@ function StatusBar({
   localPlayerId,
   roomId,
   selectedDecisionUIId,
-  handleSelectTargetPlayer,
-  selectedTargetPlayerId,
   isReadOnly,
   instructionKey,
+  handleDecisionSubmit
 }) {
   return (
     <div className={styles.statusBarContainer}>
@@ -44,11 +43,10 @@ function StatusBar({
             localPlayerId={localPlayerId}
             roomId={roomId}
             selectedDecisionUIId={selectedDecisionUIId}
-            handleSelectTargetPlayer={handleSelectTargetPlayer}
-            selectedTargetPlayerId={selectedTargetPlayerId}
             roomState={roomState}
             isReadOnly={isReadOnly}
             txt={statusBarTxt.playersPanelTxt}
+            handleDecisionSubmit={handleDecisionSubmit}
           />
         )}
       </div>

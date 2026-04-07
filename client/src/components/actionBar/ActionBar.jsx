@@ -6,9 +6,9 @@ function ActionBar({
   roomState,
   isPreGame,
   localPlayerId,
-  handleDecisionMade,
+  handleDecisionUISelect,
   selectedDecisionUIId,
-  isReadOnly
+  isReadOnly,
 }) {
   return (
     <div className={styles.actionBarContainer}>
@@ -16,7 +16,7 @@ function ActionBar({
         roomState={roomState}
         isPreGame={isPreGame}
         localPlayerId={localPlayerId}
-        handleDecisionMade={handleDecisionMade}
+        handleDecisionUISelect={handleDecisionUISelect}
         selectedDecisionUIId={selectedDecisionUIId}
         isReadOnly={isReadOnly}
       />

@@ -6,23 +6,49 @@ import { useStatePolling } from '../../hooks/useStatePolling';
 import { useRef, useEffect, useState } from 'react';
 import TableTop from '../../components/tableTop/TableTop';
 import LateralBar from '../../components/lateralBar/LateralBar';
+import { useRoomActions } from '../../actions/roomsActions';
+import { resolveDecisionIdFromUISelection } from '../../helpers/helpers.js';
 
 function GameScreen({ roomId, localPlayerId, onSessionInvalid }) {
-  const [showGameStartDialog, setShowGameStartDialog] = useState(false);
-  const [instructionKey, setInstructionKey] = useState(null);
-  const previousPhaseRef = useRef(null);
   const { roomState, isLoading, errorCode } = useStatePolling(roomId);
+  const previousPhaseRef = useRef(null);
+  const { setDecisonChosen } = useRoomActions(roomId, localPlayerId);
+
+  const [selectedDecisionUIId, setSelectedDecisionUIId] = useState(null);
+  const [instructionKey, setInstructionKey] = useState(null);
+  const [showGameStartDialog, setShowGameStartDialog] = useState(false);
+
   const isPreGame = roomState?.phase === 'LOBBY';
   const isReadOnlyTurn = localPlayerId !== roomState?.flow?.currentPlayerId;
 
-  const [selectedDecisionUIId, setSelectedDecisionUIId] = useState(null);
-  // const [selectedTargetComponent, setSelectedTargetComponent] = useState(null);
-  // const [selectedAmount, setSelectedAmount] = useState(null);
-
-  const handleDecisionMade = (decison, decisionInstructionKey) => {
-    setSelectedDecisionUIId(decison)
+  const handleDecisionUISelect = (decisionUIId, decisionInstructionKey) => {
+    if (decisionUIId === selectedDecisionUIId) {
+      setInstructionKey(null);
+      setSelectedDecisionUIId(null);
+      return;
+    }
+    setSelectedDecisionUIId(decisionUIId);
     setInstructionKey(decisionInstructionKey);
   };
+
+  async function handleDecisionSubmit(decisionUIId, target, amount = null) {
+    const action = resolveDecisionIdFromUISelection(
+      decisionUIId,
+      target,
+      amount,
+      roomState,
+    );
+    if (!action) {
+      console.error('No action resolved for the selected decision UI');
+      return;
+    }
+    const result = await setDecisonChosen(action);
+    if (!result.ok) {
+      console.error('Error applyng decision:', result.error);
+    }
+    setInstructionKey(null);
+    setSelectedDecisionUIId(null);
+  }
 
   useEffect(() => {
     if (isLoading) return;
@@ -79,6 +105,7 @@ function GameScreen({ roomId, localPlayerId, onSessionInvalid }) {
           selectedDecisionUIId={selectedDecisionUIId}
           isReadOnly={isReadOnlyTurn}
           instructionKey={instructionKey}
+          handleDecisionSubmit={handleDecisionSubmit}
         />
         <TableTop
           isPreGame={isPreGame}
@@ -86,12 +113,13 @@ function GameScreen({ roomId, localPlayerId, onSessionInvalid }) {
           localPlayerId={localPlayerId}
           selectedDecisionUIId={selectedDecisionUIId}
           isReadOnly={isReadOnlyTurn}
+          handleDecisionSubmit={handleDecisionSubmit}
         />
         <ActionBar
           isPreGame={isPreGame}
           roomState={roomState}
           localPlayerId={localPlayerId}
-          handleDecisionMade={handleDecisionMade}
+          handleDecisionUISelect={handleDecisionUISelect}
           selectedDecisionUIId={selectedDecisionUIId}
           isReadOnly={isReadOnlyTurn}
         />

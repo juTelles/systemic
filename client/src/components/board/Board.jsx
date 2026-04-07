@@ -18,19 +18,19 @@ const EDGES = [
   ['S3', 'R2'],
 ];
 
-function Board({ roomState, selectedDecisionUIId }) {
+function Board({ roomState, selectedDecisionUIId, handleDecisionSubmit }) {
   const boardRef = useRef(null);
   const nodeRefs = useRef({});
   const [lines, setLines] = useState([]);
 
   const nodes = roomState?.components.nodes;
 
+  const decisionUI = decisionsDefinitions?.forUI[selectedDecisionUIId];
   const decisionsAvailable = roomState?.decisionState?.available ?? [];
-  const chosenButtonDecisionIds =
-    decisionsDefinitions?.forUI[selectedDecisionUIId]?.decisionIds ?? [];
+  const chosenButtonDecisionIds = decisionUI?.decisionIds ?? [];
 
-  const availableChosen = chosenButtonDecisionIds.filter(
-    (id) => decisionsAvailable?.includes(id)
+  const availableChosen = chosenButtonDecisionIds.filter((id) =>
+    decisionsAvailable?.includes(id)
   );
 
   //   const selectDecisionId = roomState?.decisionState?.available;
@@ -111,7 +111,14 @@ function Board({ roomState, selectedDecisionUIId }) {
             bugAmount={nodes?.interface?.bugAmount}
             hasTests={nodes?.interface?.hasTests}
             hasBug={nodes?.interface?.bugAmount > 0}
-            isDisabled={isBoardNodeDisabled('interface', availableChosen, roomState)}
+            isDisabled={isBoardNodeDisabled(
+              'interface',
+              availableChosen,
+              roomState
+            )}
+            handleDecisionSubmit={() =>
+              handleDecisionSubmit(decisionUI, nodes?.interface)
+            }
           />
         </div>
         <div className={styles.frontend}>
@@ -123,7 +130,13 @@ function Board({ roomState, selectedDecisionUIId }) {
             bugAmount={nodes?.frontend?.bugAmount}
             hasTests={nodes?.frontend?.hasTests}
             hasBug={nodes?.frontend?.bugAmount > 0}
-            isDisabled={isBoardNodeDisabled('frontend', availableChosen, roomState)}
+            isDisabled={isBoardNodeDisabled(
+              'frontend',
+              availableChosen,
+              roomState
+            )}
+            handleDecisionSubmit={handleDecisionSubmit}
+            selectedDecisionUIId={selectedDecisionUIId}
           />
         </div>
         <div className={styles.interaction}>
@@ -135,7 +148,14 @@ function Board({ roomState, selectedDecisionUIId }) {
             bugAmount={nodes?.interaction?.bugAmount}
             hasTests={nodes?.interaction?.hasTests}
             hasBug={nodes?.interaction?.bugAmount > 0}
-            isDisabled={isBoardNodeDisabled('interaction', availableChosen, roomState)}
+            isDisabled={isBoardNodeDisabled(
+              'interaction',
+              availableChosen,
+              roomState
+            )}
+            handleDecisionSubmit={() =>
+              handleDecisionSubmit(decisionUI, nodes?.interaction)}
+            selectedDecisionUIId={selectedDecisionUIId}
           />
         </div>
         <div className={styles.applicationRequests}>
@@ -147,7 +167,13 @@ function Board({ roomState, selectedDecisionUIId }) {
             bugAmount={nodes?.applicationRequests?.bugAmount}
             hasTests={nodes?.applicationRequests?.hasTests}
             hasBug={nodes?.applicationRequests?.bugAmount > 0}
-            isDisabled={isBoardNodeDisabled('applicationRequests', availableChosen, roomState)}
+            isDisabled={isBoardNodeDisabled(
+              'applicationRequests',
+              availableChosen,
+              roomState
+            )}
+            handleDecisionSubmit={handleDecisionSubmit}
+            selectedDecisionUIId={selectedDecisionUIId}
           />
         </div>
         <div className={styles.logic}>
@@ -159,7 +185,13 @@ function Board({ roomState, selectedDecisionUIId }) {
             bugAmount={nodes?.logic?.bugAmount}
             hasTests={nodes?.logic?.hasTests}
             hasBug={nodes?.logic?.bugAmount > 0}
-            isDisabled={isBoardNodeDisabled('logic', availableChosen, roomState)}
+            isDisabled={isBoardNodeDisabled(
+              'logic',
+              availableChosen,
+              roomState
+            )}
+            handleDecisionSubmit={handleDecisionSubmit}
+            selectedDecisionUIId={selectedDecisionUIId}
           />
         </div>
         <div className={styles.backend}>
@@ -171,7 +203,13 @@ function Board({ roomState, selectedDecisionUIId }) {
             bugAmount={nodes?.backend?.bugAmount}
             hasTests={nodes?.backend?.hasTests}
             hasBug={nodes?.backend?.bugAmount > 0}
-            isDisabled={isBoardNodeDisabled('backend', availableChosen, roomState)}
+            isDisabled={isBoardNodeDisabled(
+              'backend',
+              availableChosen,
+              roomState
+            )}
+            handleDecisionSubmit={handleDecisionSubmit}
+            selectedDecisionUIId={selectedDecisionUIId}
           />
         </div>
         <div className={styles.integrations}>
@@ -183,7 +221,13 @@ function Board({ roomState, selectedDecisionUIId }) {
             bugAmount={nodes?.integrations?.bugAmount}
             hasTests={nodes?.integrations?.hasTests}
             hasBug={nodes?.integrations?.bugAmount > 0}
-            isDisabled={isBoardNodeDisabled('integrations', availableChosen, roomState)}
+            isDisabled={isBoardNodeDisabled(
+              'integrations',
+              availableChosen,
+              roomState
+            )}
+            handleDecisionSubmit={handleDecisionSubmit}
+            selectedDecisionUIId={selectedDecisionUIId}
           />
         </div>
         <div className={styles.dataRequests}>
@@ -195,7 +239,13 @@ function Board({ roomState, selectedDecisionUIId }) {
             bugAmount={nodes?.dataRequests?.bugAmount}
             hasTests={nodes?.dataRequests?.hasTests}
             hasBug={nodes?.dataRequests?.bugAmount > 0}
-            isDisabled={isBoardNodeDisabled('dataRequests', availableChosen, roomState)}
+            isDisabled={isBoardNodeDisabled(
+              'dataRequests',
+              availableChosen,
+              roomState
+            )}
+            handleDecisionSubmit={handleDecisionSubmit}
+            selectedDecisionUIId={selectedDecisionUIId}
           />
         </div>
         <div className={styles.data}>
@@ -208,6 +258,10 @@ function Board({ roomState, selectedDecisionUIId }) {
             hasTests={nodes?.data?.hasTests}
             hasBug={nodes?.data?.bugAmount > 0}
             isDisabled={isBoardNodeDisabled('data', availableChosen, roomState)}
+            handleDecisionSubmit={() =>
+              handleDecisionSubmit(decisionUI, nodes?.data)
+            }
+            selectedDecisionUIId={selectedDecisionUIId}
           />
         </div>
         <div className={styles.database}>
@@ -219,7 +273,13 @@ function Board({ roomState, selectedDecisionUIId }) {
             bugAmount={nodes?.database?.bugAmount}
             hasTests={nodes?.database?.hasTests}
             hasBug={nodes?.database?.bugAmount > 0}
-            isDisabled={isBoardNodeDisabled('database', availableChosen, roomState)}
+            isDisabled={isBoardNodeDisabled(
+              'database',
+              availableChosen,
+              roomState
+            )}
+            handleDecisionSubmit={handleDecisionSubmit}
+            selectedDecisionUIId={selectedDecisionUIId}
           />
         </div>
         <div className={styles.structure}>
@@ -231,7 +291,13 @@ function Board({ roomState, selectedDecisionUIId }) {
             bugAmount={nodes?.structure?.bugAmount}
             hasTests={nodes?.structure?.hasTests}
             hasBug={nodes?.structure?.bugAmount > 0}
-            isDisabled={isBoardNodeDisabled('structure', availableChosen, roomState)}
+            isDisabled={isBoardNodeDisabled(
+              'structure',
+              availableChosen,
+              roomState
+            )}
+            handleDecisionSubmit={handleDecisionSubmit}
+            selectedDecisionUIId={selectedDecisionUIId}
           />
         </div>
       </div>

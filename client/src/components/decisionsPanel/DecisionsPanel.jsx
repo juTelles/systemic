@@ -9,7 +9,7 @@ function DecisionsPanel({
   roomState,
   isPreGame,
   localPlayerId,
-  handleDecisionMade,
+  handleDecisionUISelect,
   selectedDecisionUIId,
   isReadOnly,
 }) {
@@ -65,11 +65,13 @@ function DecisionsPanel({
             isRegularDecisionAvailable={isRegularDecisionAvailable}
             costTestedLabel={costTestedLabel}
             isTestedDecisionAvailable={isTestedDecisionAvailable}
-            handleDecisionMade={isReadOnly ? readOnlyClick : handleDecisionMade}
             isChosen={isChosen}
             isReadOnly={isReadOnly}
             instructionKey={instructionKey}
             isPreGame={isPreGame}
+            handleDecisionUISelect={
+              isReadOnly ? readOnlyClick : handleDecisionUISelect
+            }
           />
         );
       })}

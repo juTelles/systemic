@@ -3,12 +3,16 @@ import { Tooltip } from 'react-tooltip';
 import styles from './ComponentNode.module.css';
 
 function ComponentNode({ anchorRef, ...props }) {
-  const { type, bugAmount, label, hasTests, hasBug, isDisabled } = props;
-
-  const handleClick = () => {
-    // Lógica para lidar com o clique no componente
-    console.log(`Componente ${label} clicado!`);
-  };
+  const {
+    type,
+    bugAmount,
+    label,
+    hasTests,
+    hasBug,
+    isDisabled,
+    id,
+    handleDecisionSubmit,
+  } = props;
 
   return (
     <div className={styles.ComponentNodeWrapper}>
@@ -16,9 +20,10 @@ function ComponentNode({ anchorRef, ...props }) {
         <label className={styles.labelUp}>{label}</label>
       ) : null}
       <div
+        id={id}
         role="button"
         tabIndex={0}
-        onClick={handleClick}
+        onClick={handleDecisionSubmit}
         data-tooltip-id="my-btn"
         ref={anchorRef}
         className={`${

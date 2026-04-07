@@ -8,7 +8,7 @@ function TableTop({
   localPlayerId,
   roomId,
   waitDecisionTarget,
-  handleTargetSelected,
+  handleDecisionSubmit,
   selectedDecisionUIId
 }) {
   return (
@@ -19,7 +19,7 @@ function TableTop({
         localPlayerId={localPlayerId}
         roomId={roomId}
         waitDecisionTarget={waitDecisionTarget}
-        handleTargetSelected={handleTargetSelected}
+        handleDecisionSubmit={handleDecisionSubmit}
         selectedDecisionUIId={selectedDecisionUIId}
       />
     </div>

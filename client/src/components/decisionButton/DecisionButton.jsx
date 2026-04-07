@@ -10,7 +10,7 @@ function DecisionButton({
   label,
   costLabel,
   costTestedLabel,
-  handleDecisionMade,
+  handleDecisionUISelect,
   id,
   isChosen,
   isReadOnly,
@@ -21,13 +21,13 @@ function DecisionButton({
     <div className={styles.decisionButtonWrapper}>
       <button
         className={
-          isChosen ? styles.decisionButton : styles.decisionButtonChosen
+          isChosen ? styles.decisionButtonChosen : styles.decisionButton
         }
         style={{
           '--category-color': categoryColor,
           cursor: isReadOnly ? 'default' : 'pointer',
         }}
-        onClick={() => handleDecisionMade(id, instructionKey)}
+        onClick={() => handleDecisionUISelect(id, instructionKey)}
         disabled={isDisabled}
       >
         <span>{label}</span>
