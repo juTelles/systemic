@@ -16,7 +16,8 @@ export function getAvailableDecisions(state, decisionsDefinitions) {
     if (cost <= playerPoints) availableByCost.push(decisionsConfig);
   }
   availableByCost.forEach((decisionAvailable) => {
-    const decisionAvailableDef = decisionsDefinitions.options[decisionAvailable];
+    const decisionAvailableDef =
+      decisionsDefinitions.options[decisionAvailable];
     if (!decisionAvailableDef) return;
 
     const context = resolveAvailableDecisionContext(
@@ -69,8 +70,7 @@ export function applyDecisionEffect(action, state, decisionsDefinitions) {
 
   return handler(next, context, definition);
 }
-
-function resolveApplyDecisionContext(decisionAction, state, decisionsDefinitions) {
+function resolveApplyDecisionContext(decisionAction, state) {
   const currentPlayerId = state.flow.currentPlayerId;
   const target = decisionAction.payload.target;
   const amount = decisionAction.payload.selectedAmount;

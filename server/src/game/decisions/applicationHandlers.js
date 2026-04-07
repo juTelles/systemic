@@ -15,12 +15,8 @@ export const decisionHandlers = {
   DEVELOP_TESTS: handleDevelopTestsDecision,
 };
 
-export function handleResolveBugDecision(next, context) {
-  const {
-    currentPlayer,
-    selectedComponent,
-    decisionDefinition,
-  } = context;
+export function handleResolveBugDecision(next, context, decisionDefinition) {
+  const { currentPlayer, component } = context;
 
   if (!component) return next;
 
@@ -75,12 +71,7 @@ export function handleHoldPointsDecision(next, context) {
   return next;
 }
 
-export function handleDevelopTestsDecision(next, context) {
-  const {
-    currentPlayer,
-    selectedComponent,
-    decisionDefinition,
-  } = context;
+export function handleDevelopTestsDecision(next, context, decisionDefinition) {
   const { currentPlayer, component } = context;
 
   if (!component) return next;
