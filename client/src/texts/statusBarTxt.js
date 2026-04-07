@@ -16,12 +16,12 @@ export const statusBarTxt = {
       pt: `Total`,
       en: `Total`,
     },
+  },
+  playersPanelPreGameTxt: {
     preGamePlayersTitle: {
       pt: `Jogadores`,
       en: `Players`,
     },
-  },
-  playersPanelPreGameTxt: {
     preGameStatusDescription: {
       READY: {
         pt: `PRONTO`,
