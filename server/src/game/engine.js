@@ -182,6 +182,19 @@ export function applyAction(state, action, ctx = {}) {
     // next.decisions.available when you actually recompute it, or default
     // decisionsAvailable to the current list.
 
+    case ACTION_TYPES.DRAW_CARD: {
+      next.flow.blockedUntil = now + 1500;
+      next.flow.turn += 1;
+      next.meta.rev += 1;
+      next.meta.updatedAt = now;
+      next.log.lastEvent = {
+        type: ACTION_TYPES.DRAW_CARD,
+        by: action.payload.senderId ?? null,
+        at: now,
+      };
+      return next;
+    }
+
     case ACTION_TYPES.FINISH_TURN: {
       next.flow.blockedUntil = now + 1500;
       next.flow.turn += 1;
