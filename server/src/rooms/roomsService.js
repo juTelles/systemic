@@ -1,7 +1,7 @@
 import {
   validateNickname,
   validateNicknameAvailability,
-} from '../../../shared/utils/validations.js';
+} from '../../../shared/src/validations/validations.js';
 import { ERRORS } from '../../../shared/src/constants/errors.js';
 import { createError } from '../utils/createErrors.js';
 import { createRoomsStore } from './roomsStore.js';
