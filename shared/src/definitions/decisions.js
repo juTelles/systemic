@@ -2,7 +2,7 @@ export const decisions = Object.freeze({
   options: {
     RESOLVE_LOCAL_BUG: {
       id: 'RESOLVE_LOCAL_BUG',
-      type: 'BUG_LOCAL',
+      type: 'RESOLVE_BUG',
       componentType: 'LOCAL',
       effect: 'RESOLVE_BUG',
       applicationValidators: ['REQUIRES_COMPONENT', 'COMPONENT_MUST_HAVE_BUG'],
@@ -10,7 +10,7 @@ export const decisions = Object.freeze({
     },
     RESOLVE_LOCAL_BUG_TESTED: {
       id: 'RESOLVE_LOCAL_BUG_TESTED',
-      type: 'BUG_LOCAL',
+      type: 'RESOLVE_BUG',
       componentType: 'LOCAL',
       effect: 'RESOLVE_BUG',
       applicationValidators: [
@@ -22,7 +22,7 @@ export const decisions = Object.freeze({
     },
     RESOLVE_STRUCTURAL_BUG: {
       id: 'RESOLVE_STRUCTURAL_BUG',
-      type: 'BUG_STRUCTURAL',
+      type: 'RESOLVE_BUG',
       componentType: 'STRUCTURAL',
       effect: 'RESOLVE_BUG',
       applicationValidators: ['REQUIRES_COMPONENT', 'COMPONENT_MUST_HAVE_BUG'],
@@ -30,7 +30,7 @@ export const decisions = Object.freeze({
     },
     RESOLVE_STRUCTURAL_BUG_TESTED: {
       id: 'RESOLVE_STRUCTURAL_BUG_TESTED',
-      type: 'BUG_STRUCTURAL',
+      type: 'RESOLVE_BUG',
       componentType: 'STRUCTURAL',
       effect: 'RESOLVE_BUG',
       applicationValidators: [
@@ -42,7 +42,7 @@ export const decisions = Object.freeze({
     },
     RESOLVE_REQUESTS_BUG: {
       id: 'RESOLVE_REQUESTS_BUG',
-      type: 'BUG_REQUESTS',
+      type: 'RESOLVE_BUG',
       componentType: 'REQUESTS',
       effect: 'RESOLVE_BUG',
       applicationValidators: ['REQUIRES_COMPONENT', 'COMPONENT_MUST_HAVE_BUG'],
@@ -50,7 +50,7 @@ export const decisions = Object.freeze({
     },
     RESOLVE_REQUESTS_BUG_TESTED: {
       id: 'RESOLVE_REQUESTS_BUG_TESTED',
-      type: 'BUG_REQUESTS',
+      type: 'RESOLVE_BUG',
       componentType: 'REQUESTS',
       effect: 'RESOLVE_BUG',
       applicationValidators: [
@@ -62,7 +62,7 @@ export const decisions = Object.freeze({
     },
     DONATE_POINTS: {
       id: 'DONATE_POINTS',
-      type: 'DONATE_POINTS',
+      type: 'MANAGE_POINTS',
       effect: 'DONATE_POINTS',
       applicationValidators: [
         'REQUIRES_TARGET',
@@ -73,7 +73,7 @@ export const decisions = Object.freeze({
     },
     HOLD_POINTS: {
       id: 'HOLD_POINTS',
-      type: 'HOLD_POINTS',
+      type: 'MANAGE_POINTS',
       effect: 'HOLD_POINTS',
       applicationValidators: ['REQUIRES_AMOUNT', 'AMOUNT_MUST_BE_POSITIVE'],
       availabilityRules: ['HOLD_WITHIN_TURN_LIMIT'],
@@ -99,34 +99,47 @@ export const decisions = Object.freeze({
   ],
   forUI: {
     HOLD_POINTS: {
+      id: 'HOLD_POINTS',
+      type: 'MANAGE_POINTS',
       decisionIds: ['HOLD_POINTS'],
       regularDecisionId: 'HOLD_POINTS',
       instructionKey: 'descriptionChoseToHoldPoints',
+
     },
     LOCAL: {
+      id: 'LOCAL',
+      type: 'RESOLVE_BUG',
       decisionIds: ['RESOLVE_LOCAL_BUG', 'RESOLVE_LOCAL_BUG_TESTED'],
       regularDecisionId: 'RESOLVE_LOCAL_BUG',
       testedDecisionId: 'RESOLVE_LOCAL_BUG_TESTED',
       instructionKey: 'decriptionChoseToResolveBug',
     },
     STRUCTURAL: {
+      id: 'STRUCTURAL',
+      type: 'RESOLVE_BUG',
       decisionIds: ['RESOLVE_STRUCTURAL_BUG', 'RESOLVE_STRUCTURAL_BUG_TESTED'],
       regularDecisionId: 'RESOLVE_STRUCTURAL_BUG',
       testedDecisionId: 'RESOLVE_STRUCTURAL_BUG_TESTED',
       instructionKey: 'decriptionChoseToResolveBug',
     },
     REQUESTS: {
+      id: 'REQUESTS',
+      type: 'RESOLVE_BUG',
       decisionIds: ['RESOLVE_REQUESTS_BUG', 'RESOLVE_REQUESTS_BUG_TESTED'],
       regularDecisionId: 'RESOLVE_REQUESTS_BUG',
       testedDecisionId: 'RESOLVE_REQUESTS_BUG_TESTED',
       instructionKey: 'decriptionChoseToResolveBug',
     },
-    'TESTS': {
+    TESTS: {
+      id: 'TESTS',
+      type: 'DEVELOP_TESTS',
       decisionIds: ['DEVELOP_TESTS'],
       regularDecisionId: 'DEVELOP_TESTS',
       instructionKey: 'descriptionChoseToDevelopTest',
     },
     DONATE_POINTS: {
+      id: 'DONATE_POINTS',
+      type: 'MANAGE_POINTS',
       decisionIds: ['DONATE_POINTS'],
       regularDecisionId: 'DONATE_POINTS',
       instructionKey: 'descriptionChoseToDonatePoints',
