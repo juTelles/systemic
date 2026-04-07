@@ -2,6 +2,7 @@ import { getPlayerObject, getTotalPlayersPoints } from '../selectors.js';
 import { runDecisionsAvailabilityRules } from './availabilityRules.js';
 import { decisionHandlers } from './applicationHandlers.js';
 import { runDecisionsApplicationValidators } from './applicationValidators.js';
+import { ERRORS } from '../../../../shared/src/constants/errors.js';
 
 export function getAvailableDecisions(state, decisionsDefinitions) {
   const player = getPlayerObject(state.flow.currentPlayerId, state.players);
@@ -54,21 +55,35 @@ function resolveAvailableDecisionContext(state, decisionDefinition) {
 export function applyDecisionEffect(action, state, decisionsDefinitions) {
   let next = structuredClone(state);
 
-  const definition = decisionsDefinitions.options[action.chosen];
-  if (!definition) return next;
+  const definition = decisionsDefinitions.options[action.payload.chosen];
+  if (!definition) throw new Error(ERRORS.DECISION_DEFINITION_NOT_FOUND);
 
-  const context = resolveApplyDecisionContext(action, next, decisionsDefinitions);
+  const context = resolveApplyDecisionContext(
+    action,
+    next,
+    decisionsDefinitions
+  );
 
   const isValid = runDecisionsApplicationValidators(
     definition.applicationValidators,
     context
   );
-  if (!isValid) return next;
+  if (!isValid)
+    return {
+      ok: false,
+      type: 'INVALID_ACTION',
+      state,
+    };
 
   const handler = decisionHandlers[definition.effect];
-  if (!handler) return next;
+  if (!handler) throw new Error(ERRORS.DECISION_HANDLER_NOT_FOUND);
 
-  return handler(next, context, definition);
+  next = handler(next, context, definition);
+
+  return {
+    ok: true,
+    next: next,
+  };
 }
 function resolveApplyDecisionContext(decisionAction, state) {
   const currentPlayerId = state.flow.currentPlayerId;
