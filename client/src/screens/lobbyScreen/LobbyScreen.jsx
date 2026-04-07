@@ -41,8 +41,9 @@ function LobbyScreen({ onJoinSuccess }) {
         <div className={styles.buttonsWrapper}>
           <Button
             label={'Criar uma sala'}
-            width="10rem"
-            height="4rem"
+            width="8rem"
+            height="3rem"
+            color={'var(--ciano)'}
             onClick={handleCreateRoom}
           />
         </div>

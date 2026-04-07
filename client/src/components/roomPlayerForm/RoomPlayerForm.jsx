@@ -44,6 +44,7 @@ function RoomPlayerForm({ room, onJoinRoom }) {
           height="100%"
           inverted={true}
           borderRadius="0px"
+          color={'var(--ciano)'}
         />
       </form>
       {error && <span className={styles.errorMessage}>{error}</span>}

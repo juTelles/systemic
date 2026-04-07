@@ -30,14 +30,14 @@
   font-weight: 600;
   font-size: var(--font-md);
   letter-spacing: -0.01rem;
-  border: 2px solid var(--ciano);
+  border: 2px solid var(--btn-color);
   border-radius: 5px;
   cursor: pointer;
-  background: var(--ciano);
+  background: var(--btn-color);
   color: var(--bg-pure);
   text-shadow: 0 0 3px #ffffff;
   letter-spacing: 0.03rem;
-  box-shadow: 0 0 10px var(--ciano);
+  box-shadow: 0 0 10px var(--btn-color);
   transition: all 0.2s ease;
 }
 .invertedButton:hover {

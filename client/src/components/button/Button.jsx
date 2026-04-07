@@ -14,6 +14,7 @@ function Button({
   fontSize,
   disabled,
   border,
+  color
 }) {
   return (
     <button
@@ -25,6 +26,7 @@ function Button({
         borderRadius: borderRadius,
         fontSize: fontSize,
         border: border,
+        '--btn-color': color
       }}
       className={inverted ? styles.invertedButton : styles.button}
       onClick={onClick}
