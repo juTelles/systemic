@@ -1,22 +1,19 @@
-import { ERRORS } from "../src/constants/errors.js";
+import { ERRORS } from '../constants/errors.js';
 
 export function validateNickname(nickname, options = {}) {
-  const {
-    minLength = 1,
-    maxLength = 8,
-   } = options;
+  const { minLength = 1, maxLength = 8 } = options;
 
-   if (typeof nickname !== "string") {
+  if (typeof nickname !== 'string') {
     return { ok: false, code: ERRORS.INVALID_NICKNAME };
   }
 
-   const normalizedNickname = nickname.trim().toLocaleLowerCase();
+  const normalizedNickname = nickname.trim().toLocaleLowerCase();
 
-   if (
+  if (
     normalizedNickname.length < minLength ||
     normalizedNickname.length > maxLength
   ) {
-    return { ok: false, code: ERRORS.INVALID_NICKNAME_LENGTH};
+    return { ok: false, code: ERRORS.INVALID_NICKNAME_LENGTH };
   }
 
   return {

@@ -72,20 +72,22 @@ export function applyDecisionEffect(action, state, decisionsDefinitions) {
 
 function resolveApplyDecisionContext(decisionAction, state, decisionsDefinitions) {
   const currentPlayerId = state.flow.currentPlayerId;
-  const selectedTarget = decisionAction.target;
-  const selectedAmount = decisionAction.selectedAmount;
+  const target = decisionAction.payload.target;
+  const amount = decisionAction.payload.selectedAmount;
 
   const currentPlayer = getPlayerObject(currentPlayerId, state.players);
 
-  const selectedComponent = state?.components?.nodes[selectedTarget]
-    ? { ...state.components.nodes[selectedTarget] }
+  const component = state?.components?.nodes[target]
+    ? { ...state.components.nodes[target] }
     : null;
 
   return {
-    decisionsDefinitions,
     currentPlayer,
-    selectedTarget,
-    selectedComponent,
-    selectedAmount,
+    target,
+    component,
+    amount,
+    usedPointsDonation,
+    usedPointsHold,
+    totalPointsLimit,
   };
 }

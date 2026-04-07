@@ -22,14 +22,14 @@ export function handleResolveBugDecision(next, context) {
     decisionDefinition,
   } = context;
 
-  if (!selectedComponent) return next;
+  if (!component) return next;
 
-  const updatedComponent = resolveBug(selectedComponent);
+  const updatedComponent = resolveBug(component);
 
   const cost = next.gameConfig.decisionCosts[decisionDefinition.id];
   const updatedCurrentPlayer = subtractPointsToPlayer(currentPlayer, cost);
 
-  next.components.nodes[selectedComponent.id] = updatedComponent;
+  next.components.nodes[component.id] = updatedComponent;
   next.players = next.players.map((player) =>
     player.id === currentPlayer.id ? updatedCurrentPlayer : player
   );
@@ -38,14 +38,14 @@ export function handleResolveBugDecision(next, context) {
 }
 
 export function handleDonatePointsDecision(next, context) {
-  const { currentPlayer, selectedAmount, selectedTarget } = context;
+  const { currentPlayer, amount, target } = context;
 
-  const targetPlayer = getPlayerObject(selectedTarget, next.players);
+  const targetPlayer = getPlayerObject(target, next.players);
   if (!targetPlayer) return next;
 
   const updatedTargetPlayer = addPointsToPlayerBankByDonation(
     targetPlayer,
-    selectedAmount,
+    amount,
     next.gameConfig.maxPlayerPoints
   );
   const updatedCurrentPlayer = subtractPointsToPlayer(currentPlayer, amount);
@@ -61,11 +61,11 @@ export function handleDonatePointsDecision(next, context) {
 }
 
 export function handleHoldPointsDecision(next, context) {
-  const { currentPlayer, selectedAmount } = context;
+  const { currentPlayer, amount } = context;
 
   const updatedCurrentPlayer = addPointsToPlayerBankByHolding(
     currentPlayer,
-    selectedAmount
+    amount
   );
 
   next.players = next.players.map((player) =>
@@ -81,20 +81,20 @@ export function handleDevelopTestsDecision(next, context) {
     selectedComponent,
     decisionDefinition,
   } = context;
+  const { currentPlayer, component } = context;
 
   if (!component) return next;
 
-  checkForChildren = selectedComponent.type === 'LOCAL' ? true : false;
+  checkForChildren = component.type === 'LOCAL' ? true : false;
 
-  if (!isComponentEligibleForTests(selectedComponent, next.components))
-    return next;
+  if (!isComponentEligibleForTests(component, next.components)) return next;
 
-  const updatedComponent = applyTest(selectedComponent);
+  const updatedComponent = applyTest(component);
 
   const cost = next.gameConfig.decisionCosts[decisionDefinition.id];
   const updatedCurrentPlayer = subtractPointsToPlayer(currentPlayer, cost);
 
-  next.components.nodes[selectedComponent.id] = updatedComponent;
+  next.components.nodes[component.id] = updatedComponent;
   next.players = next.players.map((player) =>
     player.id === currentPlayer.id ? updatedCurrentPlayer : player
   );
