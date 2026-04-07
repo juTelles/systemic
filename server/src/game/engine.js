@@ -145,30 +145,25 @@ export function applyAction(state, action, ctx = {}) {
     }
 
     case ACTION_TYPES.APPLY_DECISION: {
-      next.flow.step = steps['PROCESSING_DECISION'];
+      let result = {};
+      try {
+        result = applyDecisionEffect(action, next, decisionsDefinitions);
 
-      const currentPlayer = getPlayerObject(
-        next.flow.currentPlayerId,
-        next.players
-      );
-
-      const decisionNext = applyDecisionEffect(action, next, currentPlayer.id);
-
-      let decisionsAvailable = getAvailableDecisions(
-        decisionNext,
-        decisionsDefinitions
-      );
-      if (decisionsAvailable.length === 0) {
-        decisionNext.flow.step.next = 'DRAW_CARD';
-      } else {
-        decisionNext.flow.step.next = 'CHOOSE_DECISION';
+        if (!result.ok) {
+          return next;
+        }
+      } catch (error) {
+        console.error('[ENGINE]', error);
+        throw error;
       }
-      decisionNext.decisionState.applied.push({
-        chosen: action.decision.chosen,
-        target: action.decision.target,
-        selectedAmount: action.decision.selectedAmount,
-      });
-      decisionNext.decisionState.available = decisionsAvailable;
+      const decisionNext = result.next;
+      decisionNext.flow.step = steps['PROCESSING_DECISION'];
+
+      let decisionsAvailableApply = [];
+      decisionsAvailableApply = getAvailableDecisions(decisionNext, decisionsDefinitions);
+      decisionNext.decisionState.available = decisionsAvailableApply;
+      decisionNext.flow.step.flowControl.nextTransition =
+        transitionResolvers['PROCESSING_DECISION'](decisionNext)
       decisionNext.decisionState.chosen = null;
       decisionNext.decisionState.target = null;
       decisionNext.decisionState.selectedAmount = 0;
