@@ -57,6 +57,7 @@ function PlayersPanel({
               pointsHand={player.handPoints}
               pointsBank={player.bankPoints}
               maxPoints={roomState?.gameConfig?.taskPoints?.maxPlayerPoints}
+              targetPlayer={targetPlayer}
             />
           ) : (
             <Player

@@ -5,15 +5,14 @@ import { GiCheckMark } from 'react-icons/gi';
 import { useState } from 'react';
 
 function PlayerPointsForm({
-  id,
   playerName,
-  localPlayerId,
   pointsTotal,
   pointsHand,
   pointsBank,
-  selectedTargetPlayerId,
-  currentPlayerId,
   maxPoints,
+  handleDecisionSubmit,
+  decisionUI,
+  targetPlayer
 }) {
   const [value, setValue] = useState(0);
 
@@ -37,7 +36,7 @@ function PlayerPointsForm({
       className={`${styles.gridRow} ${styles.itemRow} ${styles.selectedRow}`}
     >
       <span
-        className={`${styles.cell} ${styles.playerName} ${styles.targetPlayer}`}
+        className={`${styles.cell} ${styles.playerName} ${styles.playerSelected}`}
       >
         {playerName}
       </span>
