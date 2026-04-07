@@ -74,6 +74,9 @@ function resolveApplyDecisionContext(decisionAction, state) {
   const currentPlayerId = state.flow.currentPlayerId;
   const target = decisionAction.payload.target;
   const amount = decisionAction.payload.selectedAmount;
+  const usedPointsDonation = state.decisionState.appliedTotals.DONATE_POINTS;
+  const usedPointsHold = state.decisionState.appliedTotals.HOLD_POINTS;
+  const totalPointsLimit = state.gameConfig.taskPoints.maxPlayerPoints;
 
   const currentPlayer = getPlayerObject(currentPlayerId, state.players);
 

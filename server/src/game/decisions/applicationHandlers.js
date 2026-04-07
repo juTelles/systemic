@@ -52,6 +52,7 @@ export function handleDonatePointsDecision(next, context) {
   next.players = next.players.map((player) =>
     player.id === targetPlayer.id ? updatedTargetPlayer : player
   );
+  next.decisionState.appliedTotals.DONATE_POINTS += amount;
 
   return next;
 }
@@ -67,6 +68,7 @@ export function handleHoldPointsDecision(next, context) {
   next.players = next.players.map((player) =>
     player.id === currentPlayer.id ? updatedCurrentPlayer : player
   );
+  next.decisionState.appliedTotals.HOLD_POINTS += amount;
 
   return next;
 }
