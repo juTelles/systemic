@@ -12,7 +12,7 @@ function PlayersPanel({
   roomState,
   isReadOnly,
   txt,
-  handleDecisionSubmit
+  handleDecisionSubmit,
 }) {
   const [selectedTargetPlayerId, setSelectedTargetPlayerId] = useState(null);
   const currentPlayerId = roomState?.flow?.currentPlayerId;
@@ -53,22 +53,25 @@ function PlayersPanel({
       >
         {players?.map((player) => {
           const inputMode =
-            !isReadOnly && selectedTargetPlayerId === player.id &&
-            (currentPlayer ||
-            (targetMode && player.id !== localPlayerId));
+            !isReadOnly &&
+            selectedTargetPlayerId === player.id &&
+            (currentPlayer || (targetMode && player.id !== localPlayerId));
 
           return inputMode ? (
             <PlayerPointsForm
               key={player.id}
               id={player.id}
               playerName={player.nickname}
-              pointsTotal={player.handPoints + player.bankPoints}
               pointsHand={player.handPoints}
               pointsBank={player.bankPoints}
+              pointsTotal={player.handPoints + player.bankPoints}
               maxPoints={roomState?.gameConfig?.taskPoints?.maxPlayerPoints}
               handleDecisionSubmit={handleDecisionSubmit}
+              selectedDecisionUIId={selectedDecisionUIId}
               decisionUI={decisionUI}
               targetPlayer={targetPlayer}
+              maxHoldTurnLimit={maxHoldTurnLimit}
+              maxDonationTurnLimit={maxDonationTurnLimit}
             />
           ) : (
             <Player
@@ -78,13 +81,9 @@ function PlayersPanel({
               pointsHand={player.handPoints}
               pointsBank={player.bankPoints}
               pointsTotal={player.handPoints + player.bankPoints}
-              localPlayerId={localPlayerId}
               targetMode={targetMode}
               currentPlayerId={currentPlayerId}
               handleSelectTargetPlayer={handleSelectTargetPlayer}
-              selectedTargetPlayerId={selectedTargetPlayerId}
-              maxPoints={roomState?.gameConfig?.taskPoints?.maxPlayerPoints}
-              inputMode={inputMode}
             />
           );
         })}
