@@ -8,6 +8,7 @@ import TableTop from '../../components/tableTop/TableTop';
 import LateralBar from '../../components/lateralBar/LateralBar';
 import { useRoomActions } from '../../actions/roomsActions';
 import { resolveDecisionIdFromUISelection } from '../../helpers/helpers.js';
+import ModalDialog from '../../components/modalDialog/ModalDialog.jsx';
 
 function GameScreen({ roomId, localPlayerId, onSessionInvalid }) {
   const { roomState, isLoading, errorCode } = useStatePolling(roomId);
@@ -17,6 +18,7 @@ function GameScreen({ roomId, localPlayerId, onSessionInvalid }) {
   const [selectedDecisionUIId, setSelectedDecisionUIId] = useState(null);
   const [instructionKey, setInstructionKey] = useState(null);
   const [showGameStartDialog, setShowGameStartDialog] = useState(false);
+  const [showErrorDialog, setShowErrorDialog] = useState(false);
 
   const isPreGame = roomState?.phase === 'LOBBY';
   const isReadOnlyTurn = localPlayerId !== roomState?.flow?.currentPlayerId;
@@ -45,6 +47,9 @@ function GameScreen({ roomId, localPlayerId, onSessionInvalid }) {
     const result = await setDecisonChosen(action);
     if (!result.ok) {
       console.error('Error applyng decision:', result.error);
+    }
+    if (roomState?.decisionState?.validationError !== null) {
+      setShowErrorDialog(true);
     }
     setInstructionKey(null);
     setSelectedDecisionUIId(null);
@@ -88,14 +93,23 @@ function GameScreen({ roomId, localPlayerId, onSessionInvalid }) {
 
   return (
     <div className={styles.pageContainer}>
-      {showGameStartDialog && (
-        <div className={styles.dialogOverlay}>
-          <div className={styles.dialogBox}>
-            <h2>Iniciando partida</h2>
-            <p>Preparando ambiente...</p>
-          </div>
-        </div>
-      )}
+      {showGameStartDialog ? (
+        <ModalDialog
+          title={'Iniciando partida'}
+          content={'Preparando ambiente...'}
+        />
+      ) : showErrorDialog ? (
+        <ModalDialog
+          title={'Decisão Inválida'}
+          content={
+            roomState?.decisionState?.validationError?.type === 'VALIDATION_ERROR'
+              ? 'A decisão não atende aos requisitos necessários.'
+              : 'Ocorreu um erro ao processar a decisão. Tente novamente.'
+          }
+          button={true}
+          onClose={() => setShowErrorDialog(false)}
+        />
+      ) : null}
       <div className={styles.mainContainer}>
         <StatusBar
           isPreGame={isPreGame}
