@@ -30,7 +30,7 @@ const nodeRules = {
   },
   RESOLVE_LOCAL_BUG_TESTED: (context) => {
     return (
-      context.context.node.type === 'LOCAL' &&
+      context.node.type === 'LOCAL' &&
       context.node.bugAmount > 0 &&
       context.node.hasTests
     );
