@@ -13,8 +13,10 @@ function LateralBar({
   isPreGame,
   localPlayerId,
   roomId,
+  isReadOnlyTurn
 }) {
   const { setEndDecision } = useRoomActions(roomId, localPlayerId);
+  const isDecisionStep = roomState?.flow?.step?.name === 'AWAIT_DECISION';
 
   async function handleFinishDecision() {
     const result = await setEndDecision();
@@ -22,9 +24,9 @@ function LateralBar({
       console.error('Error finishing decision:', result.error);
     }
   }
-
   return (
     <div className={styles.lateralBar}>
+      {console.log(roomState ?? 'No room state')}
       <div className={styles.menuContainer}>
         <button type="button" className={styles.helpButton}>
           <BsQuestionCircle size={43} className={styles.icon} />
@@ -41,15 +43,18 @@ function LateralBar({
       </div>
       <div className={styles.barBottomContainer}>
         <div className={styles.finishDecisionContainer}>
-          <Button label="Finalizar Decisões"
-            width={'4rem'}
-            height={'4rem'}
-            borderRadius={'50px'}
-            inverted={true}
-            color={'var(--red)'}
-            fontSize={'var(--font-sm)'}
-            onClick={handleFinishDecision}
-          />
+          {!isReadOnlyTurn && isDecisionStep ? (
+            <Button
+              label="Finalizar Decisões"
+              width={'4rem'}
+              height={'4rem'}
+              borderRadius={'50%'}
+              inverted={true}
+              color={'var(--red)'}
+              fontSize={'var(--font-sm)'}
+              onClick={handleFinishDecision}
+            />
+          ) : null}
         </div>
         <div className={styles.exitContainer}>
           <button type="button" className={styles.exitButton}>

@@ -19,6 +19,7 @@ export function useRoomActions(roomId, localPlayerId) {
 
   async function setEndDecision() {
     return sendAction(roomId, ACTION_TYPES.DRAW_CARD, {
+      senderId: localPlayerId,
     });
   }
 
