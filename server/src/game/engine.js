@@ -144,11 +144,23 @@ export function applyAction(state, action, ctx = {}) {
     }
 
     case ACTION_TYPES.APPLY_DECISION: {
+      next.decisionState.validationError = null;
       let result = {};
       try {
         result = applyDecisionEffect(action, next, decisionsDefinitions);
 
         if (!result.ok) {
+          next.decisionState.validationError = {
+            type: result.type,
+            failedValidation: result.failedValidation,
+          };
+          next.meta.rev += 1;
+          next.meta.updatedAt = now;
+          next.log.lastEvent = {
+            type: 'DECISION_VALIDATION_FAILED',
+            by: action.payload.senderId ?? null,
+            at: now,
+          };
           return next;
         }
       } catch (error) {
