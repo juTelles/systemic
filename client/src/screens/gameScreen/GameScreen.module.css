@@ -26,34 +26,3 @@
   flex-direction: column;
   flex-grow: 1;
 }
-.dialogOverlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.35);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 999;
-}
-
-.dialogBox {
-  min-width: 280px;
-  max-width: 420px;
-  padding: 24px;
-  border-radius: 16px;
-  background: white;
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.18);
-  text-align: center;
-}
-
-.dialogBox h2 {
-  margin: 0 0 8px;
-  color: var(--bg-pure);
-  font-family: var(--font-family);
-}
-
-.dialogBox p {
-  margin: 0;
-  color: var(--bg-pure);
-  font-family: var(--font-family);
-}

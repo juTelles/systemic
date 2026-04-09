@@ -1,6 +1,7 @@
 // eslint-disable-next-line no-unused-vars
 import styles from './TableTop.module.css';
 import Board from '../board/Board';
+import BoardB from '../board/BoardB';
 
 function TableTop({
   roomState,
@@ -13,7 +14,7 @@ function TableTop({
 }) {
   return (
     <div className={styles.tableTopContainer}>
-      <Board
+      <BoardB
         roomState={roomState}
         isPreGame={isPreGame}
         localPlayerId={localPlayerId}

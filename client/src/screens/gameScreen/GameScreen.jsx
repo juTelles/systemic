@@ -38,7 +38,7 @@ function GameScreen({ roomId, localPlayerId, onSessionInvalid }) {
       decisionUIId,
       target,
       amount,
-      roomState,
+      roomState
     );
     if (!action) {
       console.error('No action resolved for the selected decision UI');
@@ -83,7 +83,7 @@ function GameScreen({ roomId, localPlayerId, onSessionInvalid }) {
         setShowGameStartDialog(true);
         setTimeout(() => {
           setShowGameStartDialog(false);
-        }, 5000);
+        }, 1500);
       }, 0);
       previousPhaseRef.current = currentPhase;
       return () => clearTimeout(timeout);
@@ -139,7 +139,13 @@ function GameScreen({ roomId, localPlayerId, onSessionInvalid }) {
         />
       </div>
       <div className={styles.lateralBarContainer}>
-        <LateralBar />
+        <LateralBar
+          isPreGame={isPreGame}
+          roomState={roomState}
+          localPlayerId={localPlayerId}
+          isReadOnlyTurn={isReadOnlyTurn}
+          roomId={roomId}
+        />
       </div>
     </div>
   );
