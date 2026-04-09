@@ -1,4 +1,4 @@
-import { decisionsApplicationValidators } from "../../../../shared/src/validations/decisionsValidators.js";
+import { decisionsApplicationValidators } from '../../../../shared/src/validations/decisionsValidators.js';
 
 export function runDecisionsApplicationValidators(validators, context) {
   for (const validatorName of validators ?? []) {
@@ -13,8 +13,12 @@ export function runDecisionsApplicationValidators(validators, context) {
 
     if (!isValid) {
       console.warn(`[DECISION_VALIDATOR] failed: ${validatorName}`, context);
-      return false;
+      return {
+        ok: false,
+        type: 'INVALID_ACTION',
+        failedValidation: validatorName,
+      };
     }
   }
-  return true;
+  return { ok: true};
 }

@@ -64,16 +64,12 @@ export function applyDecisionEffect(action, state, decisionsDefinitions) {
     decisionsDefinitions
   );
 
-  const isValid = runDecisionsApplicationValidators(
+  const validationResult = runDecisionsApplicationValidators(
     definition.applicationValidators,
     context
   );
-  if (!isValid)
-    return {
-      ok: false,
-      type: 'INVALID_ACTION',
-      state,
-    };
+  if (!validationResult.ok)
+    return validationResult;
 
   const handler = decisionHandlers[definition.effect];
   if (!handler) throw new Error(ERRORS.DECISION_HANDLER_NOT_FOUND);

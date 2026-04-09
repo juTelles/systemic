@@ -38,6 +38,7 @@ export function createInitialState({ roomId }) {
         DONATE_POINTS: 0,
         HOLD_POINTS: 0,
       },
+      validationError: null,
     },
     components: {},
     gameConfig: {
