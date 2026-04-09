@@ -10,8 +10,7 @@ export function getAvailableDecisions(state, decisionsDefinitions) {
 
   let availableByCost = [];
   let decisionsAvailable = [];
-
-  for (const [decisionsConfig, cost] of Object.entries(
+  for (const [decisionsConfigId, cost] of Object.entries(
     state.gameConfig.decisionCosts
   )) {
     if (decisionsConfigId === 'DONATE_POINTS') {

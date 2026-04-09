@@ -68,7 +68,8 @@ export function applyAction(state, action, ctx = {}) {
         console.warn('[GAME_START] skipped: conditions not met');
         return next;
       }
-      next.flow.blockedUntil = now + 1500;
+      next.flow.blockedUntil =
+        now + steps['GAME_START'].flowControl.current.delayMs;
       next.flow.step = steps['GAME_START'];
       next.components = structuredClone(components);
       next.components = applyGameStartBugs(next.components);
@@ -94,7 +95,8 @@ export function applyAction(state, action, ctx = {}) {
 
     case ACTION_TYPES.START_ROUND: {
       next.flow.step = steps['ROUND_START'];
-      next.flow.blockedUntil = now + 1500;
+      next.flow.blockedUntil =
+        now + steps['ROUND_START'].flowControl.current.delayMs;
       next.players.forEach((player) => {
         player.handPoints = next.gameConfig.taskPoints.playerPerRound;
       });
@@ -115,6 +117,8 @@ export function applyAction(state, action, ctx = {}) {
 
     case ACTION_TYPES.START_TURN: {
       next.flow.step = steps['TURN_START'];
+      next.flow.blockedUntil =
+        now + steps['GAME_START'].flowControl.current.delayMs;
       next.flow.currentPlayerId = next.players[next.flow.turn].id;
       next.meta.rev += 1;
       next.meta.updatedAt = now;
@@ -171,10 +175,13 @@ export function applyAction(state, action, ctx = {}) {
       decisionNext.flow.step = steps['PROCESSING_DECISION'];
 
       let decisionsAvailableApply = [];
-      decisionsAvailableApply = getAvailableDecisions(decisionNext, decisionsDefinitions);
+      decisionsAvailableApply = getAvailableDecisions(
+        decisionNext,
+        decisionsDefinitions
+      );
       decisionNext.decisionState.available = decisionsAvailableApply;
       decisionNext.flow.step.flowControl.nextTransition =
-        transitionResolvers['PROCESSING_DECISION'](decisionNext)
+        transitionResolvers['PROCESSING_DECISION'](decisionNext);
       decisionNext.decisionState.chosen = null;
       decisionNext.decisionState.target = null;
       decisionNext.decisionState.selectedAmount = 0;
@@ -184,17 +191,12 @@ export function applyAction(state, action, ctx = {}) {
         type: ACTION_TYPES.APPLY_DECISION,
         by: action.payload.senderId ?? null,
         at: now,
-      };
+      }
       return decisionNext;
     }
-    // In CHOOSE_DECISION, decisionsAvailable is initialized to [] and then
-    // assigned to next.decisions.available even when next.decisions.available
-    //  was already populated. This means any subsequent CHOOSE_DECISION action
-    // will clear the available decisions array unintentionally. Only overwrite
-    // next.decisions.available when you actually recompute it, or default
-    // decisionsAvailable to the current list.
 
     case ACTION_TYPES.DRAW_CARD: {
+      next.flow.step = steps['AWAIT_CARD_DRAW'];
       next.flow.blockedUntil = now + 1500;
       next.flow.turn += 1;
       next.meta.rev += 1;
