@@ -92,6 +92,8 @@ function resolveApplyDecisionContext(decisionAction, state) {
   const usedPointsDonation = state.decisionState.appliedTotals.DONATE_POINTS;
   const usedPointsHold = state.decisionState.appliedTotals.HOLD_POINTS;
   const totalPointsLimit = state.gameConfig.taskPoints.maxPlayerPoints;
+  const donationTurnLimit = state.gameConfig.decisionCosts.DONATE_POINTS;
+  const holdTurnLimit = state.gameConfig.decisionCosts.HOLD_POINTS;
 
   const currentPlayer = getPlayerObject(currentPlayerId, state.players);
 
@@ -106,6 +108,8 @@ function resolveApplyDecisionContext(decisionAction, state) {
     amount,
     usedPointsDonation,
     usedPointsHold,
+    donationTurnLimit,
+    holdTurnLimit,
     totalPointsLimit,
   };
 }

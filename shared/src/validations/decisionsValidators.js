@@ -7,11 +7,13 @@ export const decisionsApplicationValidators = {
   COMPONENT_MUST_HAVE_BUG: (context) => context?.component?.bugAmount > 0,
   COMPONENT_MUST_NOT_HAVE_TESTS: (context) => !context?.component?.hasTests,
   COMPONENT_MUST_HAVE_TESTS: (context) => context?.component?.hasTests,
-  DONATION_WITHIN_TURN_LIMIT: (context) => {
-    return context?.usedPointsDonation < context?.amount;
-  },
   HOLD_WITHIN_TURN_LIMIT: (context) => {
-    return context?.usedPointsHold < context?.amount;
+    return context?.usedPointsHold + context?.amount <= context.holdTurnLimit;
+  },
+  DONATION_WITHIN_TURN_LIMIT: (context) => {
+    return (
+      context?.usedPointsDonation + context?.amount <= context.donationTurnLimit
+    );
   },
   CURRENT_PLAYER_TOTAL_WITHIN_LIMIT: (context) => {
     const newTotalPoints =

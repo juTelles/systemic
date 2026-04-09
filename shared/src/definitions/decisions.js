@@ -68,6 +68,8 @@ export const decisions = Object.freeze({
         'REQUIRES_TARGET',
         'REQUIRES_AMOUNT',
         'AMOUNT_MUST_BE_POSITIVE',
+        'CURRENT_PLAYER_TOTAL_WITHIN_LIMIT',
+        'DONATION_WITHIN_TURN_LIMIT',
       ],
       availabilityRules: ['DONATION_WITHIN_TURN_LIMIT'],
     },
@@ -75,14 +77,21 @@ export const decisions = Object.freeze({
       id: 'HOLD_POINTS',
       type: 'MANAGE_POINTS',
       effect: 'HOLD_POINTS',
-      applicationValidators: ['REQUIRES_AMOUNT', 'AMOUNT_MUST_BE_POSITIVE'],
+      applicationValidators: [
+        'REQUIRES_AMOUNT',
+        'AMOUNT_MUST_BE_POSITIVE',
+        'HOLD_WITHIN_TURN_LIMIT',
+      ],
       availabilityRules: ['HOLD_WITHIN_TURN_LIMIT'],
     },
     DEVELOP_TESTS: {
       id: 'DEVELOP_TESTS',
       type: 'DEVELOP_TESTS',
       effect: 'DEVELOP_TESTS',
-      applicationValidators: ['REQUIRES_COMPONENT', 'COMPONENT_MUST_NOT_HAVE_TESTS'],
+      applicationValidators: [
+        'REQUIRES_COMPONENT',
+        'COMPONENT_MUST_NOT_HAVE_TESTS',
+      ],
       availabilityRules: ['EXISTS_COMPONENT_ELIGIBLE_FOR_TESTS'],
     },
   },
@@ -104,7 +113,6 @@ export const decisions = Object.freeze({
       decisionIds: ['HOLD_POINTS'],
       regularDecisionId: 'HOLD_POINTS',
       instructionKey: 'descriptionChoseToHoldPoints',
-
     },
     LOCAL: {
       id: 'LOCAL',
