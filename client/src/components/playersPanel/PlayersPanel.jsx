@@ -30,9 +30,14 @@ function PlayersPanel({
     setSelectedTargetPlayerId(currentPlayer);
   }, [currentPlayer]);
 
-
   const decisionUI = decisionsDefinitions.forUI[selectedDecisionUIId];
   const targetPlayer = players?.find((p) => p.id === selectedTargetPlayerId);
+
+  const maxHoldTurnLimit = roomState?.gameConfig?.taskPoints?.maxHoldPerPlayer
+       - roomState?.decisionState?.appliedTotals?.HOLD_POINTS;
+  const maxDonationTurnLimit = roomState?.gameConfig?.taskPoints?.maxDonationPerPlayer
+       - roomState?.decisionState?.appliedTotals?.DONATE_POINTS;
+
   return (
     <div className={styles.playersPanelContainer}>
       <div className={`${styles.gridRow} ${styles.playersPanelHeader}`}>

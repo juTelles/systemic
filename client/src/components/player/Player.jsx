@@ -4,11 +4,11 @@ import styles from '../playersPanel/PlayersPanel.module.css';
 function Player({
   id,
   playerName,
-  currentPlayerId,
-  pointsTotal,
   pointsHand,
   pointsBank,
+  pointsTotal,
   targetMode,
+  currentPlayerId,
   handleSelectTargetPlayer,
 }) {
   const paintPlayer = id === currentPlayerId && !targetMode;

@@ -33,6 +33,7 @@ function PlayersPanelPreGame({ players, localPlayerId, roomId, txt }) {
               onClick={handleReady}
               padding={'0'}
               disabled={localPlayerId === player.id ? false : true}
+              color={'var(--ciano)'}
             />
           </div>
         ))}

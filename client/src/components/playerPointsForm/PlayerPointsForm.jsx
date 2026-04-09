@@ -6,24 +6,40 @@ import { useState } from 'react';
 
 function PlayerPointsForm({
   playerName,
-  pointsTotal,
   pointsHand,
   pointsBank,
+  pointsTotal,
   maxPoints,
   handleDecisionSubmit,
+  selectedDecisionUIId,
   decisionUI,
-  targetPlayer
+  targetPlayer,
+  maxDonationTurnLimit,
+  maxHoldTurnLimit,
 }) {
   const [value, setValue] = useState(0);
+  const [error, setError] = useState(null);
 
-  const MAX = Number(maxPoints) - (Number(pointsBank) + Number(pointsHand));
+  const maxPlayerPoints = Number(maxPoints) - (Number(pointsBank) + Number(pointsHand));
   const MIN = 1;
 
   const handleChange = (event) => {
     let val = parseInt(event.target.value, 10);
+    setError(null);
+    const maxTurnLimit = selectedDecisionUIId === 'HOLD_POINTS' ? maxHoldTurnLimit : maxDonationTurnLimit;
 
-    if (val > MAX) val = MAX;
-    if (val < MIN) val = MIN;
+    if (val > maxPlayerPoints) {
+      val = maxPlayerPoints;
+      setError(`O valor máximo permitido é ${maxPlayerPoints}`);
+    }
+    if (val > maxTurnLimit) {
+      val = maxTurnLimit;
+      setError(`O valor máximo permitido por turno é ${maxTurnLimit}`);
+    }
+    if (val < MIN) {
+      val = MIN;
+      setError(`O valor mínimo permitido é ${MIN}`);
+    }
 
     setValue(isNaN(val) ? '' : val);
   };
@@ -32,9 +48,8 @@ function PlayerPointsForm({
   console.log('Input value:', value);
 
   return (
-    <div
-      className={`${styles.gridRow} ${styles.itemRow} ${styles.selectedRow}`}
-    >
+    <div>
+    <div className={`${styles.gridRow} ${styles.itemRow} ${styles.selectedRow}`}>
       <span
         className={`${styles.cell} ${styles.playerName} ${styles.playerSelected}`}
       >
@@ -48,6 +63,7 @@ function PlayerPointsForm({
         margin={'3px 0px 3px 7px'}
         borderRadius={'0px'}
         padding={'0'}
+        color={'var(--ciano)'}
         onClick={() => handleDecisionSubmit(decisionUI, targetPlayer, value)}
       />
       <input
@@ -65,6 +81,8 @@ function PlayerPointsForm({
       >
         {displayTotal}
       </span>
+    </div>
+      {error && <span className={styles.errorMessage}>{error}</span>}
     </div>
   );
 }
