@@ -278,7 +278,9 @@ function Board({ roomState, selectedDecisionUIId, handleDecisionSubmit }) {
               availableChosen,
               roomState
             )}
-            handleDecisionSubmit={handleDecisionSubmit}
+            handleDecisionSubmit={() =>
+              handleDecisionSubmit(decisionUI, nodes?.database)
+            }
             selectedDecisionUIId={selectedDecisionUIId}
           />
         </div>
@@ -296,7 +298,9 @@ function Board({ roomState, selectedDecisionUIId, handleDecisionSubmit }) {
               availableChosen,
               roomState
             )}
-            handleDecisionSubmit={handleDecisionSubmit}
+            handleDecisionSubmit={() =>
+              handleDecisionSubmit(decisionUI, nodes?.structure)
+            }
             selectedDecisionUIId={selectedDecisionUIId}
           />
         </div>

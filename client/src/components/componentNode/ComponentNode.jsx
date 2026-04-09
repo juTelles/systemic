@@ -1,6 +1,6 @@
 // eslint-disable-next-line no-unused-vars
 import { Tooltip } from 'react-tooltip';
-import styles from './ComponentNode.module.css';
+import styles from '../board/Board.module.css';
 
 function ComponentNode({ anchorRef, ...props }) {
   const {
@@ -16,7 +16,7 @@ function ComponentNode({ anchorRef, ...props }) {
 
   return (
     <div className={styles.ComponentNodeWrapper}>
-      {type === 'local' ? (
+      {type === 'LOCAL' ? (
         <label className={styles.labelUp}>{label}</label>
       ) : null}
       <div
@@ -45,7 +45,7 @@ function ComponentNode({ anchorRef, ...props }) {
           {bugAmount !== 0 ? bugAmount : ''}
         </span>
       </div>
-      {type !== 'local' ? (
+      {type !== 'LOCAL' ? (
         <label className={styles.labelDown}>{label}</label>
       ) : null}
     </div>
