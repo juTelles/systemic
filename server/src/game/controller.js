@@ -8,9 +8,12 @@ export function createRunGameLoop({ rooms }) {
 
     let currentStepAcceptanceRule =
       state?.flow?.step?.flowControl?.current?.accepts ?? null;
+    const playerValidation = !!playerAction &&
+      (state?.flow?.currentPlayerId === playerAction?.payload?.senderId ||
+        playerAction?.type === 'SET_READY');
 
     if (
-      playerAction &&
+      playerValidation &&
       !isBlockedState(state) &&
       currentStepAcceptanceRule === 'PLAYER_INPUT'
     ) {
