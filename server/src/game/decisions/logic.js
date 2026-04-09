@@ -14,7 +14,13 @@ export function getAvailableDecisions(state, decisionsDefinitions) {
   for (const [decisionsConfig, cost] of Object.entries(
     state.gameConfig.decisionCosts
   )) {
-    if (cost <= playerPoints) availableByCost.push(decisionsConfig);
+    if (decisionsConfigId === 'DONATE_POINTS') {
+      if (playerPoints > 0) availableByCost.push(decisionsConfigId);
+    } else if (decisionsConfigId === 'HOLD_POINTS') {
+      if (player.handPoints > 0) availableByCost.push(decisionsConfigId);
+    } else {
+      if (cost <= playerPoints) availableByCost.push(decisionsConfigId);
+    }
   }
   availableByCost.forEach((decisionAvailable) => {
     const decisionAvailableDef =
