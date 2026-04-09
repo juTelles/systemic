@@ -78,8 +78,6 @@ export function handleDevelopTestsDecision(next, context, decisionDefinition) {
 
   if (!component) return next;
 
-  checkForChildren = component.type === 'LOCAL' ? true : false;
-
   if (!isComponentEligibleForTests(component, next.components)) return next;
 
   const updatedComponent = applyTest(component);
