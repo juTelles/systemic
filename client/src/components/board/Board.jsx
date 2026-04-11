@@ -1,10 +1,12 @@
 // eslint-disable-next-line no-unused-vars
 import { useEffect, useRef, useState, useLayoutEffect, useMemo } from 'react';
 import { decisions as decisionsDefinitions } from '../../../../shared/src/definitions/decisions.js';
+import ComponentNode from '../componentNode/ComponentNode.jsx';
 import { components as componentsDefinitions } from '../../../../shared/src/definitions/components.js';
 import styles from './Board.module.css';
 import { isBoardNodeDisabled } from '../../helpers/boardTargetRules.js';
 import { componentsTxt as txt } from '../../texts/componentsTxt.js';
+import { resolveDecision } from '../../helpers/decisionResolver.js';
 
 const EDGES = [
   ['L1', 'S1'],
@@ -28,6 +30,9 @@ function Board({
   const boardRef = useRef(null);
   const nodeRefs = useRef({});
   const [lines, setLines] = useState([]);
+  const [prevDecisionUIId, setPrevDecisionUIId] = useState(null);
+  const [error, setError] = useState(null);
+
   const nodes = useMemo(
     () =>
       isPreGame
@@ -39,12 +44,14 @@ function Board({
   const decisionUI = decisionsDefinitions?.forUI[selectedDecisionUIId];
   const decisionsAvailable = roomState?.decisionState?.available ?? [];
   const chosenButtonDecisionIds = decisionUI?.decisionIds ?? [];
-
   const availableChosen = chosenButtonDecisionIds.filter((id) =>
-    decisionsAvailable?.includes(id)
+    decisionsAvailable?.includes(id),
   );
 
-  //   const selectDecisionId = roomState?.decisionState?.available;
+  if (prevDecisionUIId !== selectedDecisionUIId) {
+    setPrevDecisionUIId(selectedDecisionUIId);
+    setError(null);
+  }
 
   function registerNode(id) {
     return (el) => {
@@ -105,6 +112,16 @@ function Board({
     };
   }, []);
 
+  const handleSubmit = (roomState, decisionUIId, target, amount = null) => {
+    const decision = resolveDecision(roomState, decisionUIId, target, amount);
+    if (!decision.ok) {
+      setError(decision.errorMessage);
+      return;
+    }
+    handleDecisionSubmit(decision.action);
+    setError(null);
+  };
+
   return (
     <div className={styles.boardContainer}>
       <div ref={boardRef} className={styles.board}>
@@ -150,6 +167,7 @@ function Board({
           })}
         </div>
       </div>
+      {error && <span className={styles.errorMessage}>{error}</span>}
     </div>
   );
 }

@@ -11,7 +11,7 @@ function ComponentNode({ anchorRef, ...props }) {
     hasBug,
     isDisabled,
     id,
-    handleDecisionSubmit,
+    handleSubmit,
   } = props;
 
   return (
@@ -23,7 +23,7 @@ function ComponentNode({ anchorRef, ...props }) {
         id={id}
         role="button"
         tabIndex={0}
-        onClick={handleDecisionSubmit}
+        onClick={handleSubmit}
         data-tooltip-id="my-btn"
         ref={anchorRef}
         className={`${
