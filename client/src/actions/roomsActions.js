@@ -8,7 +8,7 @@ export function useRoomActions(roomId, localPlayerId) {
     });
   }
 
-  async function setDecisonChosen(decision) {
+  async function setDecisionChosen(decision) {
     return sendAction(roomId, ACTION_TYPES.APPLY_DECISION, {
       senderId: localPlayerId,
       chosen: decision.chosen,
@@ -25,7 +25,7 @@ export function useRoomActions(roomId, localPlayerId) {
 
   return {
     setReady,
-    setDecisonChosen,
+    setDecisionChosen,
     setEndDecision
   };
 }

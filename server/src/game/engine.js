@@ -119,7 +119,7 @@ export function applyAction(state, action, ctx = {}) {
     case ACTION_TYPES.START_TURN: {
       next.flow.step = steps['TURN_START'];
       next.flow.blockedUntil =
-        now + steps['GAME_START'].flowControl.current.delayMs;
+        now + steps['TURN_START'].flowControl.current.delayMs;
       next.flow.currentPlayerId = next.players[next.flow.turn].id;
       next.meta.rev += 1;
       next.meta.updatedAt = now;

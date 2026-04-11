@@ -13,7 +13,7 @@ export const instructions = (state) => {
     WAITING_PLAYERS_READY: {
       title: 'Ready Up',
       description: {
-        pt: `Bem-vindos ao Systemic! \nTodos os jogadores devem clicar no botão "Pronto" para iniciar o jogo!\n Enquanto isso, aproveite para se familiarizar com o tabuleiro, paineis e conhecer a regras do jogo, localizadas no topo direito da tela, indentificadas pelo botão '?'.`,
+        pt: `Bem-vindos ao Systemic! \nTodos os jogadores devem clicar no botão "Pronto" para iniciar o jogo!\n Enquanto isso, aproveite para se familiarizar com o tabuleiro, paineis e conhecer a regras do jogo, localizadas no topo direito da tela, identificadas pelo botão '?'.`,
         en: `Welcome to Systemic! \nAll players must click the "Ready" button to start the game!\n In the meantime, take the opportunity to familiarize yourself with the board, panels, and get to know the game rules, located at the top right of the screen, identified by the '?' button.`,
       },
     },
@@ -45,7 +45,7 @@ export const instructions = (state) => {
         en: `${playerNickname} you have Task Points to spend. Choose a Technical Decision to fix bugs, develop tests, save points, or donate them to another player. At the end of the round, points that remain in hand and are not saved or donated will be discarded. Each player can have a maximum of ${maxPlayerPoints} points in total (hand + bank).`,
       },
       additionalDescriptions: {
-        decriptionChoseToResolveBug: {
+        descriptionChoseToResolveBug: {
           pt: `${playerNickname} você escolheu resolver um bug. Agora, clique no tabuleiro no componente em que deseja tratá-lo. Cada decisão permite resolver apenas um bug.\nResolver bugs em componentes que já possuem testes custa metade dos pontos.\nOs componentes desabilitados não podem ser escolhidos porque não podem ser afetados pela decisão selecionada.`,
           en: `${playerNickname} you chose to fix a bug. Now, click on the board on the component you want to fix it. Each decision allows you to fix only one bug.\nFixing bugs in components that already have tests costs half the points.\nDisabled components cannot be chosen because they cannot be affected by the selected decision.`,
         },
@@ -55,7 +55,7 @@ export const instructions = (state) => {
         },
         descriptionChoseToHoldPoints: {
           pt: `${playerNickname} você escolheu guardar pontos. Agora, informe quantos pontos deseja guardar e clique no check da coluna Enviar.\nSe quiser transferir pontos para outro jogador, escolha a decisão Doar pontos.\nLembre-se: você pode guardar até ${HOLD_POINTS} pontos por turno e doar até ${DONATE_POINTS} pontos por turno. Cada jogador pode ter no máximo ${maxPlayerPoints} pontos no total (mão + banco). Pontos que não forem guardados nem doados serão descartados ao final do turno.`,
-          en: `${playerNickname} vou chose to save points. Now, enter how many points you want to save and click the check in the Send column.\nIf you want to transfer points to another player, choose the Donate Points decision.\n\nRemember: you can save up to ${HOLD_POINTS} points per turn and donate up to ${DONATE_POINTS} points per turn. Each player can have a maximum of ${maxPlayerPoints} points in total (hand + bank). Points that are not saved or donated will be discarded at the end of the turn.`,
+          en: `${playerNickname} you chose to save points. Now, enter how many points you want to save and click the check in the Send column.\nIf you want to transfer points to another player, choose the Donate Points decision.\n\nRemember: you can save up to ${HOLD_POINTS} points per turn and donate up to ${DONATE_POINTS} points per turn. Each player can have a maximum of ${maxPlayerPoints} points in total (hand + bank). Points that are not saved or donated will be discarded at the end of the turn.`,
         },
         descriptionChoseToDevelopTest: {
           pt: `${playerNickname} você escolheu desenvolver testes. Agora, clique no componente do tabuleiro em que deseja implementá-los.\nTestes só podem ser desenvolvidos em componentes que não possuem bugs e cujos subcomponentes já estejam testados. Por exemplo, o Front-end só pode receber testes se Interface e Interação já possuírem testes.\nOs componentes desabilitados não podem ser escolhidos porque ainda não atendem a essas condições.`,

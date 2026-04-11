@@ -11,7 +11,7 @@ import ModalDialog from '../../components/modalDialog/ModalDialog.jsx';
 import { getErrorMessage } from '../../texts/errorsMessages.js';
 
 function GameScreen({ roomId, localPlayerId, onSessionInvalid }) {
-  const { setDecisonChosen, setEndDecision } = useRoomActions(
+  const { setDecisionChosen, setEndDecision } = useRoomActions(
     roomId,
     localPlayerId,
   );
@@ -37,10 +37,10 @@ function GameScreen({ roomId, localPlayerId, onSessionInvalid }) {
   };
 
   async function handleDecisionSubmit(action) {
-    const result = await setDecisonChosen(action);
+    const result = await setDecisionChosen(action);
 
     if (!result.ok) {
-      console.error('Error applyng decision:', result.error);
+      console.error('Error applying decision:', result.error);
       setShowErrorDialog({ content: getErrorMessage('DECISION_ERROR') });
     }
 

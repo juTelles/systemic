@@ -120,7 +120,7 @@ export const decisions = Object.freeze({
       decisionIds: ['RESOLVE_LOCAL_BUG', 'RESOLVE_LOCAL_BUG_TESTED'],
       regularDecisionId: 'RESOLVE_LOCAL_BUG',
       testedDecisionId: 'RESOLVE_LOCAL_BUG_TESTED',
-      instructionKey: 'decriptionChoseToResolveBug',
+      instructionKey: 'descriptionChoseToResolveBug',
     },
     STRUCTURAL: {
       id: 'STRUCTURAL',
@@ -128,7 +128,7 @@ export const decisions = Object.freeze({
       decisionIds: ['RESOLVE_STRUCTURAL_BUG', 'RESOLVE_STRUCTURAL_BUG_TESTED'],
       regularDecisionId: 'RESOLVE_STRUCTURAL_BUG',
       testedDecisionId: 'RESOLVE_STRUCTURAL_BUG_TESTED',
-      instructionKey: 'decriptionChoseToResolveBug',
+      instructionKey: 'descriptionChoseToResolveBug',
     },
     REQUESTS: {
       id: 'REQUESTS',
@@ -136,7 +136,7 @@ export const decisions = Object.freeze({
       decisionIds: ['RESOLVE_REQUESTS_BUG', 'RESOLVE_REQUESTS_BUG_TESTED'],
       regularDecisionId: 'RESOLVE_REQUESTS_BUG',
       testedDecisionId: 'RESOLVE_REQUESTS_BUG_TESTED',
-      instructionKey: 'decriptionChoseToResolveBug',
+      instructionKey: 'descriptionChoseToResolveBug',
     },
     DEVELOP_TESTS: {
       id: 'DEVELOP_TESTS',
