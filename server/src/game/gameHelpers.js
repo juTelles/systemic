@@ -21,10 +21,10 @@ export function existsComponentEligibleForTests(components) {
     byType.LOCAL.some((component) =>
       isComponentEligibleForTests(components.nodes[component], components)
     ) ||
-    byType.STRUCTURAL.Array.some((component) =>
+    byType.STRUCTURAL.some((component) =>
       isComponentEligibleForTests(components.nodes[component], components)
     ) ||
-    byType.REQUESTS.Array.some((component) =>
+    byType.REQUESTS.some((component) =>
       isComponentEligibleForTests(components.nodes[component], components)
     );
   return exists;
