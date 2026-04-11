@@ -68,7 +68,7 @@ export const decisions = Object.freeze({
         'REQUIRES_TARGET',
         'REQUIRES_AMOUNT',
         'AMOUNT_MUST_BE_POSITIVE',
-        'CURRENT_PLAYER_TOTAL_WITHIN_LIMIT',
+        'TARGET_PLAYER_TOTAL_WITHIN_LIMIT',
         'DONATION_WITHIN_TURN_LIMIT',
       ],
       availabilityRules: ['DONATION_WITHIN_TURN_LIMIT'],

@@ -15,11 +15,12 @@ export const decisionsApplicationValidators = {
       context?.usedPointsDonation + context?.amount <= context.donationTurnLimit
     );
   },
-  CURRENT_PLAYER_TOTAL_WITHIN_LIMIT: (context) => {
+  TARGET_PLAYER_TOTAL_WITHIN_LIMIT: (context) => {
     const newTotalPoints =
-      context?.currentPlayer?.handPoints +
-      context?.currentPlayer?.bankPoints +
+      context?.target?.handPoints +
+      context?.target?.bankPoints +
       context?.amount;
     return newTotalPoints <= context?.totalPointsLimit;
   },
 };
+// TODO: add validator for current player has points for decision
