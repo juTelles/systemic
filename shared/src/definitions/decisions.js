@@ -138,8 +138,8 @@ export const decisions = Object.freeze({
       testedDecisionId: 'RESOLVE_REQUESTS_BUG_TESTED',
       instructionKey: 'decriptionChoseToResolveBug',
     },
-    TESTS: {
-      id: 'TESTS',
+    DEVELOP_TESTS: {
+      id: 'DEVELOP_TESTS',
       type: 'DEVELOP_TESTS',
       decisionIds: ['DEVELOP_TESTS'],
       regularDecisionId: 'DEVELOP_TESTS',
