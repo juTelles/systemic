@@ -3,58 +3,48 @@ import styles from '../playersPanel/PlayersPanel.module.css';
 import Button from '../button/Button';
 import { GiCheckMark } from 'react-icons/gi';
 import { useState } from 'react';
+import { resolveDecision } from '../../helpers/decisionResolver.js';
 
 function PlayerPointsForm({
-  playerName,
-  pointsHand,
-  pointsBank,
-  pointsTotal,
-  maxPoints,
+  targetPlayer,
   handleDecisionSubmit,
   selectedDecisionUIId,
-  decisionUI,
-  targetPlayer,
-  maxDonationTurnLimit,
-  maxHoldTurnLimit,
+  roomState,
 }) {
-  const [value, setValue] = useState(0);
   const [error, setError] = useState(null);
+  const [value, setValue] = useState(0);
 
-  const maxPlayerPoints = Number(maxPoints) - (Number(pointsBank) + Number(pointsHand));
-  const MIN = 1;
+  const { bankPoints, handPoints, nickname } = targetPlayer;
+  const maxPoints =
+    Number(roomState?.gameConfig?.taskPoints?.maxPlayerPoints) -
+    (Number(bankPoints) + Number(handPoints));
+  const displayTotal =
+    value && selectedDecisionUIId === 'DONATE_POINTS'
+      ? Number(handPoints) + Number(bankPoints) + Number(value)
+      : Number(handPoints) + Number(bankPoints);
+
+  const handleSubmit = (roomState, decisionUIId, target, amount = null) => {
+    const decision = resolveDecision(roomState, decisionUIId, target, amount);
+    if (!decision.ok) {
+      setError(decision.errorMessage);
+      return;
+    }
+    handleDecisionSubmit(decision.action);
+    setError(null);
+    setValue(0);
+  };
 
   const handleChange = (event) => {
     let val = parseInt(event.target.value, 10);
     setError(null);
-    const maxTurnLimit = selectedDecisionUIId === 'HOLD_POINTS' ? maxHoldTurnLimit : maxDonationTurnLimit;
-
-    if (val > maxPlayerPoints) {
-      val = maxPlayerPoints;
-      setError(`O valor máximo permitido é ${maxPlayerPoints}`);
-    }
-    if (val > maxTurnLimit) {
-      val = maxTurnLimit;
-      setError(`O valor máximo permitido por turno é ${maxTurnLimit}`);
-    }
-    if (val < MIN) {
-      val = MIN;
-      setError(`O valor mínimo permitido é ${MIN}`);
-    }
-
     setValue(isNaN(val) ? '' : val);
   };
 
-  const displayTotal = value ? Number(pointsHand) + Number(value) : pointsTotal;
-  console.log('Input value:', value);
-
   return (
-    <div>
-    <div className={`${styles.gridRow} ${styles.itemRow} ${styles.selectedRow}`}>
-      <span
-        className={`${styles.cell} ${styles.playerName} ${styles.playerSelected}`}
-      >
-        {playerName}
-      </span>
+    <div
+      className={`${styles.gridRow} ${styles.itemRow} ${styles.selectedRow}`}
+    >
+      <span className={`${styles.cell} ${styles.playerName}`}>{nickname}</span>
       <Button
         className={`${styles.cell} ${styles.buttonSendPoints}`}
         label={<GiCheckMark size={16} />}
@@ -64,24 +54,23 @@ function PlayerPointsForm({
         borderRadius={'0px'}
         padding={'0'}
         color={'var(--ciano)'}
-        onClick={() => handleDecisionSubmit(decisionUI, targetPlayer, value)}
+        onClick={() =>
+          handleSubmit(roomState, selectedDecisionUIId, targetPlayer, value)
+        }
       />
       <input
         id="inputPoints"
-        className={`${styles.cell} ${styles.inputPoints} ${styles.playerSelected}`}
+        className={`${styles.cell} ${styles.inputPoints}`}
         type="number"
         placeholder=""
         onChange={handleChange}
-        max={Number(maxPoints) - (Number(pointsBank) + Number(pointsHand))}
-        min={1}
+        max={maxPoints}
+        min={0}
         value={value}
       />
-      <span
-        className={`${styles.cell} ${styles.playerPoints} ${styles.playerSelected}`}
-      >
+      <span className={`${styles.cell} ${styles.playerPoints} `}>
         {displayTotal}
       </span>
-    </div>
       {error && <span className={styles.errorMessage}>{error}</span>}
     </div>
   );

@@ -1,4 +1,3 @@
-// eslint-disable-next-line no-unused-vars
 import Player from '../player/Player';
 import PlayerPointsForm from '../playerPointsForm/PlayerPointsForm';
 import styles from './PlayersPanel.module.css';
@@ -50,26 +49,13 @@ function PlayersPanel({
         style={{ width: '100%', overflowY: 'auto' }}
       >
         {players?.map((player) => {
-          const inputMode =
-            !isReadOnly &&
-            selectedTargetPlayerId === player.id &&
-            (currentPlayer || (targetMode && player.id !== localPlayerId));
-
-          return inputMode ? (
+          return inputMode && selectedTargetPlayerId === player.id ? (
             <PlayerPointsForm
               key={player.id}
-              id={player.id}
-              playerName={player.nickname}
-              pointsHand={player.handPoints}
-              pointsBank={player.bankPoints}
-              pointsTotal={player.handPoints + player.bankPoints}
-              maxPoints={roomState?.gameConfig?.taskPoints?.maxPlayerPoints}
+              targetPlayer={targetPlayer}
               handleDecisionSubmit={handleDecisionSubmit}
               selectedDecisionUIId={selectedDecisionUIId}
-              decisionUI={decisionUI}
-              targetPlayer={targetPlayer}
-              maxHoldTurnLimit={maxHoldTurnLimit}
-              maxDonationTurnLimit={maxDonationTurnLimit}
+              roomState={roomState}
             />
           ) : (
             <Player
