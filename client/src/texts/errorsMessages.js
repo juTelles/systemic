@@ -66,6 +66,11 @@ export const errorMessages = {
     en: 'Invalid action.',
   },
 
+  [ERRORS.INVALID_DECISION]: {
+    pt: 'Decisão inválida',
+    en: 'Invalid decision.',
+  },
+
   [ERRORS.UNAUTHORIZED_ACTION]: {
     pt: 'Você não pode realizar esta ação.',
     en: 'You cannot perform this action.',

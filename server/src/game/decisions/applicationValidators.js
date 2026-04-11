@@ -6,7 +6,11 @@ export function runDecisionsApplicationValidators(validators, context) {
 
     if (!validator) {
       console.warn(`[DECISION_VALIDATOR] missing validator: ${validatorName}`);
-      return false;
+      return {
+        ok: false,
+        type: 'VALIDATOR_NOT_FOUND',
+        failedValidation: validatorName,
+      };
     }
 
     const isValid = validator(context);
@@ -15,7 +19,7 @@ export function runDecisionsApplicationValidators(validators, context) {
       console.warn(`[DECISION_VALIDATOR] failed: ${validatorName}`, context);
       return {
         ok: false,
-        type: 'INVALID_ACTION',
+        type: 'INVALID_DECISION',
         failedValidation: validatorName,
       };
     }
