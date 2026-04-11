@@ -6,6 +6,7 @@ import { components } from '../../../shared/src/definitions/components.js';
 import { applyGameStartBugs } from './gameHelpers.js';
 import { transitionResolvers } from './transitionResolvers.js';
 import { decisions as decisionsDefinitions } from '../../../shared/src/definitions/decisions.js';
+import { createDecisionState, createValidationErrorState } from './roomStateFactories.js';
 
 import {
   getAvailableDecisions,
@@ -198,6 +199,7 @@ export function applyAction(state, action, ctx = {}) {
     case ACTION_TYPES.DRAW_CARD: {
       next.flow.step = steps['AWAIT_CARD_DRAW'];
       next.flow.blockedUntil = now + 1500;
+      next.decisionState = createDecisionState();
       next.flow.turn += 1;
       next.meta.rev += 1;
       next.meta.updatedAt = now;
