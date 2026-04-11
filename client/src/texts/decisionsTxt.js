@@ -66,7 +66,7 @@ export const decisionsTxt = (cost = 0) => ({
     },
     categoryColor: '#22d3ee',
   },
-  TESTS: {
+  DEVELOP_TESTS: {
     label: {
       pt: `Desenvolver Testes\n`,
       en: `Develop Tests\n`,
