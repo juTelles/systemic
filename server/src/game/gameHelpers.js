@@ -34,7 +34,7 @@ export function applyBug(component, components, amount = 1) {
   const saturated = component.bugAmount + amount >= component.saturationLimit;
 
   if (saturated && component.type !== 'REQUESTS') {
-    components.parentIds.forEach((parentId) => {
+    component.parentIds.forEach((parentId) => {
       const parentComponent = components.nodes[parentId];
       components.nodes[parentId] = applyBug(parentComponent, components);
     });
