@@ -5,7 +5,7 @@ import { GiCheckMark } from 'react-icons/gi';
 
 function PlayersPanelPreGame({ players, localPlayerId, roomId, txt }) {
   const { setReady } = useRoomActions(roomId, localPlayerId);
-  //add action to unset ready if player is already ready
+  //TODO: add action to unset ready if player is already ready
 
   async function handleReady() {
     const result = await setReady();

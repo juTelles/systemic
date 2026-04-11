@@ -36,4 +36,5 @@
   color: var(--text-main);
   font-family: var(--font-family);
   font-size: var(--font-lg);
+  white-space: pre-line;
 }

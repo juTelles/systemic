@@ -1,5 +1,4 @@
 export function isComponentEligibleForTests(component, components) {
-  console.log('Checking eligibility for component:', component.id);
   const requiresChildrenTested = component.type !== 'LOCAL';
   const hasNoBugs = component.bugAmount === 0;
   const hasNoTests = !component.hasTests;

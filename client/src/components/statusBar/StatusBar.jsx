@@ -14,7 +14,7 @@ function StatusBar({
   selectedDecisionUIId,
   isReadOnly,
   instructionKey,
-  handleDecisionSubmit
+  handleDecisionSubmit,
 }) {
   return (
     <div className={styles.statusBarContainer}>
@@ -41,7 +41,6 @@ function StatusBar({
           <PlayersPanel
             players={roomState?.players}
             localPlayerId={localPlayerId}
-            roomId={roomId}
             selectedDecisionUIId={selectedDecisionUIId}
             roomState={roomState}
             isReadOnly={isReadOnly}

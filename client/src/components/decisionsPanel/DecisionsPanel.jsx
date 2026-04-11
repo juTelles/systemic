@@ -38,12 +38,7 @@ function DecisionsPanel({
         const isTestedDecisionAvailable = availableSet.has(testedDecisionId);
 
         const isChosen = selectedDecisionUIId === decisionUIId ? true : false;
-        console.log(
-          'Decisão disponível:',
-          decisionUIId,
-          selectedDecisionUIId,
-          isChosen
-        );
+
         const isAvailable = decisionUI.decisionIds.some((id) =>
           availableSet.has(id)
         );
