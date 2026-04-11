@@ -155,10 +155,11 @@ export function applyAction(state, action, ctx = {}) {
         result = applyDecisionEffect(action, next, decisionsDefinitions);
 
         if (!result.ok) {
-          next.decisionState.validationError = {
-            type: result.type,
-            failedValidation: result.failedValidation,
-          };
+          const error = createValidationErrorState();
+          error.type = result.type;
+          error.failedValidation = result.failedValidation;
+
+          next.decisionState.validationError = error;
           next.meta.rev += 1;
           next.meta.updatedAt = now;
           next.log.lastEvent = {
