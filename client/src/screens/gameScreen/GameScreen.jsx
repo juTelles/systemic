@@ -11,6 +11,10 @@ import { resolveDecisionIdFromUISelection } from '../../helpers/helpers.js';
 import ModalDialog from '../../components/modalDialog/ModalDialog.jsx';
 
 function GameScreen({ roomId, localPlayerId, onSessionInvalid }) {
+  const { setDecisonChosen, setEndDecision } = useRoomActions(
+    roomId,
+    localPlayerId,
+  );
   const { roomState, isLoading, errorCode } = useStatePolling(roomId);
   const previousPhaseRef = useRef(null);
   const { setDecisonChosen } = useRoomActions(roomId, localPlayerId);
@@ -53,6 +57,16 @@ function GameScreen({ roomId, localPlayerId, onSessionInvalid }) {
     }
     setInstructionKey(null);
     setSelectedDecisionUIId(null);
+  }
+
+  async function handleFinishDecision() {
+    const result = await setEndDecision();
+    if (!result.ok) {
+      console.error('Error finishing decision:', result.error);
+    }
+    setInstructionKey(null);
+    setSelectedDecisionUIId(null);
+    return;
   }
 
   useEffect(() => {
@@ -145,6 +159,7 @@ function GameScreen({ roomId, localPlayerId, onSessionInvalid }) {
           localPlayerId={localPlayerId}
           isReadOnlyTurn={isReadOnlyTurn}
           roomId={roomId}
+          handleFinishDecision={handleFinishDecision}
         />
       </div>
     </div>

@@ -6,27 +6,19 @@ import { BsQuestionCircle } from "react-icons/bs";
 import { VscSignOut } from "react-icons/vsc";
 import { IoSettingsOutline } from "react-icons/io5";
 import Button from '../button/Button';
-import { useRoomActions } from '../../actions/roomsActions';
 
 function LateralBar({
   roomState,
-  isPreGame,
-  localPlayerId,
-  roomId,
-  isReadOnlyTurn
+  // isPreGame,
+  // localPlayerId,
+  // roomId,
+  isReadOnlyTurn,
+  handleFinishDecision
 }) {
-  const { setEndDecision } = useRoomActions(roomId, localPlayerId);
   const isDecisionStep = roomState?.flow?.step?.name === 'AWAIT_DECISION';
 
-  async function handleFinishDecision() {
-    const result = await setEndDecision();
-    if (!result.ok) {
-      console.error('Error finishing decision:', result.error);
-    }
-  }
   return (
     <div className={styles.lateralBar}>
-      {console.log(roomState ?? 'No room state')}
       <div className={styles.menuContainer}>
         <button type="button" className={styles.helpButton}>
           <BsQuestionCircle size={43} className={styles.icon} />
