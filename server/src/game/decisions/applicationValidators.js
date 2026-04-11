@@ -24,5 +24,5 @@ export function runDecisionsApplicationValidators(validators, context) {
       };
     }
   }
-  return { ok: true};
+  return { ok: true };
 }

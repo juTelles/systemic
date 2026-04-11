@@ -4,7 +4,7 @@ import { isComponentEligibleForTests } from '../../../shared/src/game/helpers.js
 export function existsComponentEligibleForBugResolvByType(
   components,
   componentType,
-  withTests = false
+  withTests = false,
 ) {
   const componentsByTypeArray = components.byType?.[componentType] ?? [];
   const exists = componentsByTypeArray.some((component) => {
@@ -19,13 +19,13 @@ export function existsComponentEligibleForTests(components) {
   const { byType } = components;
   const exists =
     byType.LOCAL.some((component) =>
-      isComponentEligibleForTests(components.nodes[component], components)
+      isComponentEligibleForTests(components.nodes[component], components),
     ) ||
     byType.STRUCTURAL.some((component) =>
-      isComponentEligibleForTests(components.nodes[component], components)
+      isComponentEligibleForTests(components.nodes[component], components),
     ) ||
     byType.REQUESTS.some((component) =>
-      isComponentEligibleForTests(components.nodes[component], components)
+      isComponentEligibleForTests(components.nodes[component], components),
     );
   return exists;
 }
@@ -49,13 +49,19 @@ export function applyBug(component, components, amount = 1) {
 // TODO: refactor to make applyBug more generica and pure
 export function applyGameStartBugs(stateComponents, amount = 5) {
   const updatedNodes = { ...stateComponents.nodes };
-  const componentsWithUpdatedNodes = { ...stateComponents, nodes: updatedNodes };
+  const componentsWithUpdatedNodes = {
+    ...stateComponents,
+    nodes: updatedNodes,
+  };
   for (let i = 0; i < amount; i++) {
     let randomComponentId =
       stateComponents.allIds[
         Math.floor(Math.random() * stateComponents.allIds.length)
       ];
-    updatedNodes[randomComponentId] = applyBug(updatedNodes[randomComponentId], componentsWithUpdatedNodes);
+    updatedNodes[randomComponentId] = applyBug(
+      updatedNodes[randomComponentId],
+      componentsWithUpdatedNodes,
+    );
   }
   return {
     ...stateComponents,
@@ -108,7 +114,7 @@ export function subtractPointsToPlayer(player, pointsToSubtract) {
 export function addPointsToPlayerBankByDonation(
   player,
   pointsToAdd,
-  maxPlayerPoints
+  maxPlayerPoints,
 ) {
   const totalPoints = getTotalPlayersPoints(player);
   if (totalPoints + pointsToAdd > maxPlayerPoints) {
@@ -124,7 +130,7 @@ export function addPointsToPlayerBankByDonation(
 export function addPointsToPlayerBankByHolding(player, pointsToAdd) {
   if (player.handPoints < pointsToAdd) {
     console.warn(
-      'Invalid action: Not have enough points in hand to add to bank'
+      'Invalid action: Not have enough points in hand to add to bank',
     );
     return player;
   }
@@ -142,7 +148,7 @@ export function addPointsToPlayerHand(player, pointsToAdd, maxPlayerPoints) {
   }
   const allowedPointsToAdd = Math.min(
     pointsToAdd,
-    maxPlayerPoints - totalPoints
+    maxPlayerPoints - totalPoints,
   );
   return {
     ...player,
