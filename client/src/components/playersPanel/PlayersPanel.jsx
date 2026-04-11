@@ -2,8 +2,7 @@
 import Player from '../player/Player';
 import PlayerPointsForm from '../playerPointsForm/PlayerPointsForm';
 import styles from './PlayersPanel.module.css';
-import { useState, useMemo, useEffect } from 'react';
-import { decisions as decisionsDefinitions } from '../../../../shared/src/definitions/decisions.js';
+import { useState } from 'react';
 
 function PlayersPanel({
   players,
@@ -15,28 +14,27 @@ function PlayersPanel({
   handleDecisionSubmit,
 }) {
   const [selectedTargetPlayerId, setSelectedTargetPlayerId] = useState(null);
+  const [prevSelectedDecisionUIId, setPrevSelectedDecisionUIId] = useState(null);
   const currentPlayerId = roomState?.flow?.currentPlayerId;
-
-  const targetMode = selectedDecisionUIId == 'DONATE_POINTS' ? true : false;
-
-  const handleSelectTargetPlayer = (player) => {
-    setSelectedTargetPlayerId(player);
-  };
-  const currentPlayer = useMemo(() => {
-    return selectedDecisionUIId == 'HOLD_POINTS' ? currentPlayerId : null;
-  }, [selectedDecisionUIId, currentPlayerId]);
-
-  useEffect(() => {
-    setSelectedTargetPlayerId(currentPlayer);
-  }, [currentPlayer]);
-
-  const decisionUI = decisionsDefinitions.forUI[selectedDecisionUIId];
   const targetPlayer = players?.find((p) => p.id === selectedTargetPlayerId);
 
-  const maxHoldTurnLimit = roomState?.gameConfig?.taskPoints?.maxHoldPerPlayer
-       - roomState?.decisionState?.appliedTotals?.HOLD_POINTS;
-  const maxDonationTurnLimit = roomState?.gameConfig?.taskPoints?.maxDonationPerPlayer
-       - roomState?.decisionState?.appliedTotals?.DONATE_POINTS;
+  if (prevSelectedDecisionUIId !== selectedDecisionUIId) {
+    setPrevSelectedDecisionUIId(selectedDecisionUIId);
+    if (selectedDecisionUIId === 'HOLD_POINTS') setSelectedTargetPlayerId(currentPlayerId);
+    else setSelectedTargetPlayerId(null);
+  }
+
+  const targetMode = selectedDecisionUIId === 'DONATE_POINTS';
+  const inputMode =
+    !isReadOnly &&
+    (selectedDecisionUIId === 'HOLD_POINTS' ||
+      selectedDecisionUIId === 'DONATE_POINTS');
+
+  const handleSelectTargetPlayer = (playerId) => {
+    if (targetMode && !isReadOnly) {
+      setSelectedTargetPlayerId(playerId);
+    }
+  };
 
   return (
     <div className={styles.playersPanelContainer}>
@@ -81,7 +79,7 @@ function PlayersPanel({
               pointsHand={player.handPoints}
               pointsBank={player.bankPoints}
               pointsTotal={player.handPoints + player.bankPoints}
-              targetMode={targetMode}
+              targetMode={player.id !== localPlayerId && targetMode}
               currentPlayerId={currentPlayerId}
               handleSelectTargetPlayer={handleSelectTargetPlayer}
             />
