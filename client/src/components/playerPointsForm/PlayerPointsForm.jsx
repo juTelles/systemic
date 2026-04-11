@@ -65,7 +65,7 @@ function PlayerPointsForm({
         placeholder=""
         onChange={handleChange}
         max={maxPoints}
-        min={0}
+        min={1}
         value={value}
       />
       <span className={`${styles.cell} ${styles.playerPoints} `}>
