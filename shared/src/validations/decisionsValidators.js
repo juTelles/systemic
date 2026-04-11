@@ -3,7 +3,7 @@ export const decisionsApplicationValidators = {
   REQUIRES_TARGET: (context) => !!context?.target,
   REQUIRES_AMOUNT: (context) => context.amount != null,
   AMOUNT_MUST_BE_POSITIVE: (context) => context.amount > 0,
-  AMOUNT_MUST_BE_POSITIVE: (context) => context.amount > 0,
+
   COMPONENT_MUST_HAVE_BUG: (context) => context?.component?.bugAmount > 0,
   COMPONENT_MUST_NOT_HAVE_TESTS: (context) => !context?.component?.hasTests,
   COMPONENT_MUST_HAVE_TESTS: (context) => context?.component?.hasTests,
