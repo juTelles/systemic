@@ -1,7 +1,12 @@
 // eslint-disable-next-line no-unused-vars
-import { useEffect, useRef, useState, useLayoutEffect } from 'react';
-import ComponentNode from '../componentNode/ComponentNode';
+import { useEffect, useRef, useState, useLayoutEffect, useMemo } from 'react';
+import { decisions as decisionsDefinitions } from '../../../../shared/src/definitions/decisions.js';
+import ComponentNode from '../componentNode/ComponentNode.jsx';
+import { components as componentsDefinitions } from '../../../../shared/src/definitions/components.js';
 import styles from './Board.module.css';
+import { isBoardNodeDisabled } from '../../helpers/boardTargetRules.js';
+import { componentsTxt as txt } from '../../texts/componentsTxt.js';
+import { resolveDecision } from '../../helpers/decisionResolver.js';
 
 const EDGES = [
   ['L1', 'S1'],
@@ -16,16 +21,43 @@ const EDGES = [
   ['S3', 'R2'],
 ];
 
-function Board({ roomState }) {
+function Board({
+  roomState,
+  isPreGame,
+  selectedDecisionUIId,
+  handleDecisionSubmit,
+}) {
   const boardRef = useRef(null);
   const nodeRefs = useRef({});
   const [lines, setLines] = useState([]);
+  const [prevDecisionUIId, setPrevDecisionUIId] = useState(null);
+  const [error, setError] = useState(null);
 
-  const nodes = roomState?.components.nodes;
+  const nodes = useMemo(
+    () =>
+      isPreGame
+        ? componentsDefinitions.nodes
+        : (roomState?.components?.nodes ?? {}),
+    [isPreGame, roomState?.components?.nodes],
+  );
 
-  const registerNode = (id) => (el) => {
-    if (el) nodeRefs.current[id] = el;
-  };
+  const decisionUI = decisionsDefinitions?.forUI[selectedDecisionUIId];
+  const decisionsAvailable = roomState?.decisionState?.available ?? [];
+  const chosenButtonDecisionIds = decisionUI?.decisionIds ?? [];
+  const availableChosen = chosenButtonDecisionIds.filter((id) =>
+    decisionsAvailable?.includes(id),
+  );
+
+  if (prevDecisionUIId !== selectedDecisionUIId) {
+    setPrevDecisionUIId(selectedDecisionUIId);
+    setError(null);
+  }
+
+  function registerNode(id) {
+    return (el) => {
+      if (el) nodeRefs.current[id] = el;
+    };
+  }
 
   const computeLines = () => {
     const boardEl = boardRef.current;
@@ -59,159 +91,83 @@ function Board({ roomState }) {
   }, []);
 
   useEffect(() => {
-    // Atualiza quando a janela redimensiona
+    requestAnimationFrame(() => computeLines());
+  }, [nodes, availableChosen, selectedDecisionUIId]);
+
+  useEffect(() => {
+    // Updates when the window resizes
     window.addEventListener('resize', computeLines);
 
-    // Atualiza quando o board muda de tamanho (mais robusto que só resize)
-    const ro = new ResizeObserver(() => computeLines());
-    if (boardRef.current) ro.observe(boardRef.current);
+    // Updates when the board changes size (more robust than just resize)
+    const ro =
+      typeof ResizeObserver !== 'undefined'
+        ? new ResizeObserver(() => computeLines())
+        : null;
+
+    if (ro && boardRef.current) ro.observe(boardRef.current);
 
     return () => {
       window.removeEventListener('resize', computeLines);
-      ro.disconnect();
+      ro?.disconnect();
     };
   }, []);
 
-  return (
-    <div ref={boardRef} className={styles.board}>
-      <svg className={styles.connectionsLayer}>
-        {lines.map((ln) => (
-          <line
-            key={ln.key}
-            x1={ln.x1}
-            y1={ln.y1}
-            x2={ln.x2}
-            y2={ln.y2}
-            stroke="white"
-            strokeWidth="5"
-            opacity="0.7"
-          />
-        ))}
-      </svg>
+  const handleSubmit = (roomState, decisionUIId, target, amount = null) => {
+    const decision = resolveDecision(roomState, decisionUIId, target, amount);
+    if (!decision.ok) {
+      setError(decision.errorMessage);
+      return;
+    }
+    handleDecisionSubmit(decision.action);
+    setError(null);
+  };
 
-      <div className={styles.nodesLayer}>
-        <div className={styles.interface}>
-          <ComponentNode
-            id={'interface'}
-            anchorRef={registerNode('L1')}
-            label="Interface"
-            type="local"
-            bugAmount={nodes?.interface?.bugAmount}
-            hasTests={nodes?.interface?.hasTests}
-            hasBug={nodes?.interface?.bugAmount > 0}
-          />
-        </div>
-        <div className={styles.frontend}>
-          <ComponentNode
-            id={'frontend'}
-            anchorRef={registerNode('S1')}
-            label="Frontend"
-            type="structural"
-            bugAmount={nodes?.frontend?.bugAmount}
-            hasTests={nodes?.frontend?.hasTests}
-            hasBug={nodes?.frontend?.bugAmount > 0}
-          />
-        </div>
-        <div className={styles.interaction}>
-          <ComponentNode
-            id={'interaction'}
-            anchorRef={registerNode('L2')}
-            label="Interação"
-            type="local"
-            bugAmount={nodes?.interaction?.bugAmount}
-            hasTests={nodes?.interaction?.hasTests}
-            hasBug={nodes?.interaction?.bugAmount > 0}
-          />
-        </div>
-        <div className={styles.applicationRequests}>
-          <ComponentNode
-            id={'applicationRequests'}
-            anchorRef={registerNode('R1')}
-            label="Requisiçoes de Aplicação"
-            type="requests"
-            bugAmount={nodes?.applicationRequests?.bugAmount}
-            hasTests={nodes?.applicationRequests?.hasTests}
-            hasBug={nodes?.applicationRequests?.bugAmount > 0}
-          />
-        </div>
-        <div className={styles.logic}>
-          <ComponentNode
-            id={'logic'}
-            anchorRef={registerNode('L3')}
-            label="Lógica"
-            type="local"
-            bugAmount={nodes?.logic?.bugAmount}
-            hasTests={nodes?.logic?.hasTests}
-            hasBug={nodes?.logic?.bugAmount > 0}
-          />
-        </div>
-        <div className={styles.backend}>
-          <ComponentNode
-            id={'backend'}
-            anchorRef={registerNode('S2')}
-            label="Backend"
-            type="structural"
-            bugAmount={nodes?.backend?.bugAmount}
-            hasTests={nodes?.backend?.hasTests}
-            hasBug={nodes?.backend?.bugAmount > 0}
-          />
-        </div>
-        <div className={styles.integrations}>
-          <ComponentNode
-            id={'integrations'}
-            anchorRef={registerNode('L4')}
-            label="Integrações"
-            type="local"
-            bugAmount={nodes?.integrations?.bugAmount}
-            hasTests={nodes?.integrations?.hasTests}
-            hasBug={nodes?.integrations?.bugAmount > 0}
-          />
-        </div>
-        <div className={styles.dataRequests}>
-          <ComponentNode
-            id={'dataRequests'}
-            anchorRef={registerNode('R2')}
-            label="Requisiçoes de Dados"
-            type="requests"
-            bugAmount={nodes?.dataRequests?.bugAmount}
-            hasTests={nodes?.dataRequests?.hasTests}
-            hasBug={nodes?.dataRequests?.bugAmount > 0}
-          />
-        </div>
-        <div className={styles.data}>
-          <ComponentNode
-            id={'data'}
-            anchorRef={registerNode('L5')}
-            label="Dados"
-            type="local"
-            bugAmount={nodes?.data?.bugAmount}
-            hasTests={nodes?.data?.hasTests}
-            hasBug={nodes?.data?.bugAmount > 0}
-          />
-        </div>
-        <div className={styles.database}>
-          <ComponentNode
-            id={'database'}
-            anchorRef={registerNode('S3')}
-            label="Banco de Dados"
-            type="structural"
-            bugAmount={nodes?.database?.bugAmount}
-            hasTests={nodes?.database?.hasTests}
-            hasBug={nodes?.database?.bugAmount > 0}
-          />
-        </div>
-        <div className={styles.structure}>
-          <ComponentNode
-            id={'structure'}
-            anchorRef={registerNode('L6')}
-            label="Estrutura"
-            type="local"
-            bugAmount={nodes?.structure?.bugAmount}
-            hasTests={nodes?.structure?.hasTests}
-            hasBug={nodes?.structure?.bugAmount > 0}
-          />
+  return (
+    <div className={styles.boardContainer}>
+      <div ref={boardRef} className={styles.board}>
+        <svg className={styles.connectionsLayer}>
+          {lines.map((ln) => (
+            <line
+              key={ln.key}
+              x1={ln.x1}
+              y1={ln.y1}
+              x2={ln.x2}
+              y2={ln.y2}
+              stroke="white"
+              strokeWidth="5"
+              opacity="0.7"
+            />
+          ))}
+        </svg>
+
+        <div className={styles.nodesLayer}>
+          {Object.entries(nodes).map(([nodeId, node]) => {
+            const isDisabled = isBoardNodeDisabled(
+              nodeId,
+              availableChosen,
+              roomState,
+            );
+            return (
+              <div key={nodeId} className={styles[nodeId]}>
+                <ComponentNode
+                  id={nodeId}
+                  anchorRef={registerNode(node.anchorNode)}
+                  label={txt[nodeId].label.pt}
+                  type={node?.type}
+                  bugAmount={node?.bugAmount}
+                  hasTests={node?.hasTests}
+                  hasBug={node?.bugAmount}
+                  isDisabled={isDisabled}
+                  handleSubmit={() =>
+                    handleSubmit(roomState, selectedDecisionUIId, node)
+                  }
+                />
+              </div>
+            );
+          })}
         </div>
       </div>
+      {error && <span className={styles.errorMessage}>{error}</span>}
     </div>
   );
 }

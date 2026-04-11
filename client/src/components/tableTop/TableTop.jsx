@@ -5,20 +5,17 @@ import Board from '../board/Board';
 function TableTop({
   roomState,
   isPreGame,
-  localPlayerId,
-  roomId,
-  waitDecisionTarget,
-  handleTargetSelected
+  handleDecisionSubmit,
+  selectedDecisionUIId,
 }) {
+
   return (
     <div className={styles.tableTopContainer}>
       <Board
         roomState={roomState}
         isPreGame={isPreGame}
-        localPlayerId={localPlayerId}
-        roomId={roomId}
-        waitDecisionTarget={waitDecisionTarget}
-        handleTargetSelected={handleTargetSelected}
+        handleDecisionSubmit={handleDecisionSubmit}
+        selectedDecisionUIId={selectedDecisionUIId}
       />
     </div>
   );

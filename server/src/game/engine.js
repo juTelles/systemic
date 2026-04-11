@@ -5,6 +5,8 @@ import { composeDeck } from './deckComposer.js';
 import { components } from '../../../shared/src/definitions/components.js';
 import { applyGameStartBugs } from './gameHelpers.js';
 import { transitionResolvers } from './transitionResolvers.js';
+import { decisions as decisionsDefinitions } from '../../../shared/src/definitions/decisions.js';
+import { createDecisionState, createValidationErrorState } from './roomStateFactories.js';
 
 import {
   getAvailableDecisions,
@@ -41,7 +43,8 @@ export function applyAction(state, action, ctx = {}) {
       }
       player.status = PLAYER_STATUS.READY;
 
-      next.flow.step.flowControl.nextTransition = transitionResolvers['WAITING_PLAYERS_READY'](next);
+      next.flow.step.flowControl.nextTransition =
+        transitionResolvers['WAITING_PLAYERS_READY'](next);
       next.meta.rev += 1;
       next.meta.updatedAt = now;
       next.log.lastEvent = {
@@ -61,11 +64,13 @@ export function applyAction(state, action, ctx = {}) {
         // would means nothing without refactoring the applyRoomAction to return both
         // the new state and the log of what happened, throwing an error or something
         // triggers the cleanUp function in the client, which is not what we want in this case,
-        // since it's not an error from the user, but from the game state, so we should just log it and return the next state without applying the GAME_START action
+        // since it's not an error from the user, but from the game state, so we should just log
+        //  it and return the next state without applying the GAME_START action
         console.warn('[GAME_START] skipped: conditions not met');
         return next;
       }
-      next.flow.blockedUntil = now + 1500;
+      next.flow.blockedUntil =
+        now + steps['GAME_START'].flowControl.current.delayMs;
       next.flow.step = steps['GAME_START'];
       next.components = structuredClone(components);
       next.components = applyGameStartBugs(next.components);
@@ -76,7 +81,7 @@ export function applyAction(state, action, ctx = {}) {
       next.meta.updatedAt = now;
       next.players = next.players.map((player) => ({
         ...player,
-        status: 'PLAYING',
+        status: PLAYER_STATUS.PLAYING,
         handPoints: 0,
         bankPoints: 0,
       }));
@@ -91,7 +96,8 @@ export function applyAction(state, action, ctx = {}) {
 
     case ACTION_TYPES.START_ROUND: {
       next.flow.step = steps['ROUND_START'];
-      next.flow.blockedUntil = now + 1500;
+      next.flow.blockedUntil =
+        now + steps['ROUND_START'].flowControl.current.delayMs;
       next.players.forEach((player) => {
         player.handPoints = next.gameConfig.taskPoints.playerPerRound;
       });
@@ -112,6 +118,8 @@ export function applyAction(state, action, ctx = {}) {
 
     case ACTION_TYPES.START_TURN: {
       next.flow.step = steps['TURN_START'];
+      next.flow.blockedUntil =
+        now + steps['TURN_START'].flowControl.current.delayMs;
       next.flow.currentPlayerId = next.players[next.flow.turn].id;
       next.meta.rev += 1;
       next.meta.updatedAt = now;
@@ -125,16 +133,11 @@ export function applyAction(state, action, ctx = {}) {
 
     case ACTION_TYPES.ASK_FOR_DECISION: {
       next.flow.step = steps['AWAIT_DECISION'];
-
       let decisionsAvailable = [];
-      const player = getPlayerObject(next.flow.currentPlayerId, next.players);
-      if (next.decisions.available.length === 0) {
-        decisionsAvailable = getAvailableDecisions(
-          next.gameConfig.decisionCosts,
-          getTotalPlayersPoints(player)
-        );
+      if (next.decisionState.available.length === 0) {
+        decisionsAvailable = getAvailableDecisions(next, decisionsDefinitions);
+        next.decisionState.available = decisionsAvailable;
       }
-      next.decisions.available = decisionsAvailable;
       next.meta.rev += 1;
       next.meta.updatedAt = now;
       next.log.lastEvent = {
@@ -146,33 +149,41 @@ export function applyAction(state, action, ctx = {}) {
     }
 
     case ACTION_TYPES.APPLY_DECISION: {
-      next.flow.step = steps['PROCESSING_DECISION'];
+      next.decisionState.validationError = null;
+      let result = {};
+      try {
+        result = applyDecisionEffect(action, next, decisionsDefinitions);
 
-      const currentPlayer = getPlayerObject(
-        next.flow.currentPlayerId,
-        next.players
-      );
+        if (!result.ok) {
+          const error = createValidationErrorState();
+          error.type = result.type;
+          error.failedValidation = result.failedValidation;
 
-      const decisionNext = applyDecisionEffect(action, next, currentPlayer.id);
-
-      let decisionsAvailable = getAvailableDecisions(
-        decisionNext.gameConfig.decisionCosts,
-        getTotalPlayersPoints(currentPlayer)
-      );
-      if (decisionsAvailable.length === 0) {
-        decisionNext.flow.step.next = 'DRAW_CARD';
-      } else {
-        decisionNext.flow.step.next = 'CHOOSE_DECISION';
+          next.decisionState.validationError = error;
+          next.meta.rev += 1;
+          next.meta.updatedAt = now;
+          next.log.lastEvent = {
+            type: 'DECISION_VALIDATION_FAILED',
+            by: action.payload.senderId ?? null,
+            at: now,
+          };
+          return next;
+        }
+      } catch (error) {
+        console.error('[ENGINE]', error);
+        throw error;
       }
-      decisionNext.decisions.applied.push({
-        chosen: action.decision.chosen,
-        target: action.decision.target,
-        selectedAmount: action.decision.selectedAmount,
-      });
-      decisionNext.decisions.available = decisionsAvailable;
-      decisionNext.decisions.chosen = null;
-      decisionNext.decisions.target = null;
-      decisionNext.decisions.selectedAmount = 0;
+      const decisionNext = result.next;
+      decisionNext.flow.step = steps['PROCESSING_DECISION'];
+
+      let decisionsAvailableApply = [];
+      decisionsAvailableApply = getAvailableDecisions(
+        decisionNext,
+        decisionsDefinitions,
+      );
+      decisionNext.decisionState.available = decisionsAvailableApply;
+      decisionNext.flow.step.flowControl.nextTransition =
+        transitionResolvers['PROCESSING_DECISION'](decisionNext);
       decisionNext.meta.rev += 1;
       decisionNext.meta.updatedAt = now;
       decisionNext.log.lastEvent = {
@@ -182,12 +193,21 @@ export function applyAction(state, action, ctx = {}) {
       };
       return decisionNext;
     }
-    // In CHOOSE_DECISION, decisionsAvailable is initialized to [] and then
-    // assigned to next.decisions.available even when next.decisions.available
-    //  was already populated. This means any subsequent CHOOSE_DECISION action
-    // will clear the available decisions array unintentionally. Only overwrite
-    // next.decisions.available when you actually recompute it, or default
-    // decisionsAvailable to the current list.
+
+    case ACTION_TYPES.DRAW_CARD: {
+      next.flow.step = steps['AWAIT_CARD_DRAW'];
+      next.flow.blockedUntil = now + 1500;
+      next.decisionState = createDecisionState();
+      next.flow.turn += 1;
+      next.meta.rev += 1;
+      next.meta.updatedAt = now;
+      next.log.lastEvent = {
+        type: ACTION_TYPES.DRAW_CARD,
+        by: action.payload.senderId ?? null,
+        at: now,
+      };
+      return next;
+    }
 
     case ACTION_TYPES.FINISH_TURN: {
       next.flow.blockedUntil = now + 1500;
@@ -201,7 +221,7 @@ export function applyAction(state, action, ctx = {}) {
       };
       return next;
     }
-// TODO: Fix, remenber to zero the turn count
+    // TODO: Fix, remenber to zero the turn count
     default:
       const err = new Error('Unknown action type');
       err.code = 'UNKNOWN_ACTION_TYPE';

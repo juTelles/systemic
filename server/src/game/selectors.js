@@ -16,5 +16,3 @@ export function isGameReadyToStart(currentState, desiredPhase, playerDesiredStat
   );
   return hasValidNumberOfPlayers && isCorrectPhase && allPlayersCorrectStatus;
 }
-export function getActionForNextStep(gameState) {
-}

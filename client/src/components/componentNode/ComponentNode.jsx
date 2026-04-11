@@ -1,27 +1,34 @@
 // eslint-disable-next-line no-unused-vars
 import { Tooltip } from 'react-tooltip';
-import styles from './ComponentNode.module.css';
+import styles from '../board/Board.module.css';
 
 function ComponentNode({ anchorRef, ...props }) {
-  const { type, bugAmount, label, hasTests, hasBug } = props;
+  const {
+    type,
+    bugAmount,
+    label,
+    hasTests,
+    hasBug,
+    isDisabled,
+    id,
+    handleSubmit,
+  } = props;
 
-  const handleClick = () => {
-    // Lógica para lidar com o clique no componente
-    console.log(`Componente ${label} clicado!`);
-  }
-  
   return (
     <div className={styles.ComponentNodeWrapper}>
-      {type === 'local' ? (
+      {type === 'LOCAL' ? (
         <label className={styles.labelUp}>{label}</label>
       ) : null}
       <div
+        id={id}
         role="button"
         tabIndex={0}
-        onClick={handleClick}
+        onClick={handleSubmit}
         data-tooltip-id="my-btn"
         ref={anchorRef}
-        className={`${styles.ComponentNode} ${
+        className={`${
+          isDisabled ? styles.ComponentDisabled : styles.ComponentNode
+        } ${
           hasTests
             ? styles.testedComponent
             : hasBug
@@ -29,13 +36,16 @@ function ComponentNode({ anchorRef, ...props }) {
             : ''
         }`}
         data-status={type}
-        title={`${label}\n${hasTests ? 'Testado' : 'Sem Testes'}\n${hasBug ? 'Com Bugs' : 'Sem Bugs'}`}
-
+        title={`${label}\n${hasTests ? 'Testado' : 'Sem Testes'}\n${
+          hasBug ? 'Com Bugs' : 'Sem Bugs'
+        }`}
       >
-         <Tooltip id="my-btn" place="top" variant="dark" />
-        <span className={styles.bugQntLed}>{bugAmount !== 0 ? bugAmount : ''}</span>
+        <Tooltip id="my-btn" place="top" variant="dark" />
+        <span className={styles.bugQntLed}>
+          {bugAmount !== 0 ? bugAmount : ''}
+        </span>
       </div>
-      {type !== 'local' ? (
+      {type !== 'LOCAL' ? (
         <label className={styles.labelDown}>{label}</label>
       ) : null}
     </div>

@@ -3,7 +3,7 @@ export const components = {
     applicationRequests: {
       id: 'applicationRequests',
       namePT: 'Requisições de Aplicação',
-      type: 'REQUEST',
+      type: 'REQUESTS',
       saturationLimit: 3,
       level: 1,
       parentIds: [],
@@ -16,7 +16,7 @@ export const components = {
     dataRequests: {
       id: 'dataRequests',
       namePT: 'Requisições de Dados',
-      type: 'REQUEST',
+      type: 'REQUESTS',
       saturationLimit: 3,
       level: 1,
       parentIds: [],
@@ -158,7 +158,7 @@ export const components = {
     'structure',
   ],
   byType: {
-    REQUEST: ['applicationRequests', 'dataRequests'],
+    REQUESTS: ['applicationRequests', 'dataRequests'],
     STRUCTURAL: ['frontend', 'backend', 'database'],
     LOCAL: ['interface', 'interaction', 'logic', 'integrations', 'data', 'structure'],
   },

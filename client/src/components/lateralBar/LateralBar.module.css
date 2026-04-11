@@ -6,26 +6,36 @@
   flex-direction: column;
   align-items: flex-start;
   justify-content: space-between;
+  gap:10px
+}
+.menuContainer {
+  height: 7%;
+  display: flex;
+  flex-direction: row;
+  align-self: flex-end;
+  margin-top: 5px;
+  align-items: center;
 }
 .cardContainer {
   width: 80%;
-  height: 27%;
+  height: 35%;
   display: flex;
   align-items: center;
   justify-content: start;
 }
 .absorbedBugsPanelContainer {
   width: 85%;
-  height: 45%;
+  height: 33%;
   display: flex;
   align-items: center;
   justify-content: center;
 }
-.menuContainer {
+.barBottomContainer {
+  width: 100%;
+  height: 25%;
   display: flex;
+  justify-content: center;
   flex-direction: row;
-  align-self: flex-end;
-  margin-top: 5px;
   align-items: center;
 }
 .exitContainer {

@@ -6,12 +6,65 @@ import { useStatePolling } from '../../hooks/useStatePolling';
 import { useRef, useEffect, useState } from 'react';
 import TableTop from '../../components/tableTop/TableTop';
 import LateralBar from '../../components/lateralBar/LateralBar';
+import { useRoomActions } from '../../actions/roomsActions';
+import ModalDialog from '../../components/modalDialog/ModalDialog.jsx';
+import { getErrorMessage } from '../../texts/errorsMessages.js';
 
 function GameScreen({ roomId, localPlayerId, onSessionInvalid }) {
-  const [showGameStartDialog, setShowGameStartDialog] = useState(false);
-  const previousPhaseRef = useRef(null);
+  const { setDecisionChosen, setEndDecision } = useRoomActions(
+    roomId,
+    localPlayerId,
+  );
   const { roomState, isLoading, errorCode } = useStatePolling(roomId);
+  const previousPhaseRef = useRef(null);
+
+  const [selectedDecisionUIId, setSelectedDecisionUIId] = useState(null);
+  const [instructionKey, setInstructionKey] = useState(null);
+  const [showGameStartDialog, setShowGameStartDialog] = useState(false);
+  const [showErrorDialog, setShowErrorDialog] = useState(null);
+
   const isPreGame = roomState?.phase === 'LOBBY';
+  const isReadOnlyTurn = localPlayerId !== roomState?.flow?.currentPlayerId;
+
+  const handleDecisionUISelect = (decisionUIId, decisionInstructionKey) => {
+    if (decisionUIId === selectedDecisionUIId) {
+      setInstructionKey(null);
+      setSelectedDecisionUIId(null);
+      return;
+    }
+    setSelectedDecisionUIId(decisionUIId);
+    setInstructionKey(decisionInstructionKey);
+  };
+
+  async function handleDecisionSubmit(action) {
+    const result = await setDecisionChosen(action);
+
+    if (!result.ok) {
+      console.error('Error applying decision:', result.error);
+      setShowErrorDialog({ content: getErrorMessage('DECISION_ERROR') });
+    }
+
+    if (result.roomState?.decisionState?.validationError !== null) {
+      const validationError = result.roomState.decisionState.validationError;
+      const errorMessage = {
+        title: getErrorMessage(validationError.type),
+        content: getErrorMessage(validationError.failedValidation),
+      };
+      setShowErrorDialog(errorMessage);
+    }
+    setInstructionKey(null);
+    setSelectedDecisionUIId(null);
+  }
+
+  async function handleFinishDecision() {
+    const result = await setEndDecision();
+    if (!result.ok) {
+      console.error('Error finishing decision:', result.error);
+    }
+    setInstructionKey(null);
+    setSelectedDecisionUIId(null);
+    return;
+  }
 
   useEffect(() => {
     if (isLoading) return;
@@ -23,7 +76,7 @@ function GameScreen({ roomId, localPlayerId, onSessionInvalid }) {
 
     if (roomState?.players) {
       const playerExists = roomState.players.some(
-        (player) => player.id === localPlayerId
+        (player) => player.id === localPlayerId,
       );
 
       if (!playerExists) {
@@ -41,7 +94,7 @@ function GameScreen({ roomId, localPlayerId, onSessionInvalid }) {
         setShowGameStartDialog(true);
         setTimeout(() => {
           setShowGameStartDialog(false);
-        }, 5000);
+        }, 1500);
       }, 0);
       previousPhaseRef.current = currentPhase;
       return () => clearTimeout(timeout);
@@ -51,34 +104,59 @@ function GameScreen({ roomId, localPlayerId, onSessionInvalid }) {
 
   return (
     <div className={styles.pageContainer}>
-      {showGameStartDialog && (
-        <div className={styles.dialogOverlay}>
-          <div className={styles.dialogBox}>
-            <h2>Iniciando partida</h2>
-            <p>Preparando ambiente...</p>
-          </div>
-        </div>
-      )}
+      {showGameStartDialog ? (
+        <ModalDialog
+          title={'Iniciando partida'}
+          content={'Preparando ambiente...'}
+        />
+      ) : showErrorDialog ? (
+        <ModalDialog
+          title={showErrorDialog.title ? showErrorDialog.title : 'Erro'}
+          content={
+            showErrorDialog.content
+              ? showErrorDialog.content
+              : 'Ocorreu um erro inesperado.'
+          }
+          button={true}
+          onClose={() => setShowErrorDialog(false)}
+        />
+      ) : null}
       <div className={styles.mainContainer}>
         <StatusBar
           isPreGame={isPreGame}
           roomState={roomState}
           localPlayerId={localPlayerId}
           roomId={roomId}
+          selectedDecisionUIId={selectedDecisionUIId}
+          isReadOnly={isReadOnlyTurn}
+          instructionKey={instructionKey}
+          handleDecisionSubmit={handleDecisionSubmit}
         />
         <TableTop
-          isPreGame={isPreGame}
           roomState={roomState}
-          localPlayerId={localPlayerId}
+          isPreGame={isPreGame}
+          isReadOnly={isReadOnlyTurn}
+          handleDecisionSubmit={handleDecisionSubmit}
+          selectedDecisionUIId={selectedDecisionUIId}
         />
         <ActionBar
           isPreGame={isPreGame}
           roomState={roomState}
           localPlayerId={localPlayerId}
+          handleDecisionUISelect={handleDecisionUISelect}
+          selectedDecisionUIId={selectedDecisionUIId}
+          isReadOnly={isReadOnlyTurn}
         />
       </div>
       <div className={styles.lateralBarContainer}>
-        <LateralBar />
+        <LateralBar
+          isPreGame={isPreGame}
+          roomState={roomState}
+          localPlayerId={localPlayerId}
+          isReadOnlyTurn={isReadOnlyTurn}
+          roomId={roomId}
+          handleFinishDecision={handleFinishDecision}
+        />
       </div>
     </div>
   );

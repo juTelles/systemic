@@ -1,20 +1,67 @@
-import { components } from '../../../shared/src/definitions/components.js';
 import { getTotalPlayersPoints } from './selectors.js';
+import { isComponentEligibleForTests } from '../../../shared/src/game/helpers.js';
 
+export function existsComponentEligibleForBugResolvByType(
+  components,
+  componentType,
+  withTests = false,
+) {
+  const componentsByTypeArray = components.byType?.[componentType] ?? [];
+  const exists = componentsByTypeArray.some((component) => {
+    const componentObj = components.nodes[component];
+    if (componentObj.bugAmount <= 0) return false;
+    return withTests ? componentObj.hasTests : !componentObj.hasTests;
+  });
+  return exists;
+}
 
-export function applyBug(component, amount = 1) {
+export function existsComponentEligibleForTests(components) {
+  const { byType } = components;
+  const exists =
+    byType.LOCAL.some((component) =>
+      isComponentEligibleForTests(components.nodes[component], components),
+    ) ||
+    byType.STRUCTURAL.some((component) =>
+      isComponentEligibleForTests(components.nodes[component], components),
+    ) ||
+    byType.REQUESTS.some((component) =>
+      isComponentEligibleForTests(components.nodes[component], components),
+    );
+  return exists;
+}
+
+export function applyBug(component, components, amount = 1) {
+  const saturated = component.bugAmount + amount >= component.saturationLimit;
+
+  if (saturated && component.type !== 'REQUESTS') {
+    component.parentIds.forEach((parentId) => {
+      const parentComponent = components.nodes[parentId];
+      components.nodes[parentId] = applyBug(parentComponent, components);
+    });
+    return { ...component, bugAmount: 0, saturated: false };
+  }
   return {
     ...component,
     bugAmount: component.bugAmount + amount,
     saturated: component.bugAmount + amount >= component.saturationLimit,
   };
 }
-
+// TODO: refactor to make applyBug more generica and pure
 export function applyGameStartBugs(stateComponents, amount = 5) {
   const updatedNodes = { ...stateComponents.nodes };
+  const componentsWithUpdatedNodes = {
+    ...stateComponents,
+    nodes: updatedNodes,
+  };
   for (let i = 0; i < amount; i++) {
-    let randomComponentId = components.allIds[Math.floor(Math.random() * components.allIds.length)];
-    updatedNodes[randomComponentId] = applyBug(updatedNodes[randomComponentId]);
+    let randomComponentId =
+      stateComponents.allIds[
+        Math.floor(Math.random() * stateComponents.allIds.length)
+      ];
+    updatedNodes[randomComponentId] = applyBug(
+      updatedNodes[randomComponentId],
+      componentsWithUpdatedNodes,
+    );
   }
   return {
     ...stateComponents,
@@ -67,7 +114,7 @@ export function subtractPointsToPlayer(player, pointsToSubtract) {
 export function addPointsToPlayerBankByDonation(
   player,
   pointsToAdd,
-  maxPlayerPoints
+  maxPlayerPoints,
 ) {
   const totalPoints = getTotalPlayersPoints(player);
   if (totalPoints + pointsToAdd > maxPlayerPoints) {
@@ -80,13 +127,10 @@ export function addPointsToPlayerBankByDonation(
   };
 }
 
-export function addPointsToPlayerBankByHolding(
-  player,
-  pointsToAdd
-) {
+export function addPointsToPlayerBankByHolding(player, pointsToAdd) {
   if (player.handPoints < pointsToAdd) {
     console.warn(
-      'Invalid action: Not have enough points in hand to add to bank'
+      'Invalid action: Not have enough points in hand to add to bank',
     );
     return player;
   }
@@ -104,7 +148,7 @@ export function addPointsToPlayerHand(player, pointsToAdd, maxPlayerPoints) {
   }
   const allowedPointsToAdd = Math.min(
     pointsToAdd,
-    maxPlayerPoints - totalPoints
+    maxPlayerPoints - totalPoints,
   );
   return {
     ...player,

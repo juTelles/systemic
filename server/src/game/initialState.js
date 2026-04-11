@@ -27,12 +27,13 @@ export function createInitialState({ roomId }) {
     deck: [],
     log: { lastEvent: null },
     system: { globalStatus: 'HEALTHY' },
-    decisions: {
+    decisionState: {
       available: [],
-      chosen: null,
-      target: null,
-      selectedAmount: 0,
-      applied: [],
+      appliedTotals: {
+        DONATE_POINTS: 0,
+        HOLD_POINTS: 0,
+      },
+      validationError: null,
     },
     components: {},
     gameConfig: {
@@ -45,14 +46,15 @@ export function createInitialState({ roomId }) {
         playerPerCrisisRound: 4,
       },
       decisionCosts: {
-        LOCAL: 2,
-        STRUCTURAL: 4,
-        REQUEST: 6,
-        LOCAL_TESTED: 1,
-        STRUCTURAL_TESTED: 2,
-        REQUEST_TESTED: 3,
-        TESTS: 6,
-        MAX_POINTS: 2,
+        RESOLVE_LOCAL_BUG: 2,
+        RESOLVE_STRUCTURAL_BUG: 4,
+        RESOLVE_REQUESTS_BUG: 6,
+        RESOLVE_LOCAL_BUG_TESTED: 1,
+        RESOLVE_STRUCTURAL_BUG_TESTED: 2,
+        RESOLVE_REQUESTS_BUG_TESTED: 3,
+        DEVELOP_TESTS: 6,
+        DONATE_POINTS: 2,
+        HOLD_POINTS: 2,
       },
       deck: {
         composition: [
@@ -68,7 +70,7 @@ export function createInitialState({ roomId }) {
           },
           {
             cardType: 'BUG',
-            componentType: 'REQUEST',
+            componentType: 'REQUESTS',
             quantity: 10,
           },
           {

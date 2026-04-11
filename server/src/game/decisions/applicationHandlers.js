@@ -1,3 +1,5 @@
+import { isComponentEligibleForTests } from '../../../../shared/src/game/helpers.js';
+import { getPlayerObject } from '../selectors.js';
 import {
   addPointsToPlayerBankByDonation,
   addPointsToPlayerBankByHolding,
@@ -5,8 +7,6 @@ import {
   applyTest,
   subtractPointsToPlayer,
 } from '../gameHelpers.js';
-import { getPlayerObject } from '../selectors.js';
-
 
 export const decisionHandlers = {
   RESOLVE_BUG: handleResolveBugDecision,
@@ -15,41 +15,27 @@ export const decisionHandlers = {
   DEVELOP_TESTS: handleDevelopTestsDecision,
 };
 
-export function handleResolveBugDecision({
-  next,
-  currentPlayer,
-  component,
-  componentId,
-  decisionDefinition,
-}) {
+export function handleResolveBugDecision(next, context, decisionDefinition) {
+  const { currentPlayer, component } = context;
+
   if (!component) return next;
 
   const updatedComponent = resolveBug(component);
 
-  const cost = next.gameConfig.decisionCosts[decisionDefinition.costType];
+  const cost = next.gameConfig.decisionCosts[decisionDefinition.id];
   const updatedCurrentPlayer = subtractPointsToPlayer(currentPlayer, cost);
 
-  next.components.nodes[componentId] = updatedComponent;
+  next.components.nodes[component.id] = updatedComponent;
   next.players = next.players.map((player) =>
     player.id === currentPlayer.id ? updatedCurrentPlayer : player
   );
 
   return next;
 }
-//TODO: Investigate > applyDecisionEffect calls decision handlers as
-// handler(next, context, definition), but the handlers are defined to take
-// a single object argument with properties like { next, currentPlayer, componentId, ... }.
-// This mismatch means the handler will receive next (the state) as the parameter
-// object and all expected fields will be undefined. Align the handler signature
-// and the call site so they agree on one contract (e.g., handler(next, context, definition)
-// with handlers (state, context, definition)).
 
-export function handleDonatePointsDecision({
-  next,
-  currentPlayer,
-  amount,
-  target,
-}) {
+export function handleDonatePointsDecision(next, context) {
+  const { currentPlayer, amount, target } = context;
+
   const targetPlayer = getPlayerObject(target, next.players);
   if (!targetPlayer) return next;
 
@@ -66,11 +52,14 @@ export function handleDonatePointsDecision({
   next.players = next.players.map((player) =>
     player.id === targetPlayer.id ? updatedTargetPlayer : player
   );
+  next.decisionState.appliedTotals.DONATE_POINTS += amount;
 
   return next;
 }
 
-export function handleHoldPointsDecision({ next, currentPlayer, amount }) {
+export function handleHoldPointsDecision(next, context) {
+  const { currentPlayer, amount } = context;
+
   const updatedCurrentPlayer = addPointsToPlayerBankByHolding(
     currentPlayer,
     amount
@@ -79,25 +68,24 @@ export function handleHoldPointsDecision({ next, currentPlayer, amount }) {
   next.players = next.players.map((player) =>
     player.id === currentPlayer.id ? updatedCurrentPlayer : player
   );
+  next.decisionState.appliedTotals.HOLD_POINTS += amount;
 
   return next;
 }
 
-export function handleDevelopTestsDecision({
-  next,
-  currentPlayer,
-  component,
-  componentId,
-  decisionDefinition,
-}) {
+export function handleDevelopTestsDecision(next, context, decisionDefinition) {
+  const { currentPlayer, component } = context;
+
   if (!component) return next;
+
+  if (!isComponentEligibleForTests(component, next.components)) return next;
 
   const updatedComponent = applyTest(component);
 
-  const cost = next.gameConfig.decisionCosts[decisionDefinition.costType];
+  const cost = next.gameConfig.decisionCosts[decisionDefinition.id];
   const updatedCurrentPlayer = subtractPointsToPlayer(currentPlayer, cost);
 
-  next.components.nodes[componentId] = updatedComponent;
+  next.components.nodes[component.id] = updatedComponent;
   next.players = next.players.map((player) =>
     player.id === currentPlayer.id ? updatedCurrentPlayer : player
   );

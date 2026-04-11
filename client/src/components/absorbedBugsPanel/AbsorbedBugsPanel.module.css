@@ -1,6 +1,6 @@
 .absorbedBugsPanelWrapper {
   width: 100%;
-  height: 80%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -27,6 +27,7 @@
 /* Custom Scrollbar para Chrome/Edge/Safari */
 .absorbedBugsContainer::-webkit-scrollbar {
   width: 6px;
+  height: 9px;
 }
 .absorbedBugsContainer::-webkit-scrollbar-track {
   background: #020202;
