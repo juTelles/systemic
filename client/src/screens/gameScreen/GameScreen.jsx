@@ -7,8 +7,8 @@ import { useRef, useEffect, useState } from 'react';
 import TableTop from '../../components/tableTop/TableTop';
 import LateralBar from '../../components/lateralBar/LateralBar';
 import { useRoomActions } from '../../actions/roomsActions';
-import { resolveDecisionIdFromUISelection } from '../../helpers/helpers.js';
 import ModalDialog from '../../components/modalDialog/ModalDialog.jsx';
+import { getErrorMessage } from '../../texts/errorsMessages.js';
 
 function GameScreen({ roomId, localPlayerId, onSessionInvalid }) {
   const { setDecisonChosen, setEndDecision } = useRoomActions(
@@ -17,12 +17,11 @@ function GameScreen({ roomId, localPlayerId, onSessionInvalid }) {
   );
   const { roomState, isLoading, errorCode } = useStatePolling(roomId);
   const previousPhaseRef = useRef(null);
-  const { setDecisonChosen } = useRoomActions(roomId, localPlayerId);
 
   const [selectedDecisionUIId, setSelectedDecisionUIId] = useState(null);
   const [instructionKey, setInstructionKey] = useState(null);
   const [showGameStartDialog, setShowGameStartDialog] = useState(false);
-  const [showErrorDialog, setShowErrorDialog] = useState(false);
+  const [showErrorDialog, setShowErrorDialog] = useState(null);
 
   const isPreGame = roomState?.phase === 'LOBBY';
   const isReadOnlyTurn = localPlayerId !== roomState?.flow?.currentPlayerId;
@@ -37,23 +36,21 @@ function GameScreen({ roomId, localPlayerId, onSessionInvalid }) {
     setInstructionKey(decisionInstructionKey);
   };
 
-  async function handleDecisionSubmit(decisionUIId, target, amount = null) {
-    const action = resolveDecisionIdFromUISelection(
-      decisionUIId,
-      target,
-      amount,
-      roomState
-    );
-    if (!action) {
-      console.error('No action resolved for the selected decision UI');
-      return;
-    }
+  async function handleDecisionSubmit(action) {
     const result = await setDecisonChosen(action);
+
     if (!result.ok) {
       console.error('Error applyng decision:', result.error);
+      setShowErrorDialog({ content: getErrorMessage('DECISION_ERROR') });
     }
-    if (roomState?.decisionState?.validationError !== null) {
-      setShowErrorDialog(true);
+
+    if (result.roomState?.decisionState?.validationError !== null) {
+      const validationError = result.roomState.decisionState.validationError;
+      const errorMessage = {
+        title: getErrorMessage(validationError.type),
+        content: getErrorMessage(validationError.failedValidation),
+      };
+      setShowErrorDialog(errorMessage);
     }
     setInstructionKey(null);
     setSelectedDecisionUIId(null);
@@ -79,7 +76,7 @@ function GameScreen({ roomId, localPlayerId, onSessionInvalid }) {
 
     if (roomState?.players) {
       const playerExists = roomState.players.some(
-        (player) => player.id === localPlayerId
+        (player) => player.id === localPlayerId,
       );
 
       if (!playerExists) {
@@ -114,11 +111,11 @@ function GameScreen({ roomId, localPlayerId, onSessionInvalid }) {
         />
       ) : showErrorDialog ? (
         <ModalDialog
-          title={'Decisão Inválida'}
+          title={showErrorDialog.title ? showErrorDialog.title : 'Erro'}
           content={
-            roomState?.decisionState?.validationError?.type === 'VALIDATION_ERROR'
-              ? 'A decisão não atende aos requisitos necessários.'
-              : 'Ocorreu um erro ao processar a decisão. Tente novamente.'
+            showErrorDialog.content
+              ? showErrorDialog.content
+              : 'Ocorreu um erro inesperado.'
           }
           button={true}
           onClose={() => setShowErrorDialog(false)}
@@ -136,12 +133,11 @@ function GameScreen({ roomId, localPlayerId, onSessionInvalid }) {
           handleDecisionSubmit={handleDecisionSubmit}
         />
         <TableTop
-          isPreGame={isPreGame}
           roomState={roomState}
-          localPlayerId={localPlayerId}
-          selectedDecisionUIId={selectedDecisionUIId}
+          isPreGame={isPreGame}
           isReadOnly={isReadOnlyTurn}
           handleDecisionSubmit={handleDecisionSubmit}
+          selectedDecisionUIId={selectedDecisionUIId}
         />
         <ActionBar
           isPreGame={isPreGame}
