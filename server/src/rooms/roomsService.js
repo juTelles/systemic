@@ -1,14 +1,15 @@
-import {
-  validateNickname,
-  validateNicknameAvailability,
-} from '../../../shared/src/validations/validations.js';
+import { PLAYER_STATUS } from '../../../shared/src/constants/playerStatus.js';
 import { ERRORS } from '../../../shared/src/constants/errors.js';
 import { createError } from '../utils/createErrors.js';
 import { createRoomsStore } from './roomsStore.js';
 import { createInitialState } from '../game/initialState.js';
 import { applyAction } from '../game/engine.js';
 import crypto from 'crypto';
-import { playerDef } from '../../../shared/src/definitions/player.js';
+import { createPlayerState } from '../game/roomStateFactories.js';
+import {
+  validateNickname,
+  validateNicknameAvailability,
+} from '../../../shared/src/validations/validations.js';
 
 
 const MAX_PLAYERS = 4;
@@ -69,9 +70,10 @@ export function createRoomsService() {
       return { ok: false, code: ERRORS.ROOM_FULL };
     }
 
-    let player ={...playerDef};
+    let player = createPlayerState();
     player.id = crypto.randomUUID();
     player.nickname = nickname;
+    player.status = PLAYER_STATUS.WAITING;
 
     room.state.players.push(player);
     room.state.meta.rev += 1;

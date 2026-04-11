@@ -81,7 +81,7 @@ export function applyAction(state, action, ctx = {}) {
       next.meta.updatedAt = now;
       next.players = next.players.map((player) => ({
         ...player,
-        status: 'PLAYING',
+        status: PLAYER_STATUS.PLAYING,
         handPoints: 0,
         bankPoints: 0,
       }));
@@ -179,7 +179,7 @@ export function applyAction(state, action, ctx = {}) {
       let decisionsAvailableApply = [];
       decisionsAvailableApply = getAvailableDecisions(
         decisionNext,
-        decisionsDefinitions
+        decisionsDefinitions,
       );
       decisionNext.decisionState.available = decisionsAvailableApply;
       decisionNext.flow.step.flowControl.nextTransition =
@@ -193,7 +193,7 @@ export function applyAction(state, action, ctx = {}) {
         type: ACTION_TYPES.APPLY_DECISION,
         by: action.payload.senderId ?? null,
         at: now,
-      }
+      };
       return decisionNext;
     }
 
