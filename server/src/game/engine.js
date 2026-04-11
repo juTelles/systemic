@@ -184,9 +184,6 @@ export function applyAction(state, action, ctx = {}) {
       decisionNext.decisionState.available = decisionsAvailableApply;
       decisionNext.flow.step.flowControl.nextTransition =
         transitionResolvers['PROCESSING_DECISION'](decisionNext);
-      decisionNext.decisionState.chosen = null;
-      decisionNext.decisionState.target = null;
-      decisionNext.decisionState.selectedAmount = 0;
       decisionNext.meta.rev += 1;
       decisionNext.meta.updatedAt = now;
       decisionNext.log.lastEvent = {

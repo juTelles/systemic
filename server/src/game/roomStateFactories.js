@@ -1,11 +1,6 @@
 export function createDecisionState() {
   return {
     available: [],
-    currentDecision: {
-      decisionId: null,
-      target: null,
-      selectedAmount: 0,
-    },
     appliedTotals: {
       DONATE_POINTS: 0,
       HOLD_POINTS: 0,
