@@ -46,15 +46,16 @@ export function applyBug(component, components, amount = 1) {
     saturated: component.bugAmount + amount >= component.saturationLimit,
   };
 }
-
+// TODO: refactor to make applyBug more generica and pure
 export function applyGameStartBugs(stateComponents, amount = 5) {
   const updatedNodes = { ...stateComponents.nodes };
+  const componentsWithUpdatedNodes = { ...stateComponents, nodes: updatedNodes };
   for (let i = 0; i < amount; i++) {
     let randomComponentId =
       stateComponents.allIds[
         Math.floor(Math.random() * stateComponents.allIds.length)
       ];
-    updatedNodes[randomComponentId] = applyBug(updatedNodes[randomComponentId], stateComponents);
+    updatedNodes[randomComponentId] = applyBug(updatedNodes[randomComponentId], componentsWithUpdatedNodes);
   }
   return {
     ...stateComponents,
