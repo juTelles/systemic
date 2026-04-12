@@ -43,7 +43,7 @@ export function handleDonatePointsDecision(next, context) {
   const updatedTargetPlayer = addPointsToPlayerBankByDonation(
     targetPlayer,
     amount,
-    next.gameConfig.maxPlayerPoints,
+    next.gameConfig.taskPoints.maxPlayerPoints,
   );
   const updatedCurrentPlayer = subtractPointsToPlayer(currentPlayer, amount);
 
