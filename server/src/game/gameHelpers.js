@@ -131,12 +131,12 @@ export function addPointsToPlayerBankByHolding(player, pointsToAdd) {
   if (player.handPoints < pointsToAdd) {
     throw createError(ERRORS.NOT_ENOUGH_HAND_POINTS_TO_HOLD);
   }
+  return {
+    ...player,
+    bankPoints: player.bankPoints + pointsToAdd,
+    handPoints: player.handPoints - pointsToAdd,
+  };
 }
-return {
-  ...player,
-  bankPoints: player.bankPoints + pointsToAdd,
-  handPoints: player.handPoints - pointsToAdd,
-};
 
 export function addPointsToPlayerHand(player, pointsToAdd, maxPlayerPoints) {
   const totalPoints = getTotalPlayersPoints(player);
