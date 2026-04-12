@@ -34,10 +34,10 @@ export function handleResolveBugDecision(next, context, decisionDefinition) {
 }
 
 export function handleDonatePointsDecision(next, context) {
-  const { currentPlayer, amount, target } = context;
+  const { currentPlayer, amount, targetPlayer } = context;
 
-  const targetPlayer = getPlayerObject(target, next.players);
-  if (!targetPlayer) return next;
+  if (!targetPlayer)
+    throw new Error('Target player not found for DONATE_POINTS decision');
 
   const updatedTargetPlayer = addPointsToPlayerBankByDonation(
     targetPlayer,

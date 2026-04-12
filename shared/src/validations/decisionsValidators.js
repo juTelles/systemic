@@ -1,6 +1,6 @@
 export const decisionsApplicationValidators = {
   REQUIRES_COMPONENT: (context) => !!context?.component,
-  REQUIRES_TARGET: (context) => !!context?.target,
+  REQUIRES_TARGET: (context) => !!context?.targetPlayer,
   REQUIRES_AMOUNT: (context) => context.amount != null,
   AMOUNT_MUST_BE_POSITIVE: (context) => context.amount > 0,
 
@@ -17,8 +17,8 @@ export const decisionsApplicationValidators = {
   },
   TARGET_PLAYER_TOTAL_WITHIN_LIMIT: (context) => {
     const newTotalPoints =
-      context?.target?.handPoints +
-      context?.target?.bankPoints +
+      context?.targetPlayer?.handPoints +
+      context?.targetPlayer?.bankPoints +
       context?.amount;
     return newTotalPoints <= context?.totalPointsLimit;
   },
@@ -36,4 +36,3 @@ export const decisionsApplicationValidators = {
     return totalPoints >= context?.operationCost;
   }
 };
-// TODO: add validator for current player has points for decision

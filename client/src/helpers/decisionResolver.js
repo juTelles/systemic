@@ -76,6 +76,7 @@ export function validateDecision(decisionId, targetObj, amount, roomState) {
   if (!definition) throw new Error(ERRORS.DECISION_DEFINITION_NOT_FOUND);
 
   const context = resolveContextForDecisionValidation({
+    definition,
     targetObj,
     amount,
     roomState,
@@ -120,12 +121,13 @@ export function runDecisionsValidators(validators, context) {
 }
 
 export function resolveContextForDecisionValidation({
+  definition,
   targetObj,
   amount,
   roomState,
 }) {
-  const target = targetObj;
-  const component = targetObj;
+  const targetPlayer = definition.type === 'MANAGE_POINTS' ? targetObj : null;
+  const component = definition.type !== 'MANAGE_POINTS' ? targetObj : null;
   const usedPointsDonation =
     roomState?.decisionState?.appliedTotals?.DONATE_POINTS ?? null;
   const usedPointsHold =
@@ -144,7 +146,7 @@ export function resolveContextForDecisionValidation({
 
   return {
     currentPlayer,
-    target,
+    targetPlayer,
     component,
     amount,
     usedPointsDonation,
