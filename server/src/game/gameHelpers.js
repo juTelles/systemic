@@ -1,5 +1,7 @@
 import { getTotalPlayersPoints } from './selectors.js';
 import { isComponentEligibleForTests } from '../../../shared/src/game/helpers.js';
+import { createError } from '../utils/createErrors.js';
+import { ERRORS } from '../../../shared/src/constants/errors.js';
 
 export function existsComponentEligibleForBugResolvByType(
   components,
@@ -9,7 +11,9 @@ export function existsComponentEligibleForBugResolvByType(
   const componentsByTypeArray = components.byType?.[componentType] ?? [];
   const exists = componentsByTypeArray.some((component) => {
     const componentObj = components.nodes[component];
+
     if (componentObj.bugAmount <= 0) return false;
+
     return withTests ? componentObj.hasTests : !componentObj.hasTests;
   });
   return exists;
@@ -71,8 +75,7 @@ export function applyGameStartBugs(stateComponents, amount = 5) {
 
 export function applyTest(component) {
   if (component.hasTests) {
-    console.warn('Invalid action: Component already has tests');
-    return component;
+    throw createError(ERRORS.COMPONENT_ALREADY_HAS_TESTS);
   }
   return {
     ...component,
@@ -82,8 +85,7 @@ export function applyTest(component) {
 
 export function resolveBug(component, amount = 1) {
   if (component.bugAmount <= 0) {
-    console.warn('Invalid action: Component has no bugs to resolve');
-    return component;
+    throw createError(ERRORS.COMPONENT_HAS_NO_BUGS_TO_RESOLVE);
   }
   return {
     ...component,
@@ -94,8 +96,7 @@ export function resolveBug(component, amount = 1) {
 export function subtractPointsToPlayer(player, pointsToSubtract) {
   const totalPoints = getTotalPlayersPoints(player);
   if (totalPoints - pointsToSubtract < 0) {
-    console.warn('Invalid action: Not have enough points to subtract');
-    return player;
+    throw createError(ERRORS.NOT_ENOUGH_POINTS_TO_SUBTRACT);
   }
   if (pointsToSubtract > player.handPoints) {
     const remainingPointsToSubtract = pointsToSubtract - player.handPoints;
@@ -118,8 +119,7 @@ export function addPointsToPlayerBankByDonation(
 ) {
   const totalPoints = getTotalPlayersPoints(player);
   if (totalPoints + pointsToAdd > maxPlayerPoints) {
-    console.warn('Invalid action: exceeds maximum allowed points per player');
-    return player;
+    throw createError(ERRORS.REACHED_MAX_PLAYER_POINTS);
   }
   return {
     ...player,
@@ -129,22 +129,19 @@ export function addPointsToPlayerBankByDonation(
 
 export function addPointsToPlayerBankByHolding(player, pointsToAdd) {
   if (player.handPoints < pointsToAdd) {
-    console.warn(
-      'Invalid action: Not have enough points in hand to add to bank',
-    );
-    return player;
+    throw createError(ERRORS.NOT_ENOUGH_HAND_POINTS_TO_HOLD);
   }
-  return {
-    ...player,
-    bankPoints: player.bankPoints + pointsToAdd,
-    handPoints: player.handPoints - pointsToAdd,
-  };
 }
+return {
+  ...player,
+  bankPoints: player.bankPoints + pointsToAdd,
+  handPoints: player.handPoints - pointsToAdd,
+};
 
 export function addPointsToPlayerHand(player, pointsToAdd, maxPlayerPoints) {
   const totalPoints = getTotalPlayersPoints(player);
   if (totalPoints >= maxPlayerPoints) {
-    return player;
+    throw createError(ERRORS.REACHED_MAX_PLAYER_POINTS);
   }
   const allowedPointsToAdd = Math.min(
     pointsToAdd,

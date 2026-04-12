@@ -1,5 +1,5 @@
+import { ERRORS } from '../../../../shared/src/constants/errors.js';
 import { isComponentEligibleForTests } from '../../../../shared/src/game/helpers.js';
-import { getPlayerObject } from '../selectors.js';
 import {
   addPointsToPlayerBankByDonation,
   addPointsToPlayerBankByHolding,
@@ -18,7 +18,8 @@ export const decisionHandlers = {
 export function handleResolveBugDecision(next, context, decisionDefinition) {
   const { currentPlayer, component } = context;
 
-  if (!component) return next;
+  if (!component)
+    throw new Error(ERRORS.COMPONENT_NOT_FOUND);
 
   const updatedComponent = resolveBug(component);
 
@@ -27,7 +28,7 @@ export function handleResolveBugDecision(next, context, decisionDefinition) {
 
   next.components.nodes[component.id] = updatedComponent;
   next.players = next.players.map((player) =>
-    player.id === currentPlayer.id ? updatedCurrentPlayer : player
+    player.id === currentPlayer.id ? updatedCurrentPlayer : player,
   );
 
   return next;
@@ -37,20 +38,20 @@ export function handleDonatePointsDecision(next, context) {
   const { currentPlayer, amount, targetPlayer } = context;
 
   if (!targetPlayer)
-    throw new Error('Target player not found for DONATE_POINTS decision');
+    throw new Error(ERRORS.PLAYER_NOT_FOUND);
 
   const updatedTargetPlayer = addPointsToPlayerBankByDonation(
     targetPlayer,
     amount,
-    next.gameConfig.maxPlayerPoints
+    next.gameConfig.maxPlayerPoints,
   );
   const updatedCurrentPlayer = subtractPointsToPlayer(currentPlayer, amount);
 
   next.players = next.players.map((player) =>
-    player.id === currentPlayer.id ? updatedCurrentPlayer : player
+    player.id === currentPlayer.id ? updatedCurrentPlayer : player,
   );
   next.players = next.players.map((player) =>
-    player.id === targetPlayer.id ? updatedTargetPlayer : player
+    player.id === targetPlayer.id ? updatedTargetPlayer : player,
   );
   next.decisionState.appliedTotals.DONATE_POINTS += amount;
 
@@ -62,11 +63,11 @@ export function handleHoldPointsDecision(next, context) {
 
   const updatedCurrentPlayer = addPointsToPlayerBankByHolding(
     currentPlayer,
-    amount
+    amount,
   );
 
   next.players = next.players.map((player) =>
-    player.id === currentPlayer.id ? updatedCurrentPlayer : player
+    player.id === currentPlayer.id ? updatedCurrentPlayer : player,
   );
   next.decisionState.appliedTotals.HOLD_POINTS += amount;
 
@@ -76,9 +77,11 @@ export function handleHoldPointsDecision(next, context) {
 export function handleDevelopTestsDecision(next, context, decisionDefinition) {
   const { currentPlayer, component } = context;
 
-  if (!component) return next;
+  if (!component)
+    throw new Error(ERRORS.COMPONENT_NOT_FOUND);
 
-  if (!isComponentEligibleForTests(component, next.components)) return next;
+  if (!isComponentEligibleForTests(component, next.components))
+    throw new Error(ERRORS.COMPONENT_NOT_ELIGIBLE_FOR_TESTS);
 
   const updatedComponent = applyTest(component);
 
@@ -87,7 +90,7 @@ export function handleDevelopTestsDecision(next, context, decisionDefinition) {
 
   next.components.nodes[component.id] = updatedComponent;
   next.players = next.players.map((player) =>
-    player.id === currentPlayer.id ? updatedCurrentPlayer : player
+    player.id === currentPlayer.id ? updatedCurrentPlayer : player,
   );
 
   return next;

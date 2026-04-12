@@ -2,6 +2,7 @@ import { decisionsApplicationValidators } from '../../../shared/src/validations/
 import { ERRORS } from '../../../shared/src/constants/errors.js';
 import { decisions as decisionDefinitions } from '../../../shared/src/definitions/decisions.js';
 import { getErrorMessage } from '../texts/errorsMessages.js';
+import { createError } from '../../../server/src/utils/createErrors.js';
 
 export function resolveDecision(
   roomState,
@@ -73,7 +74,7 @@ export function validateDecision(decisionId, targetObj, amount, roomState) {
     roomState,
   });
   const definition = decisionDefinitions.options[decisionId];
-  if (!definition) throw new Error(ERRORS.DECISION_DEFINITION_NOT_FOUND);
+  if (!definition) throw createError(ERRORS.DECISION_DEFINITION_NOT_FOUND);
 
   const context = resolveContextForDecisionValidation({
     definition,
