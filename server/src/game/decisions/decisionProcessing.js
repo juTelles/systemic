@@ -12,7 +12,6 @@ export function applyDecision(action, state, decisionsDefinitions) {
   const context = resolveApplyDecisionContext(
     action,
     next,
-    decisionsDefinitions,
   );
 
   const validationResult = runDecisionsApplicationValidators(
