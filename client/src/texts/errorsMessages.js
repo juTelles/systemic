@@ -126,6 +126,21 @@ export const errorMessages = {
     en: "Player's total limit exceeded.",
   },
 
+  [ERRORS.HAS_POINTS_FOR_DONATION]: {
+    pt: 'Pontos insuficientes.',
+    en: 'Insufficient points.',
+  },
+
+  [ERRORS.HAS_HAND_POINTS_FOR_HOLD]: {
+    pt: 'Pontos insuficientes na mão.',
+    en: 'Insufficient points in hand.',
+  },
+
+  [ERRORS.HAS_POINTS_FOR_OPERATION_COST]: {
+    pt: 'Pontos insuficientes.',
+    en: 'Insufficient points.',
+  },
+
   [ERRORS.DECISION_ERROR]: {
     pt: 'Ocorreu um erro inesperado ao aplicar a decisão, por favor, tente novamente.',
     en: 'An unexpected error occurred while applying the decision, please try again.',

@@ -139,6 +139,8 @@ export function resolveContextForDecisionValidation({
   const currentPlayerId = roomState?.flow?.currentPlayerId;
   const currentPlayer =
     roomState?.players?.find((p) => p.id === currentPlayerId) ?? null;
+  const operationCost =
+    roomState?.gameConfig?.decisionCosts?.[definition.id] ?? null;
 
   return {
     currentPlayer,
@@ -150,5 +152,6 @@ export function resolveContextForDecisionValidation({
     donationTurnLimit,
     holdTurnLimit,
     totalPointsLimit,
+    operationCost,
   };
 }
