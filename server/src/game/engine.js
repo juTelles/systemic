@@ -148,7 +148,7 @@ export function applyAction(state, action, ctx = {}) {
       return next;
     }
 
-    case ACTION_TYPES.APPLY_DECISION: {
+    case ACTION_TYPES.SUBMIT_DECISION: {
       next.decisionState.validationError = null;
       let result = {};
       try {
@@ -187,14 +187,14 @@ export function applyAction(state, action, ctx = {}) {
       decisionNext.meta.rev += 1;
       decisionNext.meta.updatedAt = now;
       decisionNext.log.lastEvent = {
-        type: ACTION_TYPES.APPLY_DECISION,
+        type: ACTION_TYPES.SUBMIT_DECISION,
         by: action.payload.senderId ?? null,
         at: now,
       };
       return decisionNext;
     }
 
-    case ACTION_TYPES.DRAW_CARD: {
+    case ACTION_TYPES.PROCEED_TO_CARD_DRAW: {
       next.flow.step = steps['AWAIT_CARD_DRAW'];
       next.flow.blockedUntil = now + 1500;
       next.decisionState = createDecisionState();
@@ -202,7 +202,7 @@ export function applyAction(state, action, ctx = {}) {
       next.meta.rev += 1;
       next.meta.updatedAt = now;
       next.log.lastEvent = {
-        type: ACTION_TYPES.DRAW_CARD,
+        type: ACTION_TYPES.PROCEED_TO_CARD_DRAW,
         by: action.payload.senderId ?? null,
         at: now,
       };

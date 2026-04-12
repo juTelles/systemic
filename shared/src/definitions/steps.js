@@ -75,7 +75,7 @@ export const steps = Object.freeze({
         accepts: 'PLAYER_INPUT',
       },
       nextTransition: {
-        actionType: ACTION_TYPES.APPLY_DECISION,
+        actionType: ACTION_TYPES.SUBMIT_DECISION,
         trigger: 'PLAYER_INPUT',
       },
     },
@@ -103,16 +103,17 @@ export const steps = Object.freeze({
       'CHECK_VALID_DECISIONS',
       'UPDATE_NEXT_VALID_STEP',
     ],
-    // IF allComponentsTested -> 'FINISH_GAME' with win ELSE actionsRemaining > 0 -> 'ASK_FOR_DECISION' ELSE 'DRAW_CARD'
+    // IF allComponentsTested -> 'FINISH_GAME' with win ELSE decisionsAvailable.length > 0 -> 'ASK_FOR_DECISION' ELSE 'PROCEED_TO_CARD_DRAW'
   },
   AWAIT_CARD_DRAW: {
     name: 'AWAIT_CARD_DRAW',
     flowControl: {
       current: {
         accepts: 'PLAYER_INPUT',
+        actionRemaining: 0,
       },
       nextTransition: {
-        actionType: ACTION_TYPES.APPLY_CARD,
+        actionType: ACTION_TYPES.DRAW_CARD,
         trigger: 'PLAYER_INPUT',
       },
     },
@@ -130,7 +131,7 @@ export const steps = Object.freeze({
       },
     },
     effects: ['APPLY_CARD_EFFECT', 'PROCESSING_STATE_CHANGE', 'TIME_OUT'],
-    // IF criticalState > 'FINISH_TURN' with startCriticalRoundFlag ELSE IF cardsToDrawRemaining > 0> 'DRAW_CARD' ELSE 'FINISH_TURN'
+    // IF criticalState > 'FINISH_TURN' with startCriticalRoundFlag ELSE IF cardsToDrawRemaining > 0> 'PROCEED_TO_CARD_DRAW' ELSE 'FINISH_TURN'
   },
   END_TURN: {
     name: 'END_TURN',

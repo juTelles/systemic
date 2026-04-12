@@ -2,14 +2,15 @@ import { sendAction } from '../api/roomsApi';
 import { ACTION_TYPES } from '../../../shared/src/constants/actionsTypes';
 
 export function useRoomActions(roomId, localPlayerId) {
+
   async function setReady() {
     return sendAction(roomId, ACTION_TYPES.SET_READY, {
       senderId: localPlayerId,
     });
   }
 
-  async function setDecisionChosen(decision) {
-    return sendAction(roomId, ACTION_TYPES.APPLY_DECISION, {
+  async function submitDecision(decision) {
+    return sendAction(roomId, ACTION_TYPES.SUBMIT_DECISION, {
       senderId: localPlayerId,
       chosen: decision.chosen,
       target: decision.target,
@@ -17,15 +18,15 @@ export function useRoomActions(roomId, localPlayerId) {
     });
   }
 
-  async function setEndDecision() {
-    return sendAction(roomId, ACTION_TYPES.DRAW_CARD, {
+  async function endDecision() {
+    return sendAction(roomId, ACTION_TYPES.PROCEED_TO_CARD_DRAW, {
       senderId: localPlayerId,
     });
   }
 
   return {
     setReady,
-    setDecisionChosen,
-    setEndDecision
+    submitDecision,
+    endDecision
   };
 }

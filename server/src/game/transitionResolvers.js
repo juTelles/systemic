@@ -12,11 +12,12 @@ export const transitionResolvers = {
   PROCESSING_DECISION: (state) => {
     return state.decisionState.available.length > 0
       ? { actionType: ACTION_TYPES.ASK_FOR_DECISION, trigger: 'AUTO' }
-      : { actionType: ACTION_TYPES.DRAW_CARD, trigger: 'AUTO' };
+      : { actionType: ACTION_TYPES.PROCEED_TO_CARD_DRAW, trigger: 'AUTO' };
   },
   PROCESSING_CARD: (state) => {
-    // IF actionsRemaining > 0 -> 'CHOOSE_DECISION' ELSE 'DRAW_CARD'
-    return state.actionsRemaining > 0 ? 'CHOOSE_DECISION' : 'DRAW_CARD';
+    return state.flow.step.current.actionsRemaining > 0
+      ? { actionType: ACTION_TYPES.PROCEED_TO_CARD_DRAW, trigger: 'AUTO' }
+      : { actionType: ACTION_TYPES.FINISH_TURN, trigger: 'AUTO' };
   },
   END_TURN: (state) => {
     // IF END_GAME -> 'END_GAME' ELSE IF END_ROUND -> 'END_ROUND' ELSE 'TURN_START'
