@@ -40,12 +40,13 @@ function GameScreen({ roomId, localPlayerId, onSessionInvalid }) {
     const result = await setDecisionChosen(action);
 
     if (!result.ok) {
-      console.error('Error applying decision:', result.error);
+      console.error('Error applying decision:', result.code);
       setShowErrorDialog({ content: getErrorMessage('DECISION_ERROR') });
     }
-
-    if (result.roomState?.decisionState?.validationError !== null) {
-      const validationError = result.roomState.decisionState.validationError;
+// TODO: Investigate: should I show the real error message instead of a
+// generic one? It could confuse the player
+    if (result.ok && result.roomState?.decisionState?.validationError !== null) {
+      const validationError = result?.roomState?.decisionState?.validationError;
       const errorMessage = {
         title: getErrorMessage(validationError.type),
         content: getErrorMessage(validationError.failedValidation),
