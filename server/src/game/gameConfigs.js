@@ -8,6 +8,7 @@ export const gameConfigs = Object.freeze({
     taskPoints: {
       maxPlayerPoints: 6,
       maxDonationPerPlayer: 2,
+      maxHoldPerPlayer: 2,
       playerPerRound: 3,
       playerPerCrisisRound: 4,
     },

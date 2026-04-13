@@ -5,13 +5,13 @@ import { composeDeck } from './deckComposer.js';
 import { components } from '../../../shared/src/definitions/components.js';
 import { applyGameStartBugs } from './gameHelpers.js';
 import { transitionResolvers } from './transitionResolvers.js';
+import { applyDecision } from './decisions/decisionProcessing.js';
+import { getAvailableDecisions } from './decisions/decisionAvailability.js';
 import { decisions as decisionsDefinitions } from '../../../shared/src/definitions/decisions.js';
-import { createDecisionState, createValidationErrorState } from './roomStateFactories.js';
-
 import {
-  getAvailableDecisions,
-  applyDecisionEffect,
-} from './decisions/logic.js';
+  createDecisionState,
+  createValidationErrorState,
+} from './roomStateFactories.js';
 import {
   getPlayerObject,
   isGameReadyToStart,
@@ -152,7 +152,7 @@ export function applyAction(state, action, ctx = {}) {
       next.decisionState.validationError = null;
       let result = {};
       try {
-        result = applyDecisionEffect(action, next, decisionsDefinitions);
+        result = applyDecision(action, next, decisionsDefinitions);
 
         if (!result.ok) {
           const error = createValidationErrorState();

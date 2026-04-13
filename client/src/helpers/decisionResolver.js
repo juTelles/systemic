@@ -73,9 +73,10 @@ export function validateDecision(decisionId, targetObj, amount, roomState) {
     roomState,
   });
   const definition = decisionDefinitions.options[decisionId];
-  if (!definition) throw new Error(ERRORS.DECISION_DEFINITION_NOT_FOUND);
+  if (!definition) throw Error(ERRORS.DECISION_DEFINITION_NOT_FOUND);
 
   const context = resolveContextForDecisionValidation({
+    definition,
     targetObj,
     amount,
     roomState,
@@ -120,12 +121,13 @@ export function runDecisionsValidators(validators, context) {
 }
 
 export function resolveContextForDecisionValidation({
+  definition,
   targetObj,
   amount,
   roomState,
 }) {
-  const target = targetObj;
-  const component = targetObj;
+  const targetPlayer = definition.type === 'MANAGE_POINTS' ? targetObj : null;
+  const component = definition.type !== 'MANAGE_POINTS' ? targetObj : null;
   const usedPointsDonation =
     roomState?.decisionState?.appliedTotals?.DONATE_POINTS ?? null;
   const usedPointsHold =
@@ -139,10 +141,12 @@ export function resolveContextForDecisionValidation({
   const currentPlayerId = roomState?.flow?.currentPlayerId;
   const currentPlayer =
     roomState?.players?.find((p) => p.id === currentPlayerId) ?? null;
+  const operationCost =
+    roomState?.gameConfig?.decisionCosts?.[definition.id] ?? null;
 
   return {
     currentPlayer,
-    target,
+    targetPlayer,
     component,
     amount,
     usedPointsDonation,
@@ -150,5 +154,6 @@ export function resolveContextForDecisionValidation({
     donationTurnLimit,
     holdTurnLimit,
     totalPointsLimit,
+    operationCost,
   };
 }

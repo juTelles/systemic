@@ -42,6 +42,7 @@ export function createInitialState({ roomId }) {
       taskPoints: {
         maxPlayerPoints: 8,
         maxDonationPerPlayer: 2,
+        maxHoldPerPlayer: 2,
         playerPerRound: 3,
         playerPerCrisisRound: 4,
       },
