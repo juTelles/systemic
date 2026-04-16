@@ -198,8 +198,13 @@ export function applyAction(state, action, ctx = {}) {
 
     case ACTION_TYPES.PROCEED_TO_CARD_DRAW: {
       next.flow.step = steps['AWAIT_CARD_DRAW'];
-      next.flow.blockedUntil = now + 1500;
       next.decisionState = createDecisionState();
+
+      if (next.cardState.current !== null) {
+        next.deck.discardPile.push(next.cardState.current);
+        next.cardState.current = null;
+        next.cardState.cardsRemainingInTurn -= 1;
+      }
       const drawCardKey = next.deck.drawPile.shift();
       const drawnCardId = next.cardState.lastDrawId + 1;
       next.cardState.lastDrawId = drawnCardId;
