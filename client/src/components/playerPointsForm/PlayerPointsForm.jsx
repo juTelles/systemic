@@ -15,9 +15,10 @@ function PlayerPointsForm({
   const [value, setValue] = useState(0);
 
   const { bankPoints, handPoints, nickname } = targetPlayer;
-  const maxPoints =
-    Number(roomState?.gameConfig?.taskPoints?.maxPlayerPoints) -
-    (Number(bankPoints) + Number(handPoints));
+
+  const maxPoints = Number(
+    roomState?.gameConfig?.decisionCosts?.[selectedDecisionUIId],
+  );
   const displayTotal =
     value && selectedDecisionUIId === 'DONATE_POINTS'
       ? Number(handPoints) + Number(bankPoints) + Number(value)
