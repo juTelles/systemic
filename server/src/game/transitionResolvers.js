@@ -15,7 +15,7 @@ export const transitionResolvers = {
       : { actionType: ACTION_TYPES.PROCEED_TO_CARD_DRAW, trigger: 'AUTO' };
   },
   PROCESSING_CARD: (state) => {
-    return state.flow.step.current.actionsRemaining > 0
+    return state.cardState.cardsRemainingInTurn> 0
       ? { actionType: ACTION_TYPES.PROCEED_TO_CARD_DRAW, trigger: 'AUTO' }
       : { actionType: ACTION_TYPES.FINISH_TURN, trigger: 'AUTO' };
   },
