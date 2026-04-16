@@ -123,6 +123,7 @@ export function applyAction(state, action, ctx = {}) {
       next.flow.blockedUntil =
         now + steps['TURN_START'].flowControl.current.delayMs;
       next.flow.currentPlayerId = next.players[next.flow.turn].id;
+      next.cardState.cardsRemainingInTurn = next.gameConfig.cardsPerTurn;
       next.meta.rev += 1;
       next.meta.updatedAt = now;
       next.log.lastEvent = {
