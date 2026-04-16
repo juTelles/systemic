@@ -21,9 +21,9 @@ export const transitionResolvers = {
   },
   END_TURN: (state) => {
     // IF END_GAME -> 'END_GAME' ELSE IF END_ROUND -> 'END_ROUND' ELSE 'TURN_START'
-    if (state.endGame) return 'END_GAME';
-    if (state.endRound) return 'END_ROUND';
-    return 'TURN_START';
+    return state.flow.turn >= state.players.length
+      ? { actionType: ACTION_TYPES.FINISH_ROUND, trigger: 'AUTO' }
+      : { actionType: ACTION_TYPES.START_TURN, trigger: 'AUTO' };
   },
   END_ROUND: (state) => {
     // IF END_GAME -> 'END_GAME' ELSE 'ROUND_START'

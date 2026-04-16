@@ -257,8 +257,14 @@ export function applyAction(state, action, ctx = {}) {
     }
 
     case ACTION_TYPES.FINISH_TURN: {
-      next.flow.blockedUntil = now + 1500;
+      next.flow.step = steps['END_TURN'];
+      if (next.cardState.current !== null) {
+        next.deck.discardPile.push(next.cardState.current);
+        next.cardState.current = null;
+      }
       next.flow.turn += 1;
+      next.flow.step.flowControl.nextTransition =
+        transitionResolvers['END_TURN'](next);
       next.meta.rev += 1;
       next.meta.updatedAt = now;
       next.log.lastEvent = {
