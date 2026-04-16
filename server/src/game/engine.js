@@ -208,13 +208,14 @@ export function applyAction(state, action, ctx = {}) {
       if (next.cardState.current !== null) {
         next.deck.discardPile.push(next.cardState.current);
         next.cardState.current = null;
-        next.cardState.cardsRemainingInTurn -= 1;
       }
+
       const drawCardKey = next.deck.drawPile.shift();
       const drawnCardId = next.cardState.lastDrawId + 1;
       next.cardState.lastDrawId = drawnCardId;
       const drawCard = buildCard(drawCardKey, drawnCardId);
       next.cardState.current = drawCard;
+      next.cardState.cardsRemainingInTurn -= 1;
 
       next.meta.rev += 1;
       next.meta.updatedAt = now;
