@@ -25,6 +25,7 @@
   --ciano: #22d3ee;
   --ciano-dark: #09363d;
   --dark-blue:#020617;
+  --purple: #5e17eb;
 
   --shadow: rgba(0,0,0,0.5);
 
@@ -48,4 +49,33 @@
   --color-ciano-neon: #22d3ee;
   --color-ciano-light: rgba(0, 242, 255, 0.6);
   --color-ciano-extra-light: rgba(0, 242, 255, 0.4);
+
+  --card-width: 145px;
+  --card-height: 195px;
+
+  --REQUESTS: #fe0114;
+  --STRUCTURAL: #fd622b;
+  --LOCAL: #fedb08;
+  --POINTS: #24924d;
+}
+
+@media (min-width: 1600px) {
+  :root {
+    --card-width: 170px;
+    --card-height: 240px;
+  }
+}
+
+@media (min-width: 1900px) {
+  :root {
+    --card-width: 195px;
+    --card-height: 255px;
+  }
+}
+
+@media (min-width: 2500px) {
+  :root {
+    --card-width: 200px;
+    --card-height: 260px;
+  }
 }
