@@ -17,6 +17,8 @@ import {
   isGameReadyToStart,
   getTotalPlayersPoints,
 } from './selectors.js';
+import { buildCard } from './cards/cardBuilder.js';
+import { applyCardEffect } from './cards/cardApplier.js';
 
 export function applyAction(state, action, ctx = {}) {
   const now = Date.now();
