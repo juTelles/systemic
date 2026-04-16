@@ -1,7 +1,7 @@
 import { ERRORS } from '../../../../shared/src/constants/errors.js';
 import { isComponentEligibleForTests } from '../../../../shared/src/game/helpers.js';
 import {
-  addPointsToPlayerBankByDonation,
+  addPointsToPlayerBank,
   addPointsToPlayerBankByHolding,
   resolveBug,
   applyTest,
@@ -40,7 +40,7 @@ export function handleDonatePointsDecision(next, context) {
   if (!targetPlayer)
     throw new Error(ERRORS.PLAYER_NOT_FOUND);
 
-  const updatedTargetPlayer = addPointsToPlayerBankByDonation(
+  const updatedTargetPlayer = addPointsToPlayerBank(
     targetPlayer,
     amount,
     next.gameConfig.taskPoints.maxPlayerPoints,

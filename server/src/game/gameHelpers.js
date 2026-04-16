@@ -112,18 +112,22 @@ export function subtractPointsToPlayer(player, pointsToSubtract) {
   };
 }
 
-export function addPointsToPlayerBankByDonation(
+export function addPointsToPlayerBank(
   player,
   pointsToAdd,
   maxPlayerPoints,
 ) {
   const totalPoints = getTotalPlayersPoints(player);
-  if (totalPoints + pointsToAdd > maxPlayerPoints) {
-    throw createError(ERRORS.REACHED_MAX_PLAYER_POINTS);
+  if (totalPoints >= maxPlayerPoints) {
+    return player;
   }
+  const allowedPointsToAdd = Math.min(
+    pointsToAdd,
+    maxPlayerPoints - totalPoints,
+  );
   return {
     ...player,
-    bankPoints: player.bankPoints + pointsToAdd,
+    bankPoints: player.bankPoints + allowedPointsToAdd,
   };
 }
 
