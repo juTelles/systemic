@@ -66,3 +66,7 @@ export const componentsTxt = {
     },
   },
 };
+
+export function getComponentName(component, lang = 'pt') {
+  return componentsTxt?.[component]?.label?.[lang] || 'Component not found';
+};
