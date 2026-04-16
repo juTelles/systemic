@@ -24,9 +24,16 @@ export function useRoomActions(roomId, localPlayerId) {
     });
   }
 
+  async function drawCard() {
+    return sendAction(roomId, ACTION_TYPES.DRAW_CARD, {
+      senderId: localPlayerId,
+    });
+  }
+
   return {
     setReady,
     submitDecision,
-    endDecision
+    endDecision,
+    drawCard
   };
 }
