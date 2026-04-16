@@ -24,7 +24,10 @@ export function createInitialState({ roomId }) {
         },
       },
     },
-    deck: [],
+    deck: {
+      drawPile: [],
+      discardPile: [],
+    },
     log: { lastEvent: null },
     system: { globalStatus: 'HEALTHY' },
     decisionState: {
@@ -35,10 +38,16 @@ export function createInitialState({ roomId }) {
       },
       validationError: null,
     },
+    cardState: {
+      lastDrawId: 0,
+      cardsRemainingInTurn: 0,
+      current: null,
+    },
     components: {},
     gameConfig: {
       maxPlayers: 4,
       minPlayers: 2,
+      cardsPerTurn: 2,
       taskPoints: {
         maxPlayerPoints: 8,
         maxDonationPerPlayer: 2,
@@ -57,20 +66,20 @@ export function createInitialState({ roomId }) {
         DONATE_POINTS: 2,
         HOLD_POINTS: 2,
       },
-      deck: {
-        composition: [
+      deckComposition: {
+        regularCards: [
           {
-            cardType: 'BUG',
+            cardType: 'LOCAL',
             componentType: 'LOCAL',
             quantity: 20,
           },
           {
-            cardType: 'BUG',
+            cardType: 'STRUCTURAL',
             componentType: 'STRUCTURAL',
             quantity: 15,
           },
           {
-            cardType: 'BUG',
+            cardType: 'REQUESTS',
             componentType: 'REQUESTS',
             quantity: 10,
           },
@@ -78,11 +87,16 @@ export function createInitialState({ roomId }) {
             cardType: 'POINTS',
             quantity: 5,
           },
-          {
-            cardType: 'EVENT',
-            quantity: 5,
-          },
         ],
+        specialCards: {
+          cardType: 'EVENT',
+          quantity: 10,
+          quantityByPressureLevel: {
+            LOW: 3,
+            WARNING: 4,
+            CRITICAL: 3,
+          },
+        },
       },
     },
   };
