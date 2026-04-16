@@ -230,6 +230,32 @@ export function applyAction(state, action, ctx = {}) {
       return next;
     }
 
+    case ACTION_TYPES.APPLY_CARD_EFFECT: {
+      next.flow.step = steps['PROCESSING_CARD'];
+      next.flow.blockedUntil =
+        now + steps['PROCESSING_CARD'].flowControl.current.delayMs;
+
+      let nextCard = next;
+      try {
+        nextCard = applyCardEffect(next, next.cardState.current);
+      } catch (error) {
+        console.error('[ENGINE]', error);
+        throw error;
+      }
+
+      nextCard.flow.step.flowControl.nextTransition =
+        transitionResolvers['PROCESSING_CARD'](nextCard);
+
+      nextCard.meta.rev += 1;
+      nextCard.meta.updatedAt = now;
+      nextCard.log.lastEvent = {
+        type: ACTION_TYPES.APPLY_CARD_EFFECT,
+        by: action.payload.senderId ?? null,
+        at: now,
+      };
+      return nextCard;
+    }
+
     case ACTION_TYPES.FINISH_TURN: {
       next.flow.blockedUntil = now + 1500;
       next.flow.turn += 1;
