@@ -144,9 +144,11 @@ export function addPointsToPlayerBankByHolding(player, pointsToAdd) {
 
 export function addPointsToPlayerHand(player, pointsToAdd, maxPlayerPoints) {
   const totalPoints = getTotalPlayersPoints(player);
+
   if (totalPoints >= maxPlayerPoints) {
-    throw createError(ERRORS.REACHED_MAX_PLAYER_POINTS);
+    return player;
   }
+
   const allowedPointsToAdd = Math.min(
     pointsToAdd,
     maxPlayerPoints - totalPoints,
