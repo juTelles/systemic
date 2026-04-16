@@ -1,7 +1,7 @@
 import { ACTION_TYPES } from '../../../shared/src/constants/actionsTypes.js';
 import { PLAYER_STATUS } from '../../../shared/src/constants/playerStatus.js';
 import { steps } from '../../../shared/src/definitions/steps.js';
-import { composeDeck } from './deckComposer.js';
+import { composeDeck } from './cards/deckComposer.js';
 import { components } from '../../../shared/src/definitions/components.js';
 import { applyGameStartBugs } from './gameHelpers.js';
 import { transitionResolvers } from './transitionResolvers.js';
@@ -74,8 +74,8 @@ export function applyAction(state, action, ctx = {}) {
       next.flow.step = steps['GAME_START'];
       next.components = structuredClone(components);
       next.components = applyGameStartBugs(next.components);
-      const deck = composeDeck(next.gameConfig.deck.composition);
-      next.deck = deck;
+      const deck = composeDeck(next.gameConfig.deckComposition);
+      next.deck.drawPile = deck;
       next.phase = 'IN_GAME';
       next.meta.rev += 1;
       next.meta.updatedAt = now;
