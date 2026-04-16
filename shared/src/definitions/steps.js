@@ -119,6 +119,20 @@ export const steps = Object.freeze({
     },
     effects: ['WAIT_FOR_DRAW', 'SHOW_DRAWN_CARD'],
   },
+  SHOWING_CARD: {
+    name: 'SHOWING_CARD',
+    flowControl: {
+      current: {
+        accepts: 'AUTO',
+        delayMs: 3000,
+      },
+      nextTransition: {
+        actionType: ACTION_TYPES.APPLY_CARD_EFFECT,
+        trigger: 'AUTO',
+      },
+    },
+    effects: ['APPLY_CARD_EFFECT', 'PROCESSING_STATE_CHANGE', 'TIME_OUT'],
+  },
   PROCESSING_CARD: {
     name: 'PROCESSING_CARD',
     flowControl: {
