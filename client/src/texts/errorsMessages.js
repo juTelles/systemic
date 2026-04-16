@@ -121,7 +121,7 @@ export const errorMessages = {
     en: 'Donation limit by turn exceeded.',
   },
 
-  [ERRORS.CURRENT_PLAYER_TOTAL_WITHIN_LIMIT]: {
+  [ERRORS.TARGET_PLAYER_TOTAL_WITHIN_LIMIT]: {
     pt: 'Limite total do jogador excedido.',
     en: "Player's total limit exceeded.",
   },

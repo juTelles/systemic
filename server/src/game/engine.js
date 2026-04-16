@@ -1,9 +1,9 @@
 import { ACTION_TYPES } from '../../../shared/src/constants/actionsTypes.js';
 import { PLAYER_STATUS } from '../../../shared/src/constants/playerStatus.js';
 import { steps } from '../../../shared/src/definitions/steps.js';
-import { composeDeck } from './deckComposer.js';
+import { composeDeck } from './cards/deckComposer.js';
 import { components } from '../../../shared/src/definitions/components.js';
-import { applyGameStartBugs } from './gameHelpers.js';
+import { addPointsToPlayerHand, applyGameStartBugs } from './gameHelpers.js';
 import { transitionResolvers } from './transitionResolvers.js';
 import { applyDecision } from './decisions/decisionProcessing.js';
 import { getAvailableDecisions } from './decisions/decisionAvailability.js';
@@ -17,6 +17,8 @@ import {
   isGameReadyToStart,
   getTotalPlayersPoints,
 } from './selectors.js';
+import { buildCard } from './cards/cardBuilder.js';
+import { applyCardEffect } from './cards/cardApplier.js';
 
 export function applyAction(state, action, ctx = {}) {
   const now = Date.now();
@@ -74,8 +76,8 @@ export function applyAction(state, action, ctx = {}) {
       next.flow.step = steps['GAME_START'];
       next.components = structuredClone(components);
       next.components = applyGameStartBugs(next.components);
-      const deck = composeDeck(next.gameConfig.deck.composition);
-      next.deck = deck;
+      const deck = composeDeck(next.gameConfig.deckComposition);
+      next.deck.drawPile = deck;
       next.phase = 'IN_GAME';
       next.meta.rev += 1;
       next.meta.updatedAt = now;
@@ -98,8 +100,12 @@ export function applyAction(state, action, ctx = {}) {
       next.flow.step = steps['ROUND_START'];
       next.flow.blockedUntil =
         now + steps['ROUND_START'].flowControl.current.delayMs;
-      next.players.forEach((player) => {
-        player.handPoints = next.gameConfig.taskPoints.playerPerRound;
+      next.players = next.players.map((player) => {
+        return addPointsToPlayerHand(
+          player,
+          next.gameConfig.taskPoints.playerPerRound,
+          next.gameConfig.taskPoints.maxPlayerPoints,
+        );
       });
       next.flow.round += 1;
       next.flow.turn = 0;
@@ -121,6 +127,7 @@ export function applyAction(state, action, ctx = {}) {
       next.flow.blockedUntil =
         now + steps['TURN_START'].flowControl.current.delayMs;
       next.flow.currentPlayerId = next.players[next.flow.turn].id;
+      next.cardState.cardsRemainingInTurn = next.gameConfig.cardsPerTurn;
       next.meta.rev += 1;
       next.meta.updatedAt = now;
       next.log.lastEvent = {
@@ -148,7 +155,7 @@ export function applyAction(state, action, ctx = {}) {
       return next;
     }
 
-    case ACTION_TYPES.APPLY_DECISION: {
+    case ACTION_TYPES.SUBMIT_DECISION: {
       next.decisionState.validationError = null;
       let result = {};
       try {
@@ -187,18 +194,43 @@ export function applyAction(state, action, ctx = {}) {
       decisionNext.meta.rev += 1;
       decisionNext.meta.updatedAt = now;
       decisionNext.log.lastEvent = {
-        type: ACTION_TYPES.APPLY_DECISION,
+        type: ACTION_TYPES.SUBMIT_DECISION,
         by: action.payload.senderId ?? null,
         at: now,
       };
       return decisionNext;
     }
 
-    case ACTION_TYPES.DRAW_CARD: {
+    case ACTION_TYPES.PROCEED_TO_CARD_DRAW: {
       next.flow.step = steps['AWAIT_CARD_DRAW'];
-      next.flow.blockedUntil = now + 1500;
       next.decisionState = createDecisionState();
-      next.flow.turn += 1;
+
+      if (next.cardState.current !== null) {
+        next.deck.discardPile.push(next.cardState.current);
+        next.cardState.current = null;
+      }
+
+      const drawCardKey = next.deck.drawPile.shift();
+      const drawnCardId = next.cardState.lastDrawId + 1;
+      next.cardState.lastDrawId = drawnCardId;
+      const drawCard = buildCard(drawCardKey, drawnCardId);
+      next.cardState.current = drawCard;
+      next.cardState.cardsRemainingInTurn -= 1;
+
+      next.meta.rev += 1;
+      next.meta.updatedAt = now;
+      next.log.lastEvent = {
+        type: ACTION_TYPES.PROCEED_TO_CARD_DRAW,
+        by: action.payload.senderId ?? null,
+        at: now,
+      };
+      return next;
+    }
+
+    case ACTION_TYPES.DRAW_CARD: {
+      next.flow.step = steps['SHOWING_CARD'];
+      next.flow.blockedUntil =
+        now + steps['SHOWING_CARD'].flowControl.current.delayMs;
       next.meta.rev += 1;
       next.meta.updatedAt = now;
       next.log.lastEvent = {
@@ -209,9 +241,41 @@ export function applyAction(state, action, ctx = {}) {
       return next;
     }
 
+    case ACTION_TYPES.APPLY_CARD_EFFECT: {
+      next.flow.step = steps['PROCESSING_CARD'];
+      next.flow.blockedUntil =
+        now + steps['PROCESSING_CARD'].flowControl.current.delayMs;
+
+      let nextCard = next;
+      try {
+        nextCard = applyCardEffect(next, next.cardState.current);
+      } catch (error) {
+        console.error('[ENGINE]', error);
+        throw error;
+      }
+
+      nextCard.flow.step.flowControl.nextTransition =
+        transitionResolvers['PROCESSING_CARD'](nextCard);
+
+      nextCard.meta.rev += 1;
+      nextCard.meta.updatedAt = now;
+      nextCard.log.lastEvent = {
+        type: ACTION_TYPES.APPLY_CARD_EFFECT,
+        by: action.payload.senderId ?? null,
+        at: now,
+      };
+      return nextCard;
+    }
+
     case ACTION_TYPES.FINISH_TURN: {
-      next.flow.blockedUntil = now + 1500;
+      next.flow.step = steps['END_TURN'];
+      if (next.cardState.current !== null) {
+        next.deck.discardPile.push(next.cardState.current);
+        next.cardState.current = null;
+      }
       next.flow.turn += 1;
+      next.flow.step.flowControl.nextTransition =
+        transitionResolvers['END_TURN'](next);
       next.meta.rev += 1;
       next.meta.updatedAt = now;
       next.log.lastEvent = {
@@ -221,7 +285,22 @@ export function applyAction(state, action, ctx = {}) {
       };
       return next;
     }
-    // TODO: Fix, remenber to zero the turn count
+
+    case ACTION_TYPES.FINISH_ROUND: {
+      next.flow.step = steps['END_ROUND'];
+      next.flow.step.flowControl.nextTransition =
+        transitionResolvers['END_ROUND'](next);
+      next.flow.turn = 0;
+      next.flow.round += 1;
+      next.meta.rev += 1;
+      next.meta.updatedAt = now;
+      next.log.lastEvent = {
+        type: ACTION_TYPES.FINISH_ROUND,
+        by: action.payload.senderId ?? null,
+        at: now,
+      };
+      return next;
+    }
     default:
       const err = new Error('Unknown action type');
       err.code = 'UNKNOWN_ACTION_TYPE';
