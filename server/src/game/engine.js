@@ -3,7 +3,7 @@ import { PLAYER_STATUS } from '../../../shared/src/constants/playerStatus.js';
 import { steps } from '../../../shared/src/definitions/steps.js';
 import { composeDeck } from './cards/deckComposer.js';
 import { components } from '../../../shared/src/definitions/components.js';
-import { applyGameStartBugs } from './gameHelpers.js';
+import { addPointsToPlayerHand, applyGameStartBugs } from './gameHelpers.js';
 import { transitionResolvers } from './transitionResolvers.js';
 import { applyDecision } from './decisions/decisionProcessing.js';
 import { getAvailableDecisions } from './decisions/decisionAvailability.js';
@@ -100,8 +100,12 @@ export function applyAction(state, action, ctx = {}) {
       next.flow.step = steps['ROUND_START'];
       next.flow.blockedUntil =
         now + steps['ROUND_START'].flowControl.current.delayMs;
-      next.players.forEach((player) => {
-        player.handPoints = next.gameConfig.taskPoints.playerPerRound;
+      next.players = next.players.map((player) => {
+        return addPointsToPlayerHand(
+          player,
+          next.gameConfig.taskPoints.playerPerRound,
+          next.gameConfig.taskPoints.maxPlayerPoints,
+        );
       });
       next.flow.round += 1;
       next.flow.turn = 0;
