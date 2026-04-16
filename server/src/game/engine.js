@@ -274,7 +274,22 @@ export function applyAction(state, action, ctx = {}) {
       };
       return next;
     }
-    // TODO: Fix, remenber to zero the turn count
+
+    case ACTION_TYPES.FINISH_ROUND: {
+      next.flow.step = steps['END_ROUND'];
+      next.flow.step.flowControl.nextTransition =
+        transitionResolvers['END_ROUND'](next);
+      next.flow.turn = 0;
+      next.flow.round += 1;
+      next.meta.rev += 1;
+      next.meta.updatedAt = now;
+      next.log.lastEvent = {
+        type: ACTION_TYPES.FINISH_ROUND,
+        by: action.payload.senderId ?? null,
+        at: now,
+      };
+      return next;
+    }
     default:
       const err = new Error('Unknown action type');
       err.code = 'UNKNOWN_ACTION_TYPE';

@@ -27,6 +27,6 @@ export const transitionResolvers = {
   },
   END_ROUND: (state) => {
     // IF END_GAME -> 'END_GAME' ELSE 'ROUND_START'
-    return state.endGame ? 'END_GAME' : 'ROUND_START';
+        return { actionType: ACTION_TYPES.START_ROUND, trigger: 'AUTO' };
   },
 };
