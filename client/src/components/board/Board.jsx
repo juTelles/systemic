@@ -1,7 +1,7 @@
 // eslint-disable-next-line no-unused-vars
 import { useEffect, useRef, useState, useLayoutEffect, useMemo } from 'react';
 import { decisions as decisionsDefinitions } from '../../../../shared/src/definitions/decisions.js';
-import ComponentNode from '../componentNode/ComponentNode.jsx';
+import ComponentNode from './ComponentNode.jsx';
 import { components as componentsDefinitions } from '../../../../shared/src/definitions/components.js';
 import styles from './Board.module.css';
 import { isBoardNodeDisabled } from '../../helpers/boardTargetRules.js';
