@@ -26,7 +26,7 @@ export const steps = Object.freeze({
     flowControl: {
       current: {
         accepts: 'AUTO',
-        delayMs: 1500,
+        delayMs: 7000,
       },
       nextTransition: {
         actionType: ACTION_TYPES.START_ROUND,
@@ -45,7 +45,7 @@ export const steps = Object.freeze({
     flowControl: {
       current: {
         accepts: 'AUTO',
-        delayMs: 1500,
+        delayMs: 2000,
       },
       nextTransition: {
         actionType: ACTION_TYPES.START_TURN,
@@ -59,14 +59,14 @@ export const steps = Object.freeze({
     flowControl: {
       current: {
         accepts: 'AUTO',
-        delayMs: 1500,
+        delayMs: 2000,
       },
       nextTransition: {
         actionType: ACTION_TYPES.ASK_FOR_DECISION,
         trigger: 'AUTO',
       },
     },
-    effects: ['CONFIG_CURRENT_PLAYER', 'SHOW_PLAYER_TURN','TIME_OUT'],
+    effects: ['CONFIG_CURRENT_PLAYER', 'SHOW_PLAYER_TURN', 'TIME_OUT'],
   },
   AWAIT_DECISION: {
     name: 'AWAIT_DECISION',
@@ -90,7 +90,7 @@ export const steps = Object.freeze({
     flowControl: {
       current: {
         accepts: 'AUTO',
-        delayMs: 1500,
+        delayMs: 0,
       },
       nextTransition: {
         actionType: null,
@@ -110,7 +110,6 @@ export const steps = Object.freeze({
     flowControl: {
       current: {
         accepts: 'PLAYER_INPUT',
-        actionRemaining: 0,
       },
       nextTransition: {
         actionType: ACTION_TYPES.DRAW_CARD,
@@ -138,6 +137,7 @@ export const steps = Object.freeze({
     flowControl: {
       current: {
         accepts: 'AUTO',
+        delayMs: 3000,
       },
       nextTransition: {
         actionType: null,
@@ -185,7 +185,7 @@ export const steps = Object.freeze({
       'APPLY_END_ROUND_EFFECTS',
       'CHECK_END_GAME',
       'TIME_OUT',
-      'UPDATE_NEXT_VALID_STEP'
+      'UPDATE_NEXT_VALID_STEP',
     ],
     // IF  isCriticalRound & isCriticalState -> 'FINISH_GAME' with lost ELSE startCriticalRoundFlag ->'START_ROUND' with isCriticalRound true ELSE -> 'START_ROUND'
   },
