@@ -200,7 +200,12 @@ export function applyAction(state, action, ctx = {}) {
       next.flow.step = steps['AWAIT_CARD_DRAW'];
       next.flow.blockedUntil = now + 1500;
       next.decisionState = createDecisionState();
-      next.flow.turn += 1;
+      const drawCardKey = next.deck.drawPile.shift();
+      const drawnCardId = next.cardState.lastDrawId + 1;
+      next.cardState.lastDrawId = drawnCardId;
+      const drawCard = buildCard(drawCardKey, drawnCardId);
+      next.cardState.current = drawCard;
+
       next.meta.rev += 1;
       next.meta.updatedAt = now;
       next.log.lastEvent = {
