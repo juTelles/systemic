@@ -146,6 +146,20 @@ export const errorMessages = {
     en: 'An unexpected error occurred while applying the decision, please try again.',
   },
 
+  [ERRORS.APPLY_CARD_EFFECT_ERROR]: {
+    pt: 'Ocorreu um erro ao aplicar o efeito da carta.',
+    en: 'An error occurred while applying the card effect.',
+  },
+
+    [ERRORS.CARD_DRAW_ERROR]: {
+    pt: 'Ocorreu um erro ao comprar a carta.',
+    en: 'An error occurred while drawing the card.',
+  },
+  [ERRORS.FINISH_DECISION_ERROR]: {
+    pt: 'Ocorreu um erro ao finalizar a etapa de decisão, por favor, tente novamente.',
+    en: 'An unexpected error occurred while finishing the decision step, please try again.',
+  },
+
   [ERRORS.INTERNAL_ERROR]: {
     pt: 'Ocorreu um erro inesperado.',
     en: 'An unexpected error occurred.',

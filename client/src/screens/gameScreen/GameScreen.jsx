@@ -67,7 +67,7 @@ function GameScreen({ roomId, localPlayerId, onSessionInvalid }) {
     const result = await endDecision();
     if (!result.ok) {
       console.error('Error finishing decision:', result.error);
-      setShowErrorDialog({ content: getErrorMessage('DECISION_ERROR') });
+      setShowErrorDialog({ content: getErrorMessage('FINISH_DECISION_ERROR') });
     }
     setInstructionKey(null);
     setSelectedDecisionUIId(null);
@@ -77,9 +77,9 @@ function GameScreen({ roomId, localPlayerId, onSessionInvalid }) {
   const handleCardDraw = async () => {
     const result = await drawCard();
     if (!result.ok) {
-      console.error('Error finishing decision:', result.error);
+      console.error('Error drawing card:', result.error);
       setShowErrorDialog({
-        content: getErrorMessage('APPLY_CARD_EFFECT_ERROR'),
+        content: getErrorMessage('DRAW_CARD_ERROR'),
       });
     }
   };
