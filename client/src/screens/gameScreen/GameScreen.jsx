@@ -11,15 +11,18 @@ import ModalDialog from '../../components/modalDialog/ModalDialog.jsx';
 import { getErrorMessage } from '../../texts/errorsMessages.js';
 
 function GameScreen({ roomId, localPlayerId, onSessionInvalid }) {
-  const { submitDecision, endDecision } = useRoomActions(
+  const { submitDecision, endDecision, drawCard } = useRoomActions(
     roomId,
     localPlayerId,
   );
   const { roomState, isLoading, errorCode } = useStatePolling(roomId);
+
   const previousPhaseRef = useRef(null);
 
   const [selectedDecisionUIId, setSelectedDecisionUIId] = useState(null);
+
   const [instructionKey, setInstructionKey] = useState(null);
+
   const [showGameStartDialog, setShowGameStartDialog] = useState(false);
   const [showErrorDialog, setShowErrorDialog] = useState(null);
 
@@ -43,9 +46,10 @@ function GameScreen({ roomId, localPlayerId, onSessionInvalid }) {
       console.error('Error applying decision:', result.code);
       setShowErrorDialog({ content: getErrorMessage('DECISION_ERROR') });
     }
-// TODO: Investigate: should I show the real error message instead of a
-// generic one? It could confuse the player
-    if (result.ok && result.roomState?.decisionState?.validationError !== null) {
+    if (
+      result.ok &&
+      result.roomState?.decisionState?.validationError !== null
+    ) {
       const validationError = result?.roomState?.decisionState?.validationError;
       const errorMessage = {
         title: getErrorMessage(validationError.type),
@@ -57,15 +61,28 @@ function GameScreen({ roomId, localPlayerId, onSessionInvalid }) {
     setSelectedDecisionUIId(null);
   }
 
+  // TODO: Investigate: should I show the real error message instead of a
+  // generic one? It could confuse the player
   async function handleFinishDecision() {
     const result = await endDecision();
     if (!result.ok) {
       console.error('Error finishing decision:', result.error);
+      setShowErrorDialog({ content: getErrorMessage('FINISH_DECISION_ERROR') });
     }
     setInstructionKey(null);
     setSelectedDecisionUIId(null);
     return;
   }
+
+  const handleCardDraw = async () => {
+    const result = await drawCard();
+    if (!result.ok) {
+      console.error('Error drawing card:', result.error);
+      setShowErrorDialog({
+        content: getErrorMessage('DRAW_CARD_ERROR'),
+      });
+    }
+  };
 
   useEffect(() => {
     if (isLoading) return;
@@ -157,6 +174,7 @@ function GameScreen({ roomId, localPlayerId, onSessionInvalid }) {
           isReadOnlyTurn={isReadOnlyTurn}
           roomId={roomId}
           handleFinishDecision={handleFinishDecision}
+          handleCardDraw={handleCardDraw}
         />
       </div>
     </div>

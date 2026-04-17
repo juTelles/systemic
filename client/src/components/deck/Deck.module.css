@@ -1,0 +1,143 @@
+.deckWrapper {
+  margin-top: 15px;
+  position: relative;
+  width: var(--card-width);
+  height: var(--card-height);
+}
+.cardBackMain {
+  background-color: var(--dark-blue);
+  border: 2px solid var(--color-ciano-extra-light);
+  box-shadow: 0 0 5px var(--color-extra-light);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.logoText {
+  font-family: ui-monospace, monospace;
+  color: var(--color-ciano-neon);
+  font-weight: bold;
+  text-shadow: 0 0 10px var(--color-ciano-neon);
+  z-index: 2;
+  font-size: 28px;
+}
+
+.cardBackShadow,
+.cardBackMain {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  max-height: 100%;
+  border-radius: 12px;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.cardBackShadow {
+  background: var(--dark-blue);
+  border: 2px solid var(--color-ciano-extra-light);
+}
+
+.cardIcon {
+  font-size: 24px;
+  color: var(--text-main);
+  text-shadow: 0 0 10px var(--color-ciano-neon);
+}
+
+.cardBackShadow:nth-child(1) {
+  transform: translate(12px, 12px);
+  z-index: 1;
+}
+
+.cardBackShadow:nth-child(2) {
+  transform: translate(9px, 9px);
+  z-index: 2;
+}
+
+.cardBackMain {
+  transform: translate(6px, 6px);
+  z-index: 3;
+  overflow: hidden;
+}
+
+.cardBackFlipper {
+  transform: translate(2px, 2px);
+  z-index: 4;
+}
+
+.deckWrapper:hover .cardBackShadow:nth-child(1) {
+  transform: translate(12px, 12px);
+}
+
+.deckWrapper:hover .cardBackShadow:nth-child(2)  {
+  transform: translate(7px, 7px);
+}
+
+.deckWrapper:hover .cardBackMain {
+  transform: translate(3px, 3px);
+}
+
+.deckWrapper:hover .cardBackFlipper {
+  transform: translate(-2px, -2px);
+}
+
+
+.deckWrapper .cardBackShadow:nth-child(2)[data-status="true"] {
+  transform: translate(7px, 7px);
+}
+
+.cardBackMain[data-status="true"] {
+  transform: translate(3px, 3px);
+}
+
+
+/* FirstCard Styles */
+.firstCardContainer {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  perspective: 1000px;
+  z-index: 10;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.firstCardWrapper {
+  width: 100%;
+  height: 100%;
+  transition: transform 0.6s;
+  transform-style: preserve-3d; /* Essential: keeps front/back in 3D */
+  position: relative;
+}
+
+.isFlipped {
+  transform: rotateY(180deg);
+  z-index: 10;
+}
+
+.cardBackFlipper, .cardFront {
+  position: absolute; /* Stack them */
+  backface-visibility: hidden; /* Essential: hides the 'under' side */
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  max-height: 100%;
+  border-radius: 12px;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.cardBackFlipper {
+  background-color: var(--dark-blue);
+  border: 2px solid var(--color-ciano-neon);
+  box-shadow: 0 0 10px var(--color-extra-light);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+
+}
+.cardFront {
+    transform: rotateY(180deg); /* Pre-flip the back side */
+}

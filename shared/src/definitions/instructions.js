@@ -96,7 +96,7 @@ function cardInstructionBuilder(currentCard, playerNickname, lang = 'pt') {
     STRUCTURAL: bugCardInstructionBuilder,
     REQUESTS: bugCardInstructionBuilder,
     POINTS: pointsCardInstructionBuilder,
-    EVENTS: eventsCardInstructionBuilder
+    EVENT: eventsCardInstructionBuilder
   };
   const builder = instructionBuilders[currentCard?.type];
   if (!builder) {
