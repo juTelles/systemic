@@ -103,7 +103,7 @@ export const cardsTxt = {
 
     EVENT_API_CONGESTION: {
       title: {
-        pt: 'Congestionamento de API',
+        pt: 'API em Colapso',
         en: 'API Congestion',
       },
       description: {
