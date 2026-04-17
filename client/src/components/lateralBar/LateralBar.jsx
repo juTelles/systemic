@@ -13,6 +13,7 @@ function LateralBar({
   roomId,
   isReadOnlyTurn,
   handleFinishDecision,
+  isFlipped,
   handleCardDraw,
 }) {
   const isDecisionStep = roomState?.flow?.step?.name === 'AWAIT_DECISION';

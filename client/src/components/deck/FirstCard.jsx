@@ -13,10 +13,6 @@ function FirstCard({ roomId, localPlayerId, currentCard, isFlipped }) {
           {currentCard !== null ? <CardFace currentCard={currentCard} /> : null}
         </div>
         <CardBack isFlipped={isFlipped} isFlipperBackCard={true} />
-        {/* <div className={styles.cardBackFlipper}>
-          <h2 className={styles.logoText}>Systemic</h2>
-          <span className={styles.cardIcon}>{'{#}'}</span>
-        </div> */}
       </div>
     </div>
   );

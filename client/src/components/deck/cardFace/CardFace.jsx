@@ -2,7 +2,6 @@
 // import react, { Children, useEffect, useState } from 'react';
 import styles from './CardFace.module.css';
 import { getCardText } from '../../../texts/cardsTxt';
-import { GoAlertFill } from 'react-icons/go';
 
 function CardFace({ roomId, localPlayerId, currentCard }) {
   const { type, effect } = currentCard || {};

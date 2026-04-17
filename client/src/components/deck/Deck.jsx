@@ -2,7 +2,7 @@
 // import react, { Children, useEffect, useState } from 'react';
 import styles from './Deck.module.css';
 import CardBack from './CardBack';
-import FistCard from './FirstCard';
+import FirstCard from './FirstCard';
 
 function Deck({ roomId, localPlayerId, currentCard, isFlipped }) {
   return (
@@ -10,7 +10,7 @@ function Deck({ roomId, localPlayerId, currentCard, isFlipped }) {
       <div className={styles.cardBackShadow} data-status={isFlipped}></div>
       <div className={styles.cardBackShadow} data-status={isFlipped}></div>
       <CardBack isFlipped={isFlipped} />
-      <FistCard currentCard={currentCard} isFlipped={isFlipped} />
+      <FirstCard currentCard={currentCard} isFlipped={isFlipped} />
     </div>
   );
 }
