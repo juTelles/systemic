@@ -1,21 +1,30 @@
 // eslint-disable-next-line no-unused-vars
 import styles from './LateralBar.module.css';
 import AbsorbedBugsPanel from '../absorbedBugsPanel/AbsorbedBugsPanel';
-import CardBack from '../cardBack/CardBack';
-import { BsQuestionCircle } from "react-icons/bs";
-import { VscSignOut } from "react-icons/vsc";
-import { IoSettingsOutline } from "react-icons/io5";
+import Deck from '../deck/Deck';
+import { BsQuestionCircle } from 'react-icons/bs';
+import { VscSignOut } from 'react-icons/vsc';
+import { IoSettingsOutline } from 'react-icons/io5';
 import Button from '../button/Button';
 
 function LateralBar({
   roomState,
-  // isPreGame,
-  // localPlayerId,
-  // roomId,
+  localPlayerId,
+  roomId,
   isReadOnlyTurn,
-  handleFinishDecision
+  handleFinishDecision,
+  handleCardDraw,
 }) {
   const isDecisionStep = roomState?.flow?.step?.name === 'AWAIT_DECISION';
+  const isShowingCardStep =
+    roomState?.flow?.step?.name === 'SHOWING_CARD' ||
+    roomState?.flow?.step?.name === 'PROCESSING_CARD';
+  const canDrawCard =
+    roomState?.flow?.step?.name === 'AWAIT_CARD_DRAW' && !isReadOnlyTurn;
+
+  const handleUnallowedClick = () => {
+    return;
+  };
 
   return (
     <div className={styles.lateralBar}>
@@ -27,8 +36,17 @@ function LateralBar({
           <IoSettingsOutline size={48} className={styles.icon} />
         </button>
       </div>
-      <div className={styles.cardContainer}>
-        <CardBack />
+      <div
+        className={styles.deckContainer}
+        style={{ cursor: canDrawCard ? 'pointer' : 'default' }}
+        onClick={canDrawCard ? handleCardDraw : handleUnallowedClick}
+      >
+        <Deck
+          roomId={roomId}
+          localPlayerId={localPlayerId}
+          currentCard={isShowingCardStep ? roomState?.cardState?.current : null}
+          isFlipped={isShowingCardStep ? true : false}
+        />
       </div>
       <div className={styles.absorbedBugsPanelContainer}>
         <AbsorbedBugsPanel />
