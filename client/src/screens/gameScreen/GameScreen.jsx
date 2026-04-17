@@ -11,15 +11,18 @@ import ModalDialog from '../../components/modalDialog/ModalDialog.jsx';
 import { getErrorMessage } from '../../texts/errorsMessages.js';
 
 function GameScreen({ roomId, localPlayerId, onSessionInvalid }) {
-  const { submitDecision, endDecision } = useRoomActions(
+  const { submitDecision, endDecision, drawCard } = useRoomActions(
     roomId,
     localPlayerId,
   );
   const { roomState, isLoading, errorCode } = useStatePolling(roomId);
+
   const previousPhaseRef = useRef(null);
 
   const [selectedDecisionUIId, setSelectedDecisionUIId] = useState(null);
+
   const [instructionKey, setInstructionKey] = useState(null);
+
   const [showGameStartDialog, setShowGameStartDialog] = useState(false);
   const [showErrorDialog, setShowErrorDialog] = useState(null);
 
@@ -66,6 +69,16 @@ function GameScreen({ roomId, localPlayerId, onSessionInvalid }) {
     setSelectedDecisionUIId(null);
     return;
   }
+
+  const handleCardDraw = async () => {
+    const result = await drawCard();
+    if (!result.ok) {
+      console.error('Error finishing decision:', result.error);
+      setShowErrorDialog({
+        content: getErrorMessage('APPLY_CARD_EFFECT_ERROR'),
+      });
+    }
+  };
 
   useEffect(() => {
     if (isLoading) return;
@@ -157,6 +170,7 @@ function GameScreen({ roomId, localPlayerId, onSessionInvalid }) {
           isReadOnlyTurn={isReadOnlyTurn}
           roomId={roomId}
           handleFinishDecision={handleFinishDecision}
+          handleCardDraw={handleCardDraw}
         />
       </div>
     </div>
