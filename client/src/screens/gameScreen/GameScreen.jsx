@@ -60,10 +60,13 @@ function GameScreen({ roomId, localPlayerId, onSessionInvalid }) {
     setSelectedDecisionUIId(null);
   }
 
+  // TODO: Investigate: should I show the real error message instead of a
+  // generic one? It could confuse the player
   async function handleFinishDecision() {
     const result = await endDecision();
     if (!result.ok) {
       console.error('Error finishing decision:', result.error);
+      setShowErrorDialog({ content: getErrorMessage('DECISION_ERROR') });
     }
     setInstructionKey(null);
     setSelectedDecisionUIId(null);
