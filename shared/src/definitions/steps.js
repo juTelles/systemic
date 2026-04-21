@@ -240,7 +240,7 @@ export const steps = Object.freeze({
     stepInstructionKey: null,
     flowControl: {
       current: {
-        accepts: 'AUTO',
+        accepts: 'PLAYER_INPUT',
       },
       nextTransition: {
         actionType: ACTION_TYPES.CLEAN_ROOM_STATE,

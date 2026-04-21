@@ -404,8 +404,6 @@ export function applyAction(state, action, ctx = {}) {
 
     case ACTION_TYPES.FINISH_GAME: {
       next.flow.step = structuredClone(steps['END_GAME']);
-      next.flow.blockedUntil =
-        now + steps['END_GAME'].flowControl.current.delayMs;
       next.meta.rev += 1;
       next.meta.updatedAt = now;
       next.log.lastEvent = {
