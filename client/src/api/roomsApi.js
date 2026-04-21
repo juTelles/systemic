@@ -25,6 +25,12 @@ export async function createRoom() {
   });
 }
 
+export async function deleteRoom(roomId) {
+  return apiFetch(`/rooms/${roomId}/delete`, {
+    method: "POST",
+  });
+}
+
 export async function getRoomState(roomId, rev) {
   const result = await apiFetch(`/rooms/${roomId}/state?rev=${rev}`);
   return result;
