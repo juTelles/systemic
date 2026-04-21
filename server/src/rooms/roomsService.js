@@ -25,6 +25,7 @@ export function createRoomsService() {
     listRooms,
     createRoom,
     leaveRoom,
+    cleanRoomState,
   };
 
   function createRoom() {
