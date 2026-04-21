@@ -30,10 +30,24 @@ export function useRoomActions(roomId, localPlayerId) {
     });
   }
 
+  async function returnToLobby() {
+    return sendAction(roomId, ACTION_TYPES.RETURN_TO_LOBBY, {
+      senderId: localPlayerId,
+    });
+  }
+
+  async function cleanRoomState() {
+    return sendAction(roomId, ACTION_TYPES.CLEAN_ROOM_STATE, {
+      senderId: localPlayerId,
+    });
+  }
+
+
   return {
     setReady,
     submitDecision,
     endDecision,
-    drawCard
+    returnToLobby,
+    cleanRoomState
   };
 }
