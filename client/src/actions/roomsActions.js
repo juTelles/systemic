@@ -36,18 +36,10 @@ export function useRoomActions(roomId, localPlayerId) {
     });
   }
 
-  async function cleanRoomState() {
-    return sendAction(roomId, ACTION_TYPES.CLEAN_ROOM_STATE, {
-      senderId: localPlayerId,
-    });
-  }
-
-
   return {
     setReady,
     submitDecision,
     endDecision,
     returnToLobby,
-    cleanRoomState
   };
 }
