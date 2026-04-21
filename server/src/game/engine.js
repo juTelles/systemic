@@ -308,9 +308,6 @@ export function applyAction(state, action, ctx = {}) {
         throw error;
       }
 
-      nextCard.flow.step.flowControl.nextTransition =
-        transitionResolvers['PROCESSING_CARD'](nextCard);
-
       nextCard.meta.rev += 1;
       nextCard.meta.updatedAt = now;
       nextCard.log.lastEvent = {
