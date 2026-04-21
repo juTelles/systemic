@@ -373,9 +373,9 @@ export function applyAction(state, action, ctx = {}) {
         const systemChange = processSystemHealth(next);
         if (systemChange.updated) {
           next.system = systemChange.system;
-          decisionNext.flow.step.stepInstructionKey =
+          next.flow.step.stepInstructionKey =
             systemChange.step.stepInstructionKey;
-          decisionNext.flow.blockedUntil =
+          next.flow.blockedUntil =
             now + steps['END_ROUND'].flowControl.current.delayMs + 5000;
         }
       }
