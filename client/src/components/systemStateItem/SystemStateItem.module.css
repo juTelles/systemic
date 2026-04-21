@@ -1,19 +1,19 @@
 /* color mapping */
-.statusCheckerActive[data-status="healthy"] {
+.statusCheckerActive[data-status="HEALTHY"] {
   --led-neon: var(--color-green-neon);
   --led-dark: var(--color-green-dark);
   --led-light: var(--color-green-light);
 }
-.statusCheckerActive[data-status="warning"] {
+.statusCheckerActive[data-status="WARNING"] {
   --led-neon: var(--color-yellow-neon);
   --led-dark: var(--color-yellow-dark);
   --led-light: var(--color-yellow-light);
 }
-.statusCheckerActive[data-status="critical"] {
+.statusCheckerActive[data-status="CRITICAL"] {
   --led-neon: var(--color-red-neon);
   --led-dark: var(--color-red-dark);
   --led-light: var(--color-red-light);
-  animation: pulsarCritico 0.5s infinite alternate ease-in-out;
+    animation: pulse 0.2s infinite alternate ease-in-out;
 }
 .systemStateItemWrapper {
   width: 100%;
@@ -54,7 +54,7 @@
   align-items: center;
   justify-content: center;
 }
-@keyframes pulsarCritico {
+@keyframes pulse {
   from {
     background-color: #c2002d;
     box-shadow:

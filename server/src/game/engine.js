@@ -1,13 +1,24 @@
 import { ACTION_TYPES } from '../../../shared/src/constants/actionsTypes.js';
 import { PLAYER_STATUS } from '../../../shared/src/constants/playerStatus.js';
+import { SYSTEM_HEALTH_STATES } from '../../../shared/src/constants/systemHealthStates.js';
+import { decisions as decisionsDefinitions } from '../../../shared/src/definitions/decisions.js';
 import { steps } from '../../../shared/src/definitions/steps.js';
 import { composeDeck } from './cards/deckComposer.js';
 import { components } from '../../../shared/src/definitions/components.js';
-import { addPointsToPlayerHand, applyGameStartBugs } from './gameHelpers.js';
-import { transitionResolvers } from './transitionResolvers.js';
-import { applyDecision } from './decisions/decisionProcessing.js';
 import { getAvailableDecisions } from './decisions/decisionAvailability.js';
-import { decisions as decisionsDefinitions } from '../../../shared/src/definitions/decisions.js';
+import { applyDecision } from './decisions/decisionProcessing.js';
+import { composeDeck } from './cards/deckComposer.js';
+import { buildCard } from './cards/cardBuilder.js';
+import { applyCardEffect } from './cards/cardApplier.js';
+import { processSystemHealth } from './systemHealthState/SystemHealthProcessor.js';
+import { processEndRoundRequestPropagation } from './propagationProcessor.js';
+import { transitionResolvers } from './transitionResolvers.js';
+import { isGameReadyToStart } from './selectors.js';
+import {
+  applyGameStartBugs,
+  addStartRoundPointsToPlayers,
+  cleanPlayerHandPoints,
+} from './gameHelpers.js';
 import {
   createDecisionState,
   createValidationErrorState,
@@ -100,14 +111,18 @@ export function applyAction(state, action, ctx = {}) {
       next.flow.step = steps['ROUND_START'];
       next.flow.blockedUntil =
         now + steps['ROUND_START'].flowControl.current.delayMs;
-      next.players = next.players.map((player) => {
-        return addPointsToPlayerHand(
-          player,
-          next.gameConfig.taskPoints.playerPerRound,
-          next.gameConfig.taskPoints.maxPlayerPoints,
-        );
-      });
-      next.flow.round += 1;
+
+      if (next.system.isCrisisRound) {
+        next.system.isCrisisRound = false;
+      }
+
+      const handPointsToAdd = next.gameConfig.taskPoints.playerPerRound;
+      next.players = addStartRoundPointsToPlayers(
+        next.players,
+        handPointsToAdd,
+        next.gameConfig.taskPoints.maxPlayerPoints,
+      );
+      next.flow.crisisRoundCounter += 1;
       next.flow.turn = 0;
       next.meta.rev += 1;
       next.meta.updatedAt = now;
@@ -118,9 +133,34 @@ export function applyAction(state, action, ctx = {}) {
       };
       return next;
     }
-    // TODO:  feature lastEvent has to be dinamic: ROUND_START sets next.log.lastEvent.type to ACTION_TYPES.END_TURN,
-    // which is misleading and will make client-side event handling/debugging
-    // incorrect. This should log ACTION_TYPES.ROUND_START (and similarly TURN_START currently logs END_TURN).
+
+    case ACTION_TYPES.START_CRISIS_ROUND: {
+      next.flow.step = steps['CRISIS_ROUND_START'];
+      next.flow.blockedUntil =
+        now + steps['CRISIS_ROUND_START'].flowControl.current.delayMs;
+
+      next.system.isCrisisRound = true;
+      next.system.pendingCrisisRound = false;
+      const handPointsToAddCrisis =
+        next.gameConfig.taskPoints.playerPerRound +
+        next.gameConfig.taskPoints.playerPerCrisisRound;
+
+      next.players = addStartRoundPointsToPlayers(
+        next.players,
+        handPointsToAddCrisis,
+        next.gameConfig.taskPoints.maxPlayerPoints,
+      );
+
+      next.flow.turn = 0;
+      next.meta.rev += 1;
+      next.meta.updatedAt = now;
+      next.log.lastEvent = {
+        type: ACTION_TYPES.START_CRISIS_ROUND,
+        by: action.payload.senderId ?? null,
+        at: now,
+      };
+      return next;
+    }
 
     case ACTION_TYPES.START_TURN: {
       next.flow.step = steps['TURN_START'];
@@ -183,6 +223,20 @@ export function applyAction(state, action, ctx = {}) {
       const decisionNext = result.next;
       decisionNext.flow.step = steps['PROCESSING_DECISION'];
 
+      if (
+        action.payload.chosen === 'RESOLVE_REQUESTS_BUG_TESTED' ||
+        action.payload.chosen === 'RESOLVE_REQUESTS_BUG'
+      ) {
+        const systemChange = processSystemHealth(decisionNext);
+        if (systemChange.updated) {
+          decisionNext.system = systemChange.system;
+          decisionNext.flow.step.stepInstructionKey =
+            systemChange.step.stepInstructionKey;
+          decisionNext.flow.blockedUntil =
+            now + steps['PROCESSING_DECISION'].flowControl.current.delayMs;
+        }
+      }
+
       let decisionsAvailableApply = [];
       decisionsAvailableApply = getAvailableDecisions(
         decisionNext,
@@ -228,9 +282,7 @@ export function applyAction(state, action, ctx = {}) {
     }
 
     case ACTION_TYPES.DRAW_CARD: {
-      next.flow.step = steps['SHOWING_CARD'];
-      next.flow.blockedUntil =
-        now + steps['SHOWING_CARD'].flowControl.current.delayMs;
+      next.flow.step = structuredClone(steps['SHOWING_CARD']);
       next.meta.rev += 1;
       next.meta.updatedAt = now;
       next.log.lastEvent = {
@@ -254,9 +306,6 @@ export function applyAction(state, action, ctx = {}) {
         throw error;
       }
 
-      nextCard.flow.step.flowControl.nextTransition =
-        transitionResolvers['PROCESSING_CARD'](nextCard);
-
       nextCard.meta.rev += 1;
       nextCard.meta.updatedAt = now;
       nextCard.log.lastEvent = {
@@ -265,6 +314,30 @@ export function applyAction(state, action, ctx = {}) {
         at: now,
       };
       return nextCard;
+    }
+    case ACTION_TYPES.CHECK_SYSTEM_HEALTH: {
+      next.flow.step = structuredClone(steps['PROCESSING_SYSTEM_HEALTH']);
+
+      const systemChange = processSystemHealth(next);
+      if (systemChange.updated) {
+        next.system = systemChange.system;
+        next.flow.step.stepInstructionKey =
+          systemChange.step.stepInstructionKey;
+        next.flow.blockedUntil =
+          now + steps['PROCESSING_SYSTEM_HEALTH'].flowControl.current.delayMs;
+      }
+
+      next.flow.step.flowControl.nextTransition =
+        transitionResolvers['PROCESSING_SYSTEM_HEALTH'](next);
+
+      next.meta.rev += 1;
+      next.meta.updatedAt = now;
+      next.log.lastEvent = {
+        type: ACTION_TYPES.CHECK_SYSTEM_HEALTH,
+        by: action.payload.senderId ?? null,
+        at: now,
+      };
+      return next;
     }
 
     case ACTION_TYPES.FINISH_TURN: {
@@ -288,8 +361,30 @@ export function applyAction(state, action, ctx = {}) {
 
     case ACTION_TYPES.FINISH_ROUND: {
       next.flow.step = steps['END_ROUND'];
+      next.flow.blockedUntil =
+        now + steps['END_ROUND'].flowControl.current.delayMs;
+
+      if (
+        next.system.healthState === SYSTEM_HEALTH_STATES.WARNING ||
+        next.system.healthState === SYSTEM_HEALTH_STATES.CRITICAL
+      ) {
+        next.components = processEndRoundRequestPropagation(next.components);
+        const systemChange = processSystemHealth(next);
+        if (systemChange.updated) {
+          next.system = systemChange.system;
+          next.flow.step.stepInstructionKey =
+            systemChange.step.stepInstructionKey;
+          next.flow.blockedUntil =
+            now + steps['END_ROUND'].flowControl.current.delayMs + 5000; // Adding extra time for the propagation effects to be processed and for the players to see the changes in the system health before the next round starts
+        }
+      }
+
       next.flow.step.flowControl.nextTransition =
         transitionResolvers['END_ROUND'](next);
+
+      if (next.system.isCrisisRound) {
+        next.flow.crisisRoundCounter += 1;
+      }
       next.flow.turn = 0;
       next.flow.round += 1;
       next.meta.rev += 1;

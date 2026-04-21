@@ -3,7 +3,25 @@ import { isComponentEligibleForTests } from '../../../shared/src/game/helpers.js
 import { createError } from '../utils/createErrors.js';
 import { ERRORS } from '../../../shared/src/constants/errors.js';
 
-export function existsComponentEligibleForBugResolvByType(
+export {
+  existsComponentEligibleForBugResolvByType,
+  existsComponentEligibleForTests,
+  applyBug,
+  applyBugAndUpdateComponents,
+  applyGameStartBugs,
+  applyTest,
+  resolveBug,
+  subtractPointsToPlayer,
+  addPointsToPlayerBank,
+  addPointsToPlayerBankByHolding,
+  addPointsToPlayerHand,
+  addStartRoundPointsToPlayers,
+  // cleanPlayerHandPoints,
+  bankPlayersPointsForCrisisRound,
+  // updatePlayer,
+};
+
+function existsComponentEligibleForBugResolvByType(
   components,
   componentType,
   withTests = false,
@@ -19,7 +37,7 @@ export function existsComponentEligibleForBugResolvByType(
   return exists;
 }
 
-export function existsComponentEligibleForTests(components) {
+function existsComponentEligibleForTests(components) {
   const { byType } = components;
   const exists =
     byType.LOCAL.some((component) =>
@@ -34,7 +52,7 @@ export function existsComponentEligibleForTests(components) {
   return exists;
 }
 
-export function applyBug(component, components, amount = 1) {
+function applyBug(component, components, amount = 1) {
   const saturated = component.bugAmount + amount >= component.saturationLimit;
 
   if (saturated && component.type !== 'REQUESTS') {
@@ -51,7 +69,30 @@ export function applyBug(component, components, amount = 1) {
   };
 }
 // TODO: refactor to make applyBug more generica and pure
-export function applyGameStartBugs(stateComponents, amount = 5) {
+
+function applyBugAndUpdateComponents(componentId, stateComponents, amount = 1) {
+  const updatedNodes = { ...stateComponents.nodes };
+  const componentsWithUpdatedNodes = {
+    ...stateComponents,
+    nodes: updatedNodes,
+  };
+
+  updatedNodes[componentId] = applyBug(
+    updatedNodes[componentId],
+    componentsWithUpdatedNodes,
+    amount,
+  );
+
+  return {
+    ...stateComponents,
+    nodes: updatedNodes,
+  };
+}
+// TODO: refactor applyBug and applyBugAndUpdateComponents to use an queue based
+// approach to avoid deep recursion and potential stack overflow with large
+// component trees
+
+function applyGameStartBugs(stateComponents, amount = 5) {
   const updatedNodes = { ...stateComponents.nodes };
   const componentsWithUpdatedNodes = {
     ...stateComponents,
@@ -73,7 +114,7 @@ export function applyGameStartBugs(stateComponents, amount = 5) {
   };
 }
 
-export function applyTest(component) {
+function applyTest(component) {
   if (component.hasTests) {
     throw createError(ERRORS.COMPONENT_ALREADY_HAS_TESTS);
   }
@@ -83,7 +124,7 @@ export function applyTest(component) {
   };
 }
 
-export function resolveBug(component, amount = 1) {
+function resolveBug(component, amount = 1) {
   if (component.bugAmount <= 0) {
     throw createError(ERRORS.COMPONENT_HAS_NO_BUGS_TO_RESOLVE);
   }
@@ -93,7 +134,7 @@ export function resolveBug(component, amount = 1) {
   };
 }
 
-export function subtractPointsToPlayer(player, pointsToSubtract) {
+function subtractPointsToPlayer(player, pointsToSubtract) {
   const totalPoints = getTotalPlayersPoints(player);
   if (totalPoints - pointsToSubtract < 0) {
     throw createError(ERRORS.NOT_ENOUGH_POINTS_TO_SUBTRACT);
@@ -112,11 +153,7 @@ export function subtractPointsToPlayer(player, pointsToSubtract) {
   };
 }
 
-export function addPointsToPlayerBank(
-  player,
-  pointsToAdd,
-  maxPlayerPoints,
-) {
+function addPointsToPlayerBank(player, pointsToAdd, maxPlayerPoints) {
   const totalPoints = getTotalPlayersPoints(player);
   if (totalPoints >= maxPlayerPoints) {
     return player;
@@ -131,10 +168,11 @@ export function addPointsToPlayerBank(
   };
 }
 
-export function addPointsToPlayerBankByHolding(player, pointsToAdd) {
-  if (player.handPoints < pointsToAdd) {
-    throw createError(ERRORS.NOT_ENOUGH_HAND_POINTS_TO_HOLD);
-  }
+function addPointsToPlayerBankByHolding(
+  player,
+  pointsToHold,
+  maxPlayerPoints,
+) {
   return {
     ...player,
     bankPoints: player.bankPoints + pointsToAdd,
@@ -142,7 +180,7 @@ export function addPointsToPlayerBankByHolding(player, pointsToAdd) {
   };
 }
 
-export function addPointsToPlayerHand(player, pointsToAdd, maxPlayerPoints) {
+function addPointsToPlayerHand(player, pointsToAdd, maxPlayerPoints) {
   const totalPoints = getTotalPlayersPoints(player);
 
   if (totalPoints >= maxPlayerPoints) {
@@ -157,4 +195,26 @@ export function addPointsToPlayerHand(player, pointsToAdd, maxPlayerPoints) {
     ...player,
     handPoints: player.handPoints + allowedPointsToAdd,
   };
+}
+function addStartRoundPointsToPlayers(players, pointsToAdd, maxPlayerPoints) {
+  const updatedPlayers = players.map((player) => {
+    return addPointsToPlayerHand(player, pointsToAdd, maxPlayerPoints);
+  });
+  return updatedPlayers;
+}
+
+function bankPlayersPointsForCrisisRound(
+  players,
+  pointsToBank,
+  maxPlayerPoints,
+) {
+  const updatedPlayers = players.map((player) => {
+    if (player.handPoints === 0) return player;
+    return addPointsToPlayerBankByHolding(
+      player,
+      pointsToBank,
+      maxPlayerPoints,
+    );
+  });
+  return updatedPlayers;
 }

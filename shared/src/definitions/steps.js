@@ -3,6 +3,7 @@ import { ACTION_TYPES } from '../constants/actionsTypes.js';
 export const steps = Object.freeze({
   WAITING_PLAYERS_READY: {
     name: 'WAITING_PLAYERS_READY',
+    stepInstructionKey: null,
     flowControl: {
       current: {
         accepts: 'PLAYER_INPUT',
@@ -23,6 +24,7 @@ export const steps = Object.freeze({
   },
   GAME_START: {
     name: 'GAME_START',
+    stepInstructionKey: null,
     flowControl: {
       current: {
         accepts: 'AUTO',
@@ -42,10 +44,26 @@ export const steps = Object.freeze({
   },
   ROUND_START: {
     name: 'ROUND_START',
+    stepInstructionKey: null,
     flowControl: {
       current: {
         accepts: 'AUTO',
-        delayMs: 2000,
+        delayMs: 5000,
+      },
+      nextTransition: {
+        actionType: ACTION_TYPES.START_TURN,
+        trigger: 'AUTO',
+      },
+    },
+    effects: ['DEAL_POINTS', 'DEFINE_IS_CRISIS_ROUND', 'TIME_OUT'],
+  },
+  CRISIS_ROUND_START: {
+    name: 'CRISIS_ROUND_START',
+    stepInstructionKey: null,
+    flowControl: {
+      current: {
+        accepts: 'AUTO',
+        delayMs: 10000,
       },
       nextTransition: {
         actionType: ACTION_TYPES.START_TURN,
@@ -56,6 +74,7 @@ export const steps = Object.freeze({
   },
   TURN_START: {
     name: 'TURN_START',
+    stepInstructionKey: null,
     flowControl: {
       current: {
         accepts: 'AUTO',
@@ -70,6 +89,7 @@ export const steps = Object.freeze({
   },
   AWAIT_DECISION: {
     name: 'AWAIT_DECISION',
+    stepInstructionKey: null,
     flowControl: {
       current: {
         accepts: 'PLAYER_INPUT',
@@ -87,6 +107,7 @@ export const steps = Object.freeze({
   },
   PROCESSING_DECISION: {
     name: 'PROCESSING_DECISION',
+    stepInstructionKey: null,
     flowControl: {
       current: {
         accepts: 'AUTO',
@@ -107,6 +128,7 @@ export const steps = Object.freeze({
   },
   AWAIT_CARD_DRAW: {
     name: 'AWAIT_CARD_DRAW',
+    stepInstructionKey: null,
     flowControl: {
       current: {
         accepts: 'PLAYER_INPUT',
@@ -120,20 +142,39 @@ export const steps = Object.freeze({
   },
   SHOWING_CARD: {
     name: 'SHOWING_CARD',
+    stepInstructionKey: null,
     flowControl: {
       current: {
-        accepts: 'AUTO',
-        delayMs: 3000,
+        accepts: 'PLAYER_INPUT',
       },
       nextTransition: {
         actionType: ACTION_TYPES.APPLY_CARD_EFFECT,
+        trigger: 'PLAYER_INPUT',
+      },
+    },
+    effects: ['APPLY_CARD_EFFECT', 'PROCESSING_SYSTEM_HEALTH', 'TIME_OUT'],
+  },
+
+  PROCESSING_CARD: {
+    name: 'PROCESSING_CARD',
+    stepInstructionKey: null,
+    flowControl: {
+      current: {
+        accepts: 'AUTO',
+        delayMs: 7000,
+      },
+      nextTransition: {
+        actionType: ACTION_TYPES.CHECK_SYSTEM_HEALTH,
         trigger: 'AUTO',
       },
     },
-    effects: ['APPLY_CARD_EFFECT', 'PROCESSING_STATE_CHANGE', 'TIME_OUT'],
+    effects: ['APPLY_CARD_EFFECT', 'PROCESSING_SYSTEM_HEALTH', 'TIME_OUT'],
+    // IF criticalState > 'FINISH_TURN' with startCriticalRoundFlag ELSE IF cardsToDrawRemaining > 0> 'PROCEED_TO_CARD_DRAW' ELSE 'FINISH_TURN'
   },
-  PROCESSING_CARD: {
-    name: 'PROCESSING_CARD',
+
+  PROCESSING_SYSTEM_HEALTH: {
+    name: 'PROCESSING_SYSTEM_HEALTH',
+    stepInstructionKey: null,
     flowControl: {
       current: {
         accepts: 'AUTO',
@@ -144,11 +185,15 @@ export const steps = Object.freeze({
         trigger: null,
       },
     },
-    effects: ['APPLY_CARD_EFFECT', 'PROCESSING_STATE_CHANGE', 'TIME_OUT'],
-    // IF criticalState > 'FINISH_TURN' with startCriticalRoundFlag ELSE IF cardsToDrawRemaining > 0> 'PROCEED_TO_CARD_DRAW' ELSE 'FINISH_TURN'
+    effects: [
+      'CHECK_GAME_STATE',
+      'APPLY_STATE_CHANGE_EFFECTS',
+      'UPDATE_NEXT_VALID_STEP',
+    ],
   },
   END_TURN: {
     name: 'END_TURN',
+    stepInstructionKey: null,
     flowControl: {
       current: {
         accepts: 'AUTO',
@@ -171,6 +216,7 @@ export const steps = Object.freeze({
   },
   END_ROUND: {
     name: 'END_ROUND',
+    stepInstructionKey: null,
     flowControl: {
       current: {
         accepts: 'AUTO',

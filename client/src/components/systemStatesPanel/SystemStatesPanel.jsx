@@ -2,24 +2,21 @@
 // import react, { Children, useEffect, useState } from 'react';
 import SystemStateItem from '../systemStateItem/SystemStateItem';
 import styles from './SystemStatesPanel.module.css';
+import { SYSTEM_HEALTH_STATES as systemStates } from '../../../../shared/src/constants/systemHealthStates.js';
 
-function SystemStatesPanel({ txt }) {
-  const ITEMS = [
-    { level: 'healthy', label: 'Saudável', active: true },
-    { level: 'warning', label: 'Alerta', active: false },
-    { level: 'critical', label: 'Crítico', active: false },
-  ];
+function SystemStatesPanel({ txt, systemHealth }) {
+  const active = systemHealth;
 
   return (
     <div className={styles.systemStatesPanelWrapper}>
       <h2 className={styles.painelTitle}>{txt.systemStateTitle['pt']}</h2>
       <div className={styles.systemStateItemsContainer}>
-        {ITEMS.map((item) => (
+        {Object.values(systemStates).map((state) => (
           <SystemStateItem
-            key={item.level}
-            level={item.level}
-            label={item.label}
-            active={item.active}
+            key={state}
+            level={state}
+            label={txt?.systemStateLevelLabel[state]?.pt}
+            active={state === active}
           />
         ))}
       </div>
