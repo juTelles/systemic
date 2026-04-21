@@ -282,9 +282,7 @@ export function applyAction(state, action, ctx = {}) {
     }
 
     case ACTION_TYPES.DRAW_CARD: {
-      next.flow.step = steps['SHOWING_CARD'];
-      next.flow.blockedUntil =
-        now + steps['SHOWING_CARD'].flowControl.current.delayMs;
+      next.flow.step = structuredClone(steps['SHOWING_CARD']);
       next.meta.rev += 1;
       next.meta.updatedAt = now;
       next.log.lastEvent = {
