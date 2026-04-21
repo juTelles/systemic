@@ -28,6 +28,19 @@ export function createRoutes({ rooms, runGameLoop }) {
     }
   });
 
+  router.post('/rooms/deleteRoom', (req, res) => {
+    try {
+      const result = rooms.cleanRoomState();
+      res.json(result);
+    } catch (err) {
+      console.error(err);
+      res.status(err.status || 500).json({
+        code: err.code || err.message || "INTERNAL_ERROR",
+      });
+    }
+  });
+
+
   router.post('/rooms/:roomId/join', (req, res) => {
     try {
       const { roomId } = req.params;

@@ -4,6 +4,7 @@ export function createInitialState({ roomId }) {
   return {
     meta: { roomId, rev: 0, updatedAt: now, createdAt: now },
     phase: 'LOBBY',
+    gameResult: null,
     players: [],
     flow: {
       round: 0,
