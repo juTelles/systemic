@@ -1,7 +1,7 @@
 // eslint-disable-next-line no-unused-vars
 import styles from './StatusBar.module.css';
 import SystemStatesPanel from '../systemStatesPanel/SystemStatesPanel';
-import GamePromptPanel from '../gamePromptPanel/GamePromptPanel';
+import GamePromptPanel from '../instructionsPanel/InstructionsPanel.jsx';
 import PlayersPanel from '../playersPanel/PlayersPanel';
 import PlayersPanelPreGame from '../playersPanelPreGame/PlayersPanelPreGame';
 import { statusBarTxt } from '../../texts/statusBarTxt.js';
@@ -19,7 +19,10 @@ function StatusBar({
   return (
     <div className={styles.statusBarContainer}>
       <div className={styles.systemStatesPanelWraper}>
-        <SystemStatesPanel txt={statusBarTxt.systemStatesPanelTxt} />
+        <SystemStatesPanel
+          txt={statusBarTxt.systemStatesPanelTxt}
+          systemHealth={roomState?.system?.healthState}
+        />
       </div>
       <div className={styles.gamePromptPanelWraper}>
         <GamePromptPanel
