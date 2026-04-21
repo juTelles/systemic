@@ -1,4 +1,4 @@
-import { getModalTxt } from '../../texts/modalDialogTxt/modalDialogResolver.js';
+import { getModalTxt } from '../../texts/modalTxt.js';
 import Button from '../button/Button';
 import { getErrorMessage } from '../../texts/errorsMessages.js';
 import styles from './ModalDialog.module.css';
