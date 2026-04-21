@@ -16,9 +16,9 @@ export {
   addPointsToPlayerBankByHolding,
   addPointsToPlayerHand,
   addStartRoundPointsToPlayers,
-  cleanPlayerHandPoints,
+  // cleanPlayerHandPoints,
   bankPlayersPointsForCrisisRound,
-  updatePlayer,
+  // updatePlayer,
 };
 
 function existsComponentEligibleForBugResolvByType(
@@ -195,4 +195,26 @@ function addPointsToPlayerHand(player, pointsToAdd, maxPlayerPoints) {
     ...player,
     handPoints: player.handPoints + allowedPointsToAdd,
   };
+}
+function addStartRoundPointsToPlayers(players, pointsToAdd, maxPlayerPoints) {
+  const updatedPlayers = players.map((player) => {
+    return addPointsToPlayerHand(player, pointsToAdd, maxPlayerPoints);
+  });
+  return updatedPlayers;
+}
+
+function bankPlayersPointsForCrisisRound(
+  players,
+  pointsToBank,
+  maxPlayerPoints,
+) {
+  const updatedPlayers = players.map((player) => {
+    if (player.handPoints === 0) return player;
+    return addPointsToPlayerBankByHolding(
+      player,
+      pointsToBank,
+      maxPlayerPoints,
+    );
+  });
+  return updatedPlayers;
 }
