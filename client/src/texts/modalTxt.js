@@ -9,7 +9,7 @@ export function getModalTxt(key, txtType, lang = 'pt') {
 }
 
 export const modalTxt = {
-  START_GAME: {
+  GAME_START: {
     title: {
       pt: 'Iniciando partida',
       en: 'Game Starting Soon'

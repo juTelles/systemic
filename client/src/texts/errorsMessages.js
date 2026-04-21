@@ -151,7 +151,7 @@ export const errorMessages = {
     en: 'An error occurred while applying the card effect.',
   },
 
-    [ERRORS.CARD_DRAW_ERROR]: {
+    [ERRORS.DRAW_CARD_ERROR]: {
     pt: 'Ocorreu um erro ao comprar a carta.',
     en: 'An error occurred while drawing the card.',
   },

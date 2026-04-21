@@ -41,5 +41,6 @@ export function useRoomActions(roomId, localPlayerId) {
     submitDecision,
     endDecision,
     returnToLobby,
+    drawCard,
   };
 }

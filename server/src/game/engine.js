@@ -3,7 +3,6 @@ import { PLAYER_STATUS } from '../../../shared/src/constants/playerStatus.js';
 import { SYSTEM_HEALTH_STATES } from '../../../shared/src/constants/systemHealthStates.js';
 import { decisions as decisionsDefinitions } from '../../../shared/src/definitions/decisions.js';
 import { steps } from '../../../shared/src/definitions/steps.js';
-import { composeDeck } from './cards/deckComposer.js';
 import { components } from '../../../shared/src/definitions/components.js';
 import { getAvailableDecisions } from './decisions/decisionAvailability.js';
 import { applyDecision } from './decisions/decisionProcessing.js';
@@ -14,23 +13,18 @@ import { processSystemHealth } from './systemHealthState/SystemHealthProcessor.j
 import { processEndRoundRequestPropagation } from './propagationProcessor.js';
 import { transitionResolvers } from './transitionResolvers.js';
 import { isGameReadyToStart } from './selectors.js';
-import { verifyGameOverCondition, verifyGameWinCondition } from './gameResultVerifiers.js';
+import {
+  verifyGameOverCondition,
+  verifyGameWinCondition,
+} from './gameResultVerifiers.js';
 import {
   applyGameStartBugs,
   addStartRoundPointsToPlayers,
-  cleanPlayerHandPoints,
 } from './gameHelpers.js';
 import {
   createDecisionState,
   createValidationErrorState,
 } from './roomStateFactories.js';
-import {
-  getPlayerObject,
-  isGameReadyToStart,
-  getTotalPlayersPoints,
-} from './selectors.js';
-import { buildCard } from './cards/cardBuilder.js';
-import { applyCardEffect } from './cards/cardApplier.js';
 
 export function applyAction(state, action, ctx = {}) {
   const now = Date.now();
@@ -235,8 +229,10 @@ export function applyAction(state, action, ctx = {}) {
             systemChange.step.stepInstructionKey;
           decisionNext.flow.blockedUntil =
             now + steps['PROCESSING_DECISION'].flowControl.current.delayMs;
+        }
+      }
       if (action.payload.chosen === 'DEVELOP_TESTS') {
-       const isGameWin = verifyGameWinCondition(decisionNext.components);
+        const isGameWin = verifyGameWinCondition(decisionNext.components);
         if (isGameWin) {
           decisionNext.gameResult = 'WIN';
           decisionNext.phase = 'END_GAME';
@@ -377,6 +373,12 @@ export function applyAction(state, action, ctx = {}) {
         const systemChange = processSystemHealth(next);
         if (systemChange.updated) {
           next.system = systemChange.system;
+          decisionNext.flow.step.stepInstructionKey =
+            systemChange.step.stepInstructionKey;
+          decisionNext.flow.blockedUntil =
+            now + steps['END_ROUND'].flowControl.current.delayMs + 5000;
+        }
+      }
       const isGameOver = verifyGameOverCondition(next.system);
       if (isGameOver) {
         next.gameResult = 'LOSE';

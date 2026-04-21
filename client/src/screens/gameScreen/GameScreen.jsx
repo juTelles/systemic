@@ -87,7 +87,7 @@ function GameScreen({ roomId, localPlayerId, onSessionInvalid }) {
     if (!result.ok) {
       console.error('Error drawing card:', result.error);
       setShowErrorDialog({
-        content: getErrorMessage('DRAW_CARD_ERROR'),
+        content: 'DRAW_CARD_ERROR',
       });
     }
   };
@@ -177,9 +177,9 @@ function GameScreen({ roomId, localPlayerId, onSessionInvalid }) {
           button={true}
           onClose={() => setShowErrorDialog(false)}
         />
-      ) : roomState.gameResult === 'GAME_WIN' ? (
+      ) : roomState?.gameResult === 'GAME_WIN' ? (
         <ModalDialog modalType={'GAME_WIN'} onClose={handleEndGame} />
-      ) : roomState.gameResult === 'GAME_DEFEAT' ? (
+      ) : roomState?.gameResult === 'GAME_DEFEAT' ? (
         <ModalDialog modalType={'GAME_DEFEAT'} onClose={handleEndGame} />
       ) : null}
     </div>
