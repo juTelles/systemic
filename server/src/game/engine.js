@@ -234,7 +234,7 @@ export function applyAction(state, action, ctx = {}) {
       if (action.payload.chosen === 'DEVELOP_TESTS') {
         const isGameWin = verifyGameWinCondition(decisionNext.components);
         if (isGameWin) {
-          decisionNext.gameResult = 'WIN';
+          decisionNext.gameResult = 'GAME_WIN';
           decisionNext.phase = 'END_GAME';
         }
       }
@@ -381,7 +381,7 @@ export function applyAction(state, action, ctx = {}) {
       }
       const isGameOver = verifyGameOverCondition(next.system);
       if (isGameOver) {
-        next.gameResult = 'LOSE';
+        next.gameResult = 'GAME_OVER';
         next.phase = 'END_GAME';
       }
       next.flow.step.flowControl.nextTransition =

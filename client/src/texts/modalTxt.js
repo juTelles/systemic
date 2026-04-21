@@ -29,7 +29,7 @@ export const modalTxt = {
       en: 'You managed to save the system and prevent the crisis. Great teamwork!'
     }
   },
-  GAME_DEFEAT: {
+  GAME_OVER: {
     title: {
       pt: 'Infelizmente, vocês perderam.',
       en: 'Unfortunately, you lost.'

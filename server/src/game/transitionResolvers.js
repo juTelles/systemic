@@ -11,7 +11,7 @@ export const transitionResolvers = {
       : null;
   },
   PROCESSING_DECISION: (state) => {
-    return state.gameResult === 'WIN'
+    return state.gameResult === 'GAME_WIN'
       ? { actionType: ACTION_TYPES.FINISH_GAME, trigger: 'AUTO' }
       : state.decisionState.available.length > 0
         ? { actionType: ACTION_TYPES.ASK_FOR_DECISION, trigger: 'AUTO' }
@@ -30,7 +30,7 @@ export const transitionResolvers = {
       : { actionType: ACTION_TYPES.START_TURN, trigger: 'AUTO' };
   },
   END_ROUND: (state) => {
-    return state.gameResult === 'DEFEAT'
+    return state.gameResult === 'GAME_OVER'
       ? { actionType: ACTION_TYPES.FINISH_GAME, trigger: 'AUTO' }
       : state.system.pendingCrisisRound
         ? { actionType: ACTION_TYPES.START_CRISIS_ROUND, trigger: 'AUTO' }

@@ -178,9 +178,17 @@ function GameScreen({ roomId, localPlayerId, onSessionInvalid }) {
           onClose={() => setShowErrorDialog(false)}
         />
       ) : roomState?.gameResult === 'GAME_WIN' ? (
-        <ModalDialog modalType={'GAME_WIN'} onClose={handleEndGame} />
-      ) : roomState?.gameResult === 'GAME_DEFEAT' ? (
-        <ModalDialog modalType={'GAME_DEFEAT'} onClose={handleEndGame} />
+        <ModalDialog
+          modalType={'GAME_WIN'}
+          button={true}
+          onClose={handleEndGame}
+        />
+      ) : roomState?.gameResult === 'GAME_OVER' ? (
+        <ModalDialog
+          modalType={'GAME_OVER'}
+          button={true}
+          onClose={handleEndGame}
+        />
       ) : null}
     </div>
   );
