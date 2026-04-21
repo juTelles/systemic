@@ -8,7 +8,7 @@ import TableTop from '../../components/tableTop/TableTop';
 import LateralBar from '../../components/lateralBar/LateralBar';
 import { useRoomActions } from '../../actions/roomsActions';
 import ModalDialog from '../../components/modalDialog/ModalDialog.jsx';
-import { getErrorMessage } from '../../texts/errorsMessages.js';
+import { deleteRoom } from '../../api/roomsApi';
 
 function GameScreen({ roomId, localPlayerId, onSessionInvalid }) {
   const { submitDecision, endDecision, drawCard } = useRoomActions(
@@ -44,7 +44,7 @@ function GameScreen({ roomId, localPlayerId, onSessionInvalid }) {
 
     if (!result.ok) {
       console.error('Error applying decision:', result.code);
-      setShowErrorDialog({ content: getErrorMessage('DECISION_ERROR') });
+      setShowErrorDialog({ content: 'DECISION_ERROR' });
     }
     if (
       result.ok &&
@@ -52,13 +52,21 @@ function GameScreen({ roomId, localPlayerId, onSessionInvalid }) {
     ) {
       const validationError = result?.roomState?.decisionState?.validationError;
       const errorMessage = {
-        title: getErrorMessage(validationError.type),
-        content: getErrorMessage(validationError.failedValidation),
+        title: validationError.type,
+        content: validationError.failedValidation,
       };
       setShowErrorDialog(errorMessage);
     }
     setInstructionKey(null);
     setSelectedDecisionUIId(null);
+  }
+
+  async function handleEndGame() {
+    try {
+      await deleteRoom(roomId);
+    } catch (err) {
+      console.error('Failed to delete room:', err);
+    }
   }
 
   // TODO: Investigate: should I show the real error message instead of a
@@ -67,7 +75,7 @@ function GameScreen({ roomId, localPlayerId, onSessionInvalid }) {
     const result = await endDecision();
     if (!result.ok) {
       console.error('Error finishing decision:', result.error);
-      setShowErrorDialog({ content: getErrorMessage('FINISH_DECISION_ERROR') });
+      setShowErrorDialog({ content: 'FINISH_DECISION_ERROR' });
     }
     setInstructionKey(null);
     setSelectedDecisionUIId(null);
@@ -79,7 +87,7 @@ function GameScreen({ roomId, localPlayerId, onSessionInvalid }) {
     if (!result.ok) {
       console.error('Error drawing card:', result.error);
       setShowErrorDialog({
-        content: getErrorMessage('DRAW_CARD_ERROR'),
+        content: 'DRAW_CARD_ERROR',
       });
     }
   };
@@ -122,23 +130,6 @@ function GameScreen({ roomId, localPlayerId, onSessionInvalid }) {
 
   return (
     <div className={styles.pageContainer}>
-      {showGameStartDialog ? (
-        <ModalDialog
-          title={'Iniciando partida'}
-          content={'Preparando ambiente...'}
-        />
-      ) : showErrorDialog ? (
-        <ModalDialog
-          title={showErrorDialog.title ? showErrorDialog.title : 'Erro'}
-          content={
-            showErrorDialog.content
-              ? showErrorDialog.content
-              : 'Ocorreu um erro inesperado.'
-          }
-          button={true}
-          onClose={() => setShowErrorDialog(false)}
-        />
-      ) : null}
       <div className={styles.mainContainer}>
         <StatusBar
           isPreGame={isPreGame}
@@ -177,6 +168,28 @@ function GameScreen({ roomId, localPlayerId, onSessionInvalid }) {
           handleCardDraw={handleCardDraw}
         />
       </div>
+      {showGameStartDialog ? (
+        <ModalDialog modalType={'GAME_START'} />
+      ) : showErrorDialog ? (
+        <ModalDialog
+          modalType={'ERROR'}
+          error={showErrorDialog}
+          button={true}
+          onClose={() => setShowErrorDialog(false)}
+        />
+      ) : roomState?.gameResult === 'GAME_WIN' ? (
+        <ModalDialog
+          modalType={'GAME_WIN'}
+          button={true}
+          onClose={handleEndGame}
+        />
+      ) : roomState?.gameResult === 'GAME_OVER' ? (
+        <ModalDialog
+          modalType={'GAME_OVER'}
+          button={true}
+          onClose={handleEndGame}
+        />
+      ) : null}
     </div>
   );
 }

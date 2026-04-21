@@ -220,6 +220,7 @@ export const steps = Object.freeze({
     flowControl: {
       current: {
         accepts: 'AUTO',
+        delayMs: 3000,
       },
       nextTransition: {
         actionType: null,
@@ -237,6 +238,21 @@ export const steps = Object.freeze({
   },
   END_GAME: {
     name: 'END_GAME',
+    stepInstructionKey: null,
+    flowControl: {
+      current: {
+        accepts: 'PLAYER_INPUT',
+      },
+      nextTransition: {
+        actionType: ACTION_TYPES.CLEAN_ROOM_STATE,
+        trigger: 'PLAYER_INPUT',
+      },
+    },
+    effects: ['SHOW_GAME_RESULT'],
+  },
+  CLEANING_ROOM_STATE: {
+    name: 'CLEANING_ROOM_STATE',
+    stepInstructionKey: null,
     flowControl: {
       current: {
         accepts: 'AUTO',
@@ -246,6 +262,21 @@ export const steps = Object.freeze({
         trigger: null,
       },
     },
-    effects: ['SHOW_GAME_RESULT'],
+    effects: ['CLEANING_ROOM_STATE'],
+  },
+
+  CLEANING_PLAYER_ROOM_STATE: {
+    name: 'CLEANING_PLAYER_ROOM_STATE',
+    stepInstructionKey: null,
+    flowControl: {
+      current: {
+        accepts: 'AUTO',
+      },
+      nextTransition: {
+        actionType: null,
+        trigger: null,
+      },
+    },
+    effects: ['CLEANING_PLAYER_ROOM_STATE'],
   },
 });

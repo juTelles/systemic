@@ -3,7 +3,6 @@ import { PLAYER_STATUS } from '../../../shared/src/constants/playerStatus.js';
 import { SYSTEM_HEALTH_STATES } from '../../../shared/src/constants/systemHealthStates.js';
 import { decisions as decisionsDefinitions } from '../../../shared/src/definitions/decisions.js';
 import { steps } from '../../../shared/src/definitions/steps.js';
-import { composeDeck } from './cards/deckComposer.js';
 import { components } from '../../../shared/src/definitions/components.js';
 import { getAvailableDecisions } from './decisions/decisionAvailability.js';
 import { applyDecision } from './decisions/decisionProcessing.js';
@@ -15,21 +14,17 @@ import { processEndRoundRequestPropagation } from './propagationProcessor.js';
 import { transitionResolvers } from './transitionResolvers.js';
 import { isGameReadyToStart } from './selectors.js';
 import {
+  verifyGameOverCondition,
+  verifyGameWinCondition,
+} from './gameResultVerifiers.js';
+import {
   applyGameStartBugs,
   addStartRoundPointsToPlayers,
-  cleanPlayerHandPoints,
 } from './gameHelpers.js';
 import {
   createDecisionState,
   createValidationErrorState,
 } from './roomStateFactories.js';
-import {
-  getPlayerObject,
-  isGameReadyToStart,
-  getTotalPlayersPoints,
-} from './selectors.js';
-import { buildCard } from './cards/cardBuilder.js';
-import { applyCardEffect } from './cards/cardApplier.js';
 
 export function applyAction(state, action, ctx = {}) {
   const now = Date.now();
@@ -236,7 +231,13 @@ export function applyAction(state, action, ctx = {}) {
             now + steps['PROCESSING_DECISION'].flowControl.current.delayMs;
         }
       }
-
+      if (action.payload.chosen === 'DEVELOP_TESTS') {
+        const isGameWin = verifyGameWinCondition(decisionNext.components);
+        if (isGameWin) {
+          decisionNext.gameResult = 'GAME_WIN';
+          decisionNext.phase = 'END_GAME';
+        }
+      }
       let decisionsAvailableApply = [];
       decisionsAvailableApply = getAvailableDecisions(
         decisionNext,
@@ -375,10 +376,14 @@ export function applyAction(state, action, ctx = {}) {
           next.flow.step.stepInstructionKey =
             systemChange.step.stepInstructionKey;
           next.flow.blockedUntil =
-            now + steps['END_ROUND'].flowControl.current.delayMs + 5000; // Adding extra time for the propagation effects to be processed and for the players to see the changes in the system health before the next round starts
+            now + steps['END_ROUND'].flowControl.current.delayMs + 5000;
         }
       }
-
+      const isGameOver = verifyGameOverCondition(next.system);
+      if (isGameOver) {
+        next.gameResult = 'GAME_OVER';
+        next.phase = 'END_GAME';
+      }
       next.flow.step.flowControl.nextTransition =
         transitionResolvers['END_ROUND'](next);
 
@@ -396,6 +401,31 @@ export function applyAction(state, action, ctx = {}) {
       };
       return next;
     }
+
+    case ACTION_TYPES.FINISH_GAME: {
+      next.flow.step = structuredClone(steps['END_GAME']);
+      next.meta.rev += 1;
+      next.meta.updatedAt = now;
+      next.log.lastEvent = {
+        type: ACTION_TYPES.FINISH_GAME,
+        by: action.payload.senderId ?? null,
+        at: now,
+      };
+      return next;
+    }
+
+    case ACTION_TYPES.CLEAN_ROOM_STATE: {
+      next.flow.step = structuredClone(steps['CLEANING_ROOM_STATE']);
+      next.meta.rev += 1;
+      next.meta.updatedAt = now;
+      next.log.lastEvent = {
+        type: ACTION_TYPES.CLEAN_ROOM_STATE,
+        by: action.payload.senderId ?? null,
+        at: now,
+      };
+      return next;
+    }
+
     default:
       const err = new Error('Unknown action type');
       err.code = 'UNKNOWN_ACTION_TYPE';

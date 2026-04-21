@@ -9,8 +9,8 @@
 }
 
 .dialogBox {
-  min-width: 280px;
-  max-width: 420px;
+  min-width: 400px;
+  max-width: 550px;
   padding: 24px;
   border-radius: 16px;
   background: var(--bg-pure);

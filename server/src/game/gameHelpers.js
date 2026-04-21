@@ -171,12 +171,16 @@ function addPointsToPlayerBank(player, pointsToAdd, maxPlayerPoints) {
 function addPointsToPlayerBankByHolding(
   player,
   pointsToHold,
-  maxPlayerPoints,
 ) {
+
+  const allowedPointsToHold = Math.min(
+    pointsToHold,
+    player.handPoints,
+  );
   return {
     ...player,
-    bankPoints: player.bankPoints + pointsToAdd,
-    handPoints: player.handPoints - pointsToAdd,
+    bankPoints: player.bankPoints + allowedPointsToHold,
+    handPoints: player.handPoints - allowedPointsToHold,
   };
 }
 

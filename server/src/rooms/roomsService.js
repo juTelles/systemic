@@ -25,6 +25,7 @@ export function createRoomsService() {
     listRooms,
     createRoom,
     leaveRoom,
+    cleanRoomState,
   };
 
   function createRoom() {
@@ -42,6 +43,15 @@ export function createRoomsService() {
     room.state.meta.rev++;
 
     return { id: room.id, state: room.state };
+  }
+
+  function cleanRoomState(roomId) {
+    const room = store.get(roomId);
+    if (!room) {
+      throw createError(ERRORS.ROOM_NOT_FOUND, 404);
+    }
+    store.removeRoom(roomId);
+    return { ok: true };
   }
 
   function joinRoom(roomId, nickname) {
