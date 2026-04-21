@@ -1,5 +1,6 @@
 import { PLAYER_STATUS } from '../../../shared/src/constants/playerStatus.js';
 import { ACTION_TYPES } from '../../../shared/src/constants/actionsTypes.js';
+import { SYSTEM_HEALTH_STATES } from '../../../shared/src/constants/systemHealthStates.js';
 import { isGameReadyToStart } from './selectors.js';
 
 export const transitionResolvers = {
@@ -27,10 +28,11 @@ export const transitionResolvers = {
       : { actionType: ACTION_TYPES.START_TURN, trigger: 'AUTO' };
   },
   END_ROUND: (state) => {
-    return state.system.isCrisisRound && state.system.healthState === 'CRITICAL'
+    return state.system.isCrisisRound &&
+      state.system.healthState === SYSTEM_HEALTH_STATES.CRITICAL
       ? { actionType: ACTION_TYPES.FINISH_GAME, trigger: 'AUTO' }
       : state.system.pendingCrisisRound
-      ? { actionType: ACTION_TYPES.START_CRISIS_ROUND, trigger: 'AUTO' }
-      : { actionType: ACTION_TYPES.START_ROUND, trigger: 'AUTO' };
+        ? { actionType: ACTION_TYPES.START_CRISIS_ROUND, trigger: 'AUTO' }
+        : { actionType: ACTION_TYPES.START_ROUND, trigger: 'AUTO' };
   },
 };
