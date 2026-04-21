@@ -39,15 +39,15 @@ export const statusBarTxt = {
       en: `System State`,
     },
     systemStateLevelLabel: {
-      healthy: {
+      HEALTHY: {
         pt: `Saudável`,
         en: `Healthy`,
       },
-      warning: {
+      WARNING: {
         pt: `Alerta`,
         en: `Warning`,
       },
-      critical: {
+      CRITICAL: {
         pt: `Crítico`,
         en: `Critical`,
       },
