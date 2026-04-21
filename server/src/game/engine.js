@@ -266,6 +266,30 @@ export function applyAction(state, action, ctx = {}) {
       };
       return nextCard;
     }
+    case ACTION_TYPES.CHECK_SYSTEM_HEALTH: {
+      next.flow.step = steps['PROCESSING_SYSTEM_HEALTH'];
+
+      const systemChange = processSystemHealth(next);
+      if (systemChange.updated) {
+        next.system = systemChange.system;
+        next.flow.step.stepInstructionKey =
+          systemChange.step.stepInstructionKey;
+        next.flow.blockedUntil =
+          now + steps['PROCESSING_SYSTEM_HEALTH'].flowControl.current.delayMs;
+      }
+
+      next.flow.step.flowControl.nextTransition =
+        transitionResolvers['PROCESSING_SYSTEM_HEALTH'](next);
+
+      next.meta.rev += 1;
+      next.meta.updatedAt = now;
+      next.log.lastEvent = {
+        type: ACTION_TYPES.CHECK_SYSTEM_HEALTH,
+        by: action.payload.senderId ?? null,
+        at: now,
+      };
+      return next;
+    }
 
     case ACTION_TYPES.FINISH_TURN: {
       next.flow.step = steps['END_TURN'];
