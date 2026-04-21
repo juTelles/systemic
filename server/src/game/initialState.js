@@ -9,7 +9,6 @@ export function createInitialState({ roomId }) {
       round: 0,
       turn: 0,
       currentPlayerId: null,
-      isCrisisRound: false,
       blockedUntil: null,
       crisisRoundCounter: 0,
       step: {
