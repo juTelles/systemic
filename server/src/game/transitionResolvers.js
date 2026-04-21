@@ -21,13 +21,16 @@ export const transitionResolvers = {
       : { actionType: ACTION_TYPES.PROCEED_TO_CARD_DRAW, trigger: 'AUTO' };
   },
   END_TURN: (state) => {
-    // IF END_GAME -> 'END_GAME' ELSE IF END_ROUND -> 'END_ROUND' ELSE 'TURN_START'
-    return state.flow.turn >= state.players.length
+    return state.system.pendingCrisisRound ||
+      state.flow.turn >= state.players.length
       ? { actionType: ACTION_TYPES.FINISH_ROUND, trigger: 'AUTO' }
       : { actionType: ACTION_TYPES.START_TURN, trigger: 'AUTO' };
   },
   END_ROUND: (state) => {
-    // IF END_GAME -> 'END_GAME' ELSE 'ROUND_START'
-        return { actionType: ACTION_TYPES.START_ROUND, trigger: 'AUTO' };
+    return state.system.isCrisisRound && state.system.healthState === 'CRITICAL'
+      ? { actionType: ACTION_TYPES.FINISH_GAME, trigger: 'AUTO' }
+      : state.system.pendingCrisisRound
+      ? { actionType: ACTION_TYPES.START_CRISIS_ROUND, trigger: 'AUTO' }
+      : { actionType: ACTION_TYPES.START_ROUND, trigger: 'AUTO' };
   },
 };

@@ -102,14 +102,18 @@ export function applyAction(state, action, ctx = {}) {
       next.flow.step = steps['ROUND_START'];
       next.flow.blockedUntil =
         now + steps['ROUND_START'].flowControl.current.delayMs;
-      next.players = next.players.map((player) => {
-        return addPointsToPlayerHand(
-          player,
-          next.gameConfig.taskPoints.playerPerRound,
-          next.gameConfig.taskPoints.maxPlayerPoints,
-        );
-      });
-      next.flow.round += 1;
+
+      if (next.system.isCrisisRound) {
+        next.system.isCrisisRound = false;
+      }
+
+      const handPointsToAdd = next.gameConfig.taskPoints.playerPerRound;
+      next.players = addStartRoundPointsToPlayers(
+        next.players,
+        handPointsToAdd,
+        next.gameConfig.taskPoints.maxPlayerPoints,
+      );
+      next.flow.crisisRoundCounter += 1;
       next.flow.turn = 0;
       next.meta.rev += 1;
       next.meta.updatedAt = now;
@@ -120,9 +124,34 @@ export function applyAction(state, action, ctx = {}) {
       };
       return next;
     }
-    // TODO:  feature lastEvent has to be dinamic: ROUND_START sets next.log.lastEvent.type to ACTION_TYPES.END_TURN,
-    // which is misleading and will make client-side event handling/debugging
-    // incorrect. This should log ACTION_TYPES.ROUND_START (and similarly TURN_START currently logs END_TURN).
+
+    case ACTION_TYPES.START_CRISIS_ROUND: {
+      next.flow.step = steps['CRISIS_ROUND_START'];
+      next.flow.blockedUntil =
+        now + steps['CRISIS_ROUND_START'].flowControl.current.delayMs;
+
+      next.system.isCrisisRound = true;
+      next.system.pendingCrisisRound = false;
+      const handPointsToAddCrisis =
+        next.gameConfig.taskPoints.playerPerRound +
+        next.gameConfig.taskPoints.playerPerCrisisRound;
+
+      next.players = addStartRoundPointsToPlayers(
+        next.players,
+        handPointsToAddCrisis,
+        next.gameConfig.taskPoints.maxPlayerPoints,
+      );
+
+      next.flow.turn = 0;
+      next.meta.rev += 1;
+      next.meta.updatedAt = now;
+      next.log.lastEvent = {
+        type: ACTION_TYPES.START_CRISIS_ROUND,
+        by: action.payload.senderId ?? null,
+        at: now,
+      };
+      return next;
+    }
 
     case ACTION_TYPES.START_TURN: {
       next.flow.step = steps['TURN_START'];
@@ -348,6 +377,10 @@ export function applyAction(state, action, ctx = {}) {
 
       next.flow.step.flowControl.nextTransition =
         transitionResolvers['END_ROUND'](next);
+
+      if (next.system.isCrisisRound) {
+        next.flow.crisisRoundCounter += 1;
+      }
       next.flow.turn = 0;
       next.flow.round += 1;
       next.meta.rev += 1;
