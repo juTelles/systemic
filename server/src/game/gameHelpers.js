@@ -69,7 +69,30 @@ function applyBug(component, components, amount = 1) {
   };
 }
 // TODO: refactor to make applyBug more generica and pure
-export function applyGameStartBugs(stateComponents, amount = 5) {
+
+function applyBugAndUpdateComponents(componentId, stateComponents, amount = 1) {
+  const updatedNodes = { ...stateComponents.nodes };
+  const componentsWithUpdatedNodes = {
+    ...stateComponents,
+    nodes: updatedNodes,
+  };
+
+  updatedNodes[componentId] = applyBug(
+    updatedNodes[componentId],
+    componentsWithUpdatedNodes,
+    amount,
+  );
+
+  return {
+    ...stateComponents,
+    nodes: updatedNodes,
+  };
+}
+// TODO: refactor applyBug and applyBugAndUpdateComponents to use an queue based
+// approach to avoid deep recursion and potential stack overflow with large
+// component trees
+
+function applyGameStartBugs(stateComponents, amount = 5) {
   const updatedNodes = { ...stateComponents.nodes };
   const componentsWithUpdatedNodes = {
     ...stateComponents,
