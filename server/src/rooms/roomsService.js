@@ -44,6 +44,18 @@ export function createRoomsService() {
     return { id: room.id, state: room.state };
   }
 
+  function cleanRoomState(rooms, roomId) {
+    const roomExists = rooms.has(roomId);
+
+    if (!roomExists) {
+      throw new Error('Room not found');
+    }
+
+    rooms.delete(roomId);
+
+    return { ok: true };
+  }
+
   function joinRoom(roomId, nickname) {
     let room = store.get(roomId);
 
