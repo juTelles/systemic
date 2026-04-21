@@ -220,6 +220,7 @@ export const steps = Object.freeze({
     flowControl: {
       current: {
         accepts: 'AUTO',
+        delayMs: 3000,
       },
       nextTransition: {
         actionType: null,
