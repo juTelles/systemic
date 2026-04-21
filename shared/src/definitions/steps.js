@@ -44,10 +44,26 @@ export const steps = Object.freeze({
   },
   ROUND_START: {
     name: 'ROUND_START',
+    stepInstructionKey: null,
     flowControl: {
       current: {
         accepts: 'AUTO',
-        delayMs: 2000,
+        delayMs: 5000,
+      },
+      nextTransition: {
+        actionType: ACTION_TYPES.START_TURN,
+        trigger: 'AUTO',
+      },
+    },
+    effects: ['DEAL_POINTS', 'DEFINE_IS_CRISIS_ROUND', 'TIME_OUT'],
+  },
+  CRISIS_ROUND_START: {
+    name: 'CRISIS_ROUND_START',
+    stepInstructionKey: null,
+    flowControl: {
+      current: {
+        accepts: 'AUTO',
+        delayMs: 10000,
       },
       nextTransition: {
         actionType: ACTION_TYPES.START_TURN,
