@@ -29,7 +29,11 @@ export function createInitialState({ roomId }) {
       discardPile: [],
     },
     log: { lastEvent: null },
-    system: { globalStatus: 'HEALTHY' },
+    system: {
+      healthState: 'HEALTHY',
+      isCrisisRound: false,
+      pendingCrisisRound: false,
+    },
     decisionState: {
       available: [],
       appliedTotals: {
