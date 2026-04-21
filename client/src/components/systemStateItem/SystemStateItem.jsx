@@ -4,7 +4,7 @@ import styles from './SystemStateItem.module.css';
 
 function SystemStateItem({ label, active, level }) {
   return (
-    <div className={`${styles.systemStateItemWrapper} ${active ? styles.pulseCritical : ''}`} data-status={level}>
+    <div className={styles.systemStateItemWrapper} data-status={level}>
       <span className={styles.systemStatelabel}>{label}</span>
       <span
         className={`${styles.statusChecker} ${
