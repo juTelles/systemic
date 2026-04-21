@@ -11,8 +11,10 @@ export function createInitialState({ roomId }) {
       currentPlayerId: null,
       isCrisisRound: false,
       blockedUntil: null,
+      crisisRoundCounter: 0,
       step: {
         name: 'WAITING_PLAYERS_READY',
+        stepInstructionKey: null,
         flowControl: {
           current: {
             accepts: 'PLAYER_INPUT',
@@ -57,7 +59,7 @@ export function createInitialState({ roomId }) {
         maxDonationPerPlayer: 2,
         maxHoldPerPlayer: 2,
         playerPerRound: 3,
-        playerPerCrisisRound: 4,
+        playerPerCrisisRound: 1,
       },
       decisionCosts: {
         RESOLVE_LOCAL_BUG: 2,
