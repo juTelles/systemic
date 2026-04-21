@@ -9,8 +9,12 @@ function ModalDialog({button, onClose, modalType, error}) {
   let content = '';
 
   if (modalType === 'ERROR') {
-    title = getErrorMessage(error.title) ? getErrorMessage(error.title) : 'Erro';
-    content = getErrorMessage(error.content) ? getErrorMessage(error.content) : '';
+    const errorTitle = error?.title ? getErrorMessage(error.title) : null;
+    const errorContent = error?.content ? getErrorMessage(error.content) : null;
+
+    title = errorTitle ? errorTitle : 'Erro';
+    content = errorContent ? errorContent : '';
+    
   } else {
     title = getModalTxt(modalType, 'title', 'pt');
     content = getModalTxt(modalType, 'content', 'pt');
