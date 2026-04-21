@@ -8,10 +8,18 @@ export function createRoomsStore() {
     get,
     getAll,
     generateRoomId,
+    removeRoom,
   };
 
   function generateRoomId() {
     return String(nextRoomId++);
+  }
+
+  function removeRoom(roomId) {
+    if (!this.rooms.has(roomId)) {
+      return false;
+    }
+    return rooms.delete(roomId);
   }
 
   function ensure(roomId, createFn) {
