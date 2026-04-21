@@ -1,7 +1,7 @@
 // eslint-disable-next-line no-unused-vars
 import styles from './StatusBar.module.css';
 import SystemStatesPanel from '../systemStatesPanel/SystemStatesPanel';
-import GamePromptPanel from '../instructionsPanel/InstructionsPanel.jsx';
+import GamePromptPanel from '../gamePromptPanel/GamePromptPanel.jsx';
 import PlayersPanel from '../playersPanel/PlayersPanel';
 import PlayersPanelPreGame from '../playersPanelPreGame/PlayersPanelPreGame';
 import { statusBarTxt } from '../../texts/statusBarTxt.js';
