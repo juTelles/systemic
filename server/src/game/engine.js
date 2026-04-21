@@ -14,6 +14,7 @@ import { processSystemHealth } from './systemHealthState/SystemHealthProcessor.j
 import { processEndRoundRequestPropagation } from './propagationProcessor.js';
 import { transitionResolvers } from './transitionResolvers.js';
 import { isGameReadyToStart } from './selectors.js';
+import { verifyGameOverCondition, verifyGameWinCondition } from './gameResultVerifiers.js';
 import {
   applyGameStartBugs,
   addStartRoundPointsToPlayers,
@@ -234,9 +235,13 @@ export function applyAction(state, action, ctx = {}) {
             systemChange.step.stepInstructionKey;
           decisionNext.flow.blockedUntil =
             now + steps['PROCESSING_DECISION'].flowControl.current.delayMs;
+      if (action.payload.chosen === 'DEVELOP_TESTS') {
+       const isGameWin = verifyGameWinCondition(decisionNext.components);
+        if (isGameWin) {
+          decisionNext.gameResult = 'WIN';
+          decisionNext.phase = 'END_GAME';
         }
       }
-
       let decisionsAvailableApply = [];
       decisionsAvailableApply = getAvailableDecisions(
         decisionNext,
@@ -372,13 +377,11 @@ export function applyAction(state, action, ctx = {}) {
         const systemChange = processSystemHealth(next);
         if (systemChange.updated) {
           next.system = systemChange.system;
-          next.flow.step.stepInstructionKey =
-            systemChange.step.stepInstructionKey;
-          next.flow.blockedUntil =
-            now + steps['END_ROUND'].flowControl.current.delayMs + 5000; // Adding extra time for the propagation effects to be processed and for the players to see the changes in the system health before the next round starts
-        }
+      const isGameOver = verifyGameOverCondition(next.system);
+      if (isGameOver) {
+        next.gameResult = 'LOSE';
+        next.phase = 'END_GAME';
       }
-
       next.flow.step.flowControl.nextTransition =
         transitionResolvers['END_ROUND'](next);
 
