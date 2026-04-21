@@ -321,7 +321,7 @@ export function applyAction(state, action, ctx = {}) {
       return nextCard;
     }
     case ACTION_TYPES.CHECK_SYSTEM_HEALTH: {
-      next.flow.step = steps['PROCESSING_SYSTEM_HEALTH'];
+      next.flow.step = structuredClone(steps['PROCESSING_SYSTEM_HEALTH']);
 
       const systemChange = processSystemHealth(next);
       if (systemChange.updated) {

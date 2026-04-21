@@ -1,5 +1,7 @@
 import { SYSTEM_HEALTH_STATES } from '../../../../shared/src/constants/systemHealthStates.js';
 import { getNodeIdsByType, getSaturatedNodesIdsByType } from '../selectors.js';
+import { createError } from '../../utils/createErrors.js';
+import { ERRORS } from '../../../../shared/src/constants/errors.js';
 
 const HEALTH_RULES = [
   {
@@ -41,11 +43,11 @@ function validateGameStateForHealthCheck(gameState) {
   const currentHealthState = system?.healthState;
 
   if (!currentHealthState) {
-    throw new Error('Current Health State is missing');
+    throw createError(ERRORS.MISSING_CURRENT_HEALTH_STATE);
   }
 
   if (!components?.byType || !components?.nodes) {
-    throw new Error('Components data is missing');
+    throw createError(ERRORS.MISSING_COMPONENTS_DATA);
   }
 
   return { components, currentHealthState };
