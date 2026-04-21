@@ -28,9 +28,10 @@ export function createRoutes({ rooms, runGameLoop }) {
     }
   });
 
-  router.post('/rooms/deleteRoom', (req, res) => {
+  router.post('/rooms/:roomId/deleteRoom', (req, res) => {
     try {
-      const result = rooms.cleanRoomState();
+      const { roomId } = req.params;
+      const result = rooms.cleanRoomState(roomId);
       res.json(result);
     } catch (err) {
       console.error(err);

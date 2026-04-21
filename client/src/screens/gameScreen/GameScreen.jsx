@@ -63,7 +63,7 @@ function GameScreen({ roomId, localPlayerId, onSessionInvalid }) {
 
   async function handleEndGame() {
     try {
-      await deleteRoom();
+      await deleteRoom(roomId);
     } catch (err) {
       console.error('Failed to delete room:', err);
     }

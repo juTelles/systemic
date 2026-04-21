@@ -16,7 +16,7 @@ export function createRoomsStore() {
   }
 
   function removeRoom(roomId) {
-    if (!this.rooms.has(roomId)) {
+    if (!rooms.has(roomId)) {
       return false;
     }
     return rooms.delete(roomId);
