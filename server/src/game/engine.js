@@ -1,5 +1,6 @@
 import { ACTION_TYPES } from '../../../shared/src/constants/actionsTypes.js';
 import { PLAYER_STATUS } from '../../../shared/src/constants/playerStatus.js';
+import { SYSTEM_HEALTH_STATES } from '../../../shared/src/constants/systemHealthStates.js';
 import { steps } from '../../../shared/src/definitions/steps.js';
 import { composeDeck } from './cards/deckComposer.js';
 import { components } from '../../../shared/src/definitions/components.js';
@@ -7,7 +8,8 @@ import { addPointsToPlayerHand, applyGameStartBugs } from './gameHelpers.js';
 import { transitionResolvers } from './transitionResolvers.js';
 import { applyDecision } from './decisions/decisionProcessing.js';
 import { getAvailableDecisions } from './decisions/decisionAvailability.js';
-import { decisions as decisionsDefinitions } from '../../../shared/src/definitions/decisions.js';
+import { processSystemHealth } from './systemHealthState/SystemHealthProcessor.js';
+import { processEndRoundRequestPropagation } from './propagationProcessor.js';
 import {
   createDecisionState,
   createValidationErrorState,
@@ -326,6 +328,24 @@ export function applyAction(state, action, ctx = {}) {
 
     case ACTION_TYPES.FINISH_ROUND: {
       next.flow.step = steps['END_ROUND'];
+      next.flow.blockedUntil =
+        now + steps['END_ROUND'].flowControl.current.delayMs;
+
+      if (
+        next.system.healthState === SYSTEM_HEALTH_STATES.WARNING ||
+        next.system.healthState === SYSTEM_HEALTH_STATES.CRITICAL
+      ) {
+        next.components = processEndRoundRequestPropagation(next.components);
+        const systemChange = processSystemHealth(next);
+        if (systemChange.updated) {
+          next.system = systemChange.system;
+          next.flow.step.stepInstructionKey =
+            systemChange.step.stepInstructionKey;
+          next.flow.blockedUntil =
+            now + steps['END_ROUND'].flowControl.current.delayMs + 5000; // Adding extra time for the propagation effects to be processed and for the players to see the changes in the system health before the next round starts
+        }
+      }
+
       next.flow.step.flowControl.nextTransition =
         transitionResolvers['END_ROUND'](next);
       next.flow.turn = 0;
