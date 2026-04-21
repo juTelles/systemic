@@ -183,6 +183,20 @@ export function applyAction(state, action, ctx = {}) {
       const decisionNext = result.next;
       decisionNext.flow.step = steps['PROCESSING_DECISION'];
 
+      if (
+        action.payload.chosen === 'RESOLVE_REQUESTS_BUG_TESTED' ||
+        action.payload.chosen === 'RESOLVE_REQUESTS_BUG'
+      ) {
+        const systemChange = processSystemHealth(decisionNext);
+        if (systemChange.updated) {
+          decisionNext.system = systemChange.system;
+          decisionNext.flow.step.stepInstructionKey =
+            systemChange.step.stepInstructionKey;
+          decisionNext.flow.blockedUntil =
+            now + steps['PROCESSING_DECISION'].flowControl.current.delayMs;
+        }
+      }
+
       let decisionsAvailableApply = [];
       decisionsAvailableApply = getAvailableDecisions(
         decisionNext,
