@@ -1,7 +1,21 @@
+import { getModalTxt } from '../../texts/modalDialogTxt/modalDialogResolver.js';
 import Button from '../button/Button';
+import { getErrorMessage } from '../../texts/errorsMessages.js';
 import styles from './ModalDialog.module.css';
 
-function ModalDialog({ title, content, button, onClose }) {
+function ModalDialog({button, onClose, modalType, error}) {
+
+  let title = '';
+  let content = '';
+
+  if (modalType === 'ERROR') {
+    title = getErrorMessage(error.title) ? getErrorMessage(error.title) : 'Erro';
+    content = getErrorMessage(error.content) ? getErrorMessage(error.content) : '';
+  } else {
+    title = getModalTxt(modalType, 'title', 'pt');
+    content = getModalTxt(modalType, 'content', 'pt');
+  }
+
   return (
     <div className={styles.dialogOverlay}>
       <div className={styles.dialogBox}>
