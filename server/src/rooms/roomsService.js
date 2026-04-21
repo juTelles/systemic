@@ -45,15 +45,12 @@ export function createRoomsService() {
     return { id: room.id, state: room.state };
   }
 
-  function cleanRoomState(rooms, roomId) {
-    const roomExists = rooms.has(roomId);
-
-    if (!roomExists) {
-      throw new Error('Room not found');
+  function cleanRoomState(roomId) {
+    const room = store.get(roomId);
+    if (!room) {
+      throw createError(ERRORS.ROOM_NOT_FOUND, 404);
     }
-
-    rooms.delete(roomId);
-
+    store.removeRoom(roomId);
     return { ok: true };
   }
 
