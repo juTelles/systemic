@@ -43,7 +43,7 @@ const systemHealthChangeInstructionsTxt = {
     },
     description: {
       pt: ({bugSaturationLimit}) =>
-        `O sistema entrou em Estado de Crítico! Todos os Componentes de Requisições ultrapassarão o limite de Saturação de ${bugSaturationLimit} Bugs.\n Essa rodada será finalizada imediatamenta e uma rodada de crise será iniciada, o Time tem até o final da Rodada de Crise para recuperar o sistema, caso contrário, o jogo termina com a derrota do Time!\n\n Lembre-se: Componentes de Requisições saturados propagam bugs para seus componentes filhos imediatos! `,
+        `O sistema entrou em Estado de Crítico! Todos os Componentes de Requisições ultrapassarão o limite de Saturação de ${bugSaturationLimit} Bugs.\n Essa rodada será finalizada imediatamente e uma rodada de crise será iniciada, o Time tem até o final da Rodada de Crise para recuperar o sistema, caso contrário, o jogo termina com a derrota do Time!\n\n Lembre-se: Componentes de Requisições saturados propagam bugs para seus componentes filhos imediatos! `,
       en: ({bugSaturationLimit}) =>
         `The system has entered a Critical State! All Request Components will exceed the Saturation limit of ${bugSaturationLimit} Bugs.\n This round will end immediately and a crisis round will begin, the Team has until the end of the Crisis Round to recover the system, otherwise, the game ends with the Team's defeat!\n\n Remember: Saturated Request components propagate bugs to their immediate child components!`,
     },
@@ -54,7 +54,7 @@ const systemHealthChangeInstructionsTxt = {
       en: `The system has returned to a healthy state!`,
     },
     description: {
-      pt: `Parabens! O time consegui normalizar o Sistema a um Estado Saudável!`,
+      pt: `Parabens! O time conseguiu normalizar o Sistema a um Estado Saudável!`,
       en: `Congratulations! The team managed to normalize the System to a Healthy State!`,
     },
   },
@@ -65,7 +65,7 @@ const systemHealthChangeInstructionsTxt = {
     },
     description: {
       pt: ({bugSaturationLimit}) =>
-        `O sistema entrou em Estado de Crítico! Todos os Componentes de Requisições ultrapassarão o limite de Saturação de ${bugSaturationLimit} Bugs.\n Essa rodada será finalizada imediatamenta e uma rodada de crise será iniciada, o Time tem até o final da Rodada de Crise para recuperar o sistema, caso contrário, o jogo termina com a derrota do Time!\n\n Lembre-se: Componentes de Requisições saturados propagam bugs para seus componentes filhos imediatos! `,
+        `O sistema entrou em Estado de Crítico! Todos os Componentes de Requisições ultrapassarão o limite de Saturação de ${bugSaturationLimit} Bugs.\n Essa rodada será finalizada imediatamente e uma rodada de crise será iniciada, o Time tem até o final da Rodada de Crise para recuperar o sistema, caso contrário, o jogo termina com a derrota do Time!\n\n Lembre-se: Componentes de Requisições saturados propagam bugs para seus componentes filhos imediatos! `,
       en: ({bugSaturationLimit}) =>
         `The system has entered a Critical State! All Request Components will exceed the Saturation limit of ${bugSaturationLimit} Bugs.\n This round will end immediately and a crisis round will begin, the Team has until the end of the Crisis Round to recover the system, otherwise, the game ends with the Team's defeat!\n\n Remember: Saturated Request components propagate bugs to their immediate child components!`,
     },
@@ -76,7 +76,7 @@ const systemHealthChangeInstructionsTxt = {
       en: `The system has returned to a healthy state!`,
     },
     description: {
-      pt: `Parabens! O time consegui normalizar o Sistema a um Estado Saudável!\nSe o sistem não voltar ao Estado Crítico até o final da partida, o time vai sobreviver a Rodade de Crise!`,
+      pt: `Parabens! O time conseguiu normalizar o Sistema a um Estado Saudável!\nSe o sistema não voltar ao Estado Crítico até o final da partida, o time vai sobreviver a Rodada de Crise!`,
       en: `Congratulations! The team managed to normalize the System to a Healthy State!\nIf the system does not return to the Critical State until the end of the game, the team will survive the Crisis Round!`,
     },
   },
