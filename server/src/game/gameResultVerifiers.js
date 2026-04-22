@@ -1,4 +1,4 @@
-import { SYSTEM_HEALTH_STATES } from '../../../shared/src/constants/systemHealthStates.js';
+import { SYSTEM_HEALTH_STATES } from '../../../shared/src/constants/gameEnums.js';
 import { ERRORS } from '../../../shared/src/constants/errors.js';
 import { createError } from '../utils/createErrors.js';
 

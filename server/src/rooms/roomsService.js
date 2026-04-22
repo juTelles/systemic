@@ -1,4 +1,4 @@
-import { PLAYER_STATUS } from '../../../shared/src/constants/playerStatus.js';
+import { PLAYER_STATUS } from '../../../shared/src/constants/gameEnums.js';
 import { ERRORS } from '../../../shared/src/constants/errors.js';
 import { createError } from '../utils/createErrors.js';
 import { createRoomsStore } from './roomsStore.js';
