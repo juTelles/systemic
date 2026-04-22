@@ -20,6 +20,7 @@ import {
 import {
   applyGameStartBugs,
   addStartRoundPointsToPlayers,
+  cleanPlayerHandPoints,
 } from './gameHelpers.js';
 import {
   createDecisionState,
@@ -259,6 +260,11 @@ export function applyAction(state, action, ctx = {}) {
     case ACTION_TYPES.PROCEED_TO_CARD_DRAW: {
       next.flow.step = steps['AWAIT_CARD_DRAW'];
       next.decisionState = createDecisionState();
+
+      next.players = cleanPlayerHandPoints(
+        next.flow.currentPlayerId,
+        next.players,
+      );
 
       if (next.cardState.current !== null) {
         next.deck.discardPile.push(next.cardState.current);

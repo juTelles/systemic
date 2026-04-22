@@ -16,9 +16,8 @@ export {
   addPointsToPlayerBankByHolding,
   addPointsToPlayerHand,
   addStartRoundPointsToPlayers,
-  // cleanPlayerHandPoints,
+  cleanPlayerHandPoints,
   bankPlayersPointsForCrisisRound,
-  // updatePlayer,
 };
 
 function existsComponentEligibleForBugResolvByType(
@@ -221,4 +220,10 @@ function bankPlayersPointsForCrisisRound(
     );
   });
   return updatedPlayers;
+}
+
+function cleanPlayerHandPoints(playerId, players) {
+  return players.map((player) => {
+    return player.id === playerId ? { ...player, handPoints: 0 } : player;
+  });
 }
