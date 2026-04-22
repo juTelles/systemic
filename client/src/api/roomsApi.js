@@ -26,7 +26,7 @@ export async function createRoom() {
 }
 
 export async function deleteRoom(roomId) {
-  return apiFetch(`/rooms/${roomId}/delete`, {
+  return apiFetch(`/rooms/${roomId}/deleteRoom`, {
     method: "POST",
   });
 }
