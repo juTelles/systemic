@@ -32,7 +32,7 @@ export function createStepState(stepKey) {
   const baseStep = steps[stepKey];
 
   if (!baseStep) {
-    throw new createError(ERRORS.MISSING_STEP_DEFINITION);
+    throw createError(ERRORS.MISSING_STEP_DEFINITION);
   }
 
   return {
