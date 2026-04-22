@@ -1,7 +1,29 @@
+export const DECISION_ID = Object.freeze({
+  RESOLVE_LOCAL_BUG: 'RESOLVE_LOCAL_BUG',
+  RESOLVE_LOCAL_BUG_TESTED: 'RESOLVE_LOCAL_BUG_TESTED',
+  RESOLVE_STRUCTURAL_BUG: 'RESOLVE_STRUCTURAL_BUG',
+  RESOLVE_STRUCTURAL_BUG_TESTED: 'RESOLVE_STRUCTURAL_BUG_TESTED',
+  RESOLVE_REQUESTS_BUG: 'RESOLVE_REQUESTS_BUG',
+  RESOLVE_REQUESTS_BUG_TESTED: 'RESOLVE_REQUESTS_BUG_TESTED',
+  DONATE_POINTS: 'DONATE_POINTS',
+  HOLD_POINTS: 'HOLD_POINTS',
+  DEVELOP_TESTS: 'DEVELOP_TESTS',
+});
+
+export const DECISION_IDUI = Object.freeze({
+  LOCAL: 'LOCAL',
+  STRUCTURAL: 'STRUCTURAL',
+  REQUESTS: 'REQUESTS',
+  DONATE_POINTS: 'DONATE_POINTS',
+  HOLD_POINTS: 'HOLD_POINTS',
+  DEVELOP_TESTS: 'DEVELOP_TESTS',
+});
+
 export const decisions = Object.freeze({
   options: {
-    RESOLVE_LOCAL_BUG: {
-      id: 'RESOLVE_LOCAL_BUG',
+    [DECISION_ID.RESOLVE_LOCAL_BUG]: {
+      id: DECISION_ID.RESOLVE_LOCAL_BUG,
+      idUi: DECISION_IDUI.LOCAL,
       type: 'RESOLVE_BUG',
       componentType: 'LOCAL',
       effect: 'RESOLVE_BUG',
@@ -12,8 +34,9 @@ export const decisions = Object.freeze({
       ],
       availabilityRules: ['EXISTS_UNTESTED_COMPONENT_WITH_BUG'],
     },
-    RESOLVE_LOCAL_BUG_TESTED: {
-      id: 'RESOLVE_LOCAL_BUG_TESTED',
+    [DECISION_ID.RESOLVE_LOCAL_BUG_TESTED]: {
+      id: DECISION_ID.RESOLVE_LOCAL_BUG_TESTED,
+      idUi: DECISION_IDUI.LOCAL,
       type: 'RESOLVE_BUG',
       componentType: 'LOCAL',
       effect: 'RESOLVE_BUG',
@@ -25,8 +48,9 @@ export const decisions = Object.freeze({
       ],
       availabilityRules: ['EXISTS_TESTED_COMPONENT_WITH_BUG'],
     },
-    RESOLVE_STRUCTURAL_BUG: {
-      id: 'RESOLVE_STRUCTURAL_BUG',
+    [DECISION_ID.RESOLVE_STRUCTURAL_BUG]: {
+      id: DECISION_ID.RESOLVE_STRUCTURAL_BUG,
+      idUi: DECISION_IDUI.STRUCTURAL,
       type: 'RESOLVE_BUG',
       componentType: 'STRUCTURAL',
       effect: 'RESOLVE_BUG',
@@ -37,8 +61,9 @@ export const decisions = Object.freeze({
       ],
       availabilityRules: ['EXISTS_UNTESTED_COMPONENT_WITH_BUG'],
     },
-    RESOLVE_STRUCTURAL_BUG_TESTED: {
-      id: 'RESOLVE_STRUCTURAL_BUG_TESTED',
+    [DECISION_ID.RESOLVE_STRUCTURAL_BUG_TESTED]: {
+      id: DECISION_ID.RESOLVE_STRUCTURAL_BUG_TESTED,
+      idUi: DECISION_IDUI.STRUCTURAL,
       type: 'RESOLVE_BUG',
       componentType: 'STRUCTURAL',
       effect: 'RESOLVE_BUG',
@@ -50,8 +75,9 @@ export const decisions = Object.freeze({
       ],
       availabilityRules: ['EXISTS_TESTED_COMPONENT_WITH_BUG'],
     },
-    RESOLVE_REQUESTS_BUG: {
-      id: 'RESOLVE_REQUESTS_BUG',
+    [DECISION_ID.RESOLVE_REQUESTS_BUG]: {
+      id: DECISION_ID.RESOLVE_REQUESTS_BUG,
+      idUi: DECISION_IDUI.REQUESTS,
       type: 'RESOLVE_BUG',
       componentType: 'REQUESTS',
       effect: 'RESOLVE_BUG',
@@ -62,8 +88,9 @@ export const decisions = Object.freeze({
       ],
       availabilityRules: ['EXISTS_UNTESTED_COMPONENT_WITH_BUG'],
     },
-    RESOLVE_REQUESTS_BUG_TESTED: {
-      id: 'RESOLVE_REQUESTS_BUG_TESTED',
+    [DECISION_ID.RESOLVE_REQUESTS_BUG_TESTED]: {
+      id: DECISION_ID.RESOLVE_REQUESTS_BUG_TESTED,
+      idUi: DECISION_IDUI.REQUESTS,
       type: 'RESOLVE_BUG',
       componentType: 'REQUESTS',
       effect: 'RESOLVE_BUG',
@@ -75,8 +102,9 @@ export const decisions = Object.freeze({
       ],
       availabilityRules: ['EXISTS_TESTED_COMPONENT_WITH_BUG'],
     },
-    DONATE_POINTS: {
-      id: 'DONATE_POINTS',
+    [DECISION_ID.DONATE_POINTS]: {
+      id: DECISION_ID.DONATE_POINTS,
+      idUi: DECISION_IDUI.DONATE_POINTS,
       type: 'MANAGE_POINTS',
       effect: 'DONATE_POINTS',
       applicationValidators: [
@@ -89,8 +117,9 @@ export const decisions = Object.freeze({
       ],
       availabilityRules: ['DONATION_WITHIN_TURN_LIMIT'],
     },
-    HOLD_POINTS: {
-      id: 'HOLD_POINTS',
+    [DECISION_ID.HOLD_POINTS]: {
+      id: DECISION_ID.HOLD_POINTS,
+      idUi: DECISION_IDUI.HOLD_POINTS,
       type: 'MANAGE_POINTS',
       effect: 'HOLD_POINTS',
       applicationValidators: [
@@ -101,8 +130,9 @@ export const decisions = Object.freeze({
       ],
       availabilityRules: ['HOLD_WITHIN_TURN_LIMIT'],
     },
-    DEVELOP_TESTS: {
-      id: 'DEVELOP_TESTS',
+    [DECISION_ID.DEVELOP_TESTS]: {
+      id: DECISION_ID.DEVELOP_TESTS,
+      idUi: DECISION_IDUI.DEVELOP_TESTS,
       type: 'DEVELOP_TESTS',
       effect: 'DEVELOP_TESTS',
       applicationValidators: [
