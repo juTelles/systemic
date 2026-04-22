@@ -144,7 +144,7 @@ export function applyAction(state, action, ctx = {}) {
         handPointsToAddCrisis,
         next.gameConfig.taskPoints.maxPlayerPoints,
       );
-
+      next.flow.crisisRoundCounter += 1;
       next.flow.turn = 0;
       next.meta.rev += 1;
       next.meta.updatedAt = now;
@@ -384,9 +384,6 @@ export function applyAction(state, action, ctx = {}) {
       next.flow.step.flowControl.nextTransition =
         transitionResolvers['END_ROUND'](next);
 
-      if (next.system.isCrisisRound) {
-        next.flow.crisisRoundCounter += 1;
-      }
       next.flow.turn = 0;
       next.flow.round += 1;
       next.meta.rev += 1;
