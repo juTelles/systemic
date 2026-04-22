@@ -225,7 +225,7 @@ export function applyAction(state, action, ctx = {}) {
           decisionNext.flow.step.stepInstructionKey =
             systemChange.stepInstructionKey;
           decisionNext.flow.blockedUntil =
-            now + next.flow.step.flowControl.current.delayMs;
+            now + decisionNext.flow.step.flowControl.current.delayMs;
         }
       }
       if (action.payload.chosen === 'DEVELOP_TESTS') {
