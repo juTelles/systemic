@@ -33,7 +33,7 @@ function LateralBar({
     if (!result.ok) {
       console.error('Error drawing card:', result.error);
       setShowErrorDialog({
-        content: getErrorMessage(ERRORS.DRAW_CARD_ERROR),
+        content: ERRORS.DRAW_CARD_ERROR,
       });
     }
   };
@@ -43,7 +43,7 @@ function LateralBar({
     if (!result.ok) {
       console.error('Error applying card:', result.error);
       setShowErrorDialog({
-        content: getErrorMessage(ERRORS.APPLY_CARD_EFFECT_ERROR),
+        content: ERRORS.APPLY_CARD_EFFECT_ERROR,
       });
     }
   };
@@ -64,8 +64,7 @@ function LateralBar({
       {showErrorDialog ? (
         <ModalDialog
           type={'ERROR'}
-          title={getErrorMessage(showErrorDialog.title)}
-          content={getErrorMessage(showErrorDialog.content)}
+          error={showErrorDialog}
           button={true}
           onClose={() => setShowErrorDialog(false)}
         />
