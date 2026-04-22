@@ -1,0 +1,51 @@
+.container {
+  display: inline-flex;
+  align-items: center;
+  position: relative;
+  filter: drop-shadow(0 0 8px var(--color-ciano-neon));
+  /* O "Brilho" */
+}
+
+.body {
+  background-color: var(--color-ciano-neon);
+  color: var(--bg-pure);
+  padding: 15px 15px;
+  font-weight: bold;
+  font-family: var(--font-family);
+  font-size: var(--font-md-lg);
+  border: none;
+  height: 55px;
+  min-width: 120px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-transform: uppercase;
+}
+
+.body::after {
+  content: '';
+  position: absolute;
+  right: -35px;
+  top: 50%;
+  transform: translateY(-50%);
+  border-radius: 5px  ;
+  border-left: 45px solid var(--color-ciano-neon);
+  border-top: 45px solid transparent;
+  border-bottom: 45px solid transparent;
+  width: 0;
+  height: 0;
+}
+
+.body:hover {
+  background-color: var(--color-ciano-bg);
+  filter: brightness(1.2);
+
+}
+
+.body:hover::after {
+  border-left-color: var(--color-ciano-bg);
+}
