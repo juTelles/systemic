@@ -1,6 +1,5 @@
 import { ACTION_TYPES } from '../../../shared/src/constants/actionsTypes.js';
-import { PLAYER_STATUS } from '../../../shared/src/constants/playerStatus.js';
-import { SYSTEM_HEALTH_STATES } from '../../../shared/src/constants/systemHealthStates.js';
+import { GAME_RESULT, PLAYER_STATUS, SYSTEM_HEALTH_STATES, GAME_PHASE } from '../../../shared/src/constants/gameEnums.js';
 import { decisions as decisionsDefinitions } from '../../../shared/src/definitions/decisions.js';
 import { steps, STEP_NAME } from '../../../shared/src/definitions/steps.js';
 import { components } from '../../../shared/src/definitions/components.js';
@@ -54,7 +53,7 @@ export function applyAction(state, action, ctx = {}) {
       player.status = PLAYER_STATUS.READY;
 
       next.flow.step.flowControl.nextTransition =
-        transitionResolvers['WAITING_PLAYERS_READY'](next);
+        transitionResolvers[STEP_NAME.WAITING_PLAYERS_READY](next);
       next.meta.rev += 1;
       next.meta.updatedAt = now;
       next.log.lastEvent = {
@@ -117,7 +116,7 @@ export function applyAction(state, action, ctx = {}) {
         handPointsToAdd,
         next.gameConfig.taskPoints.maxPlayerPoints,
       );
-      next.flow.crisisRoundCounter += 1;
+
       next.flow.turn = 0;
       next.meta.rev += 1;
       next.meta.updatedAt = now;
@@ -232,8 +231,8 @@ export function applyAction(state, action, ctx = {}) {
       if (action.payload.chosen === 'DEVELOP_TESTS') {
         const isGameWin = verifyGameWinCondition(decisionNext.components);
         if (isGameWin) {
-          decisionNext.gameResult = 'GAME_WIN';
-          decisionNext.phase = 'END_GAME';
+          decisionNext.gameResult = GAME_RESULT.GAME_WIN;
+          decisionNext.phase = GAME_PHASE.END_GAME;
         }
       }
       let decisionsAvailableApply = [];
@@ -243,7 +242,7 @@ export function applyAction(state, action, ctx = {}) {
       );
       decisionNext.decisionState.available = decisionsAvailableApply;
       decisionNext.flow.step.flowControl.nextTransition =
-        transitionResolvers['PROCESSING_DECISION'](decisionNext);
+        transitionResolvers[STEP_NAME.PROCESSING_DECISION](decisionNext);
       decisionNext.meta.rev += 1;
       decisionNext.meta.updatedAt = now;
       decisionNext.log.lastEvent = {
@@ -348,7 +347,7 @@ export function applyAction(state, action, ctx = {}) {
       }
       next.flow.turn += 1;
       next.flow.step.flowControl.nextTransition =
-        transitionResolvers['END_TURN'](next);
+        transitionResolvers[STEP_NAME.END_TURN](next);
       next.meta.rev += 1;
       next.meta.updatedAt = now;
       next.log.lastEvent = {
@@ -378,11 +377,11 @@ export function applyAction(state, action, ctx = {}) {
       }
       const isGameOver = verifyGameOverCondition(next.system);
       if (isGameOver) {
-        next.gameResult = 'GAME_OVER';
-        next.phase = 'END_GAME';
+        next.gameResult = GAME_RESULT.GAME_OVER;
+        next.phase = GAME_PHASE.END_GAME;
       }
       next.flow.step.flowControl.nextTransition =
-        transitionResolvers['END_ROUND'](next);
+        transitionResolvers[STEP_NAME.END_ROUND](next);
 
       next.flow.turn = 0;
       next.flow.round += 1;
