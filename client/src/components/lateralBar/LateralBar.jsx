@@ -10,7 +10,6 @@ import { BsQuestionCircle } from 'react-icons/bs';
 import { IoSettingsOutline } from 'react-icons/io5';
 import { useRoomActions } from '../../actions/roomsActions';
 import ModalDialog from '../../components/modalDialog/ModalDialog.jsx';
-import { getErrorMessage } from '../../texts/errorsMessages.js';
 import ArrowButton from '../arrowButton/ArrowButton';
 
 function LateralBar({
@@ -94,7 +93,7 @@ function LateralBar({
         <div className={styles.absorbedBugsPanelContainer}>
           <AbsorbedBugsPanel />
         </div>
-        <div className={styles.nextButtonConteiner}>
+        <div className={styles.nextButtonContainer}>
           {!isReadOnlyTurn && (isDecisionStep || isShowCardStep) ? (
             <ArrowButton
               label={txt?.arrowButtonTxt?.[currentStepName]?.label?.pt}

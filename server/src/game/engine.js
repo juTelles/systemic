@@ -1,7 +1,7 @@
 import { ACTION_TYPES } from '../../../shared/src/constants/actionsTypes.js';
 import { GAME_RESULT, PLAYER_STATUS, SYSTEM_HEALTH_STATES, GAME_PHASE } from '../../../shared/src/constants/gameEnums.js';
 import { decisions as decisionsDefinitions } from '../../../shared/src/definitions/decisions.js';
-import { steps, STEP_NAME } from '../../../shared/src/definitions/steps.js';
+import { STEP_NAME } from '../../../shared/src/definitions/steps.js';
 import { components } from '../../../shared/src/definitions/components.js';
 import { getAvailableDecisions } from './decisions/decisionAvailability.js';
 import { applyDecision } from './decisions/decisionProcessing.js';

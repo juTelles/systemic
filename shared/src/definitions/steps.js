@@ -190,7 +190,7 @@ export const steps = Object.freeze({
   },
 
   [STEP_NAME.PROCESSING_SYSTEM_HEALTH]: {
-    name: STEP_NAME.PROCESSING_SYSTEM_HEALTH ,
+    name: STEP_NAME.PROCESSING_SYSTEM_HEALTH,
     stepInstructionKey: null,
     flowControl: {
       current: {
