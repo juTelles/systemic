@@ -30,6 +30,12 @@ export function useRoomActions(roomId, localPlayerId) {
     });
   }
 
+  async function applyCard() {
+    return sendAction(roomId, ACTION_TYPES.APPLY_CARD_EFFECT, {
+      senderId: localPlayerId,
+    });
+  }
+
   async function returnToLobby() {
     return sendAction(roomId, ACTION_TYPES.RETURN_TO_LOBBY, {
       senderId: localPlayerId,
@@ -42,5 +48,6 @@ export function useRoomActions(roomId, localPlayerId) {
     endDecision,
     returnToLobby,
     drawCard,
+    applyCard,
   };
 }

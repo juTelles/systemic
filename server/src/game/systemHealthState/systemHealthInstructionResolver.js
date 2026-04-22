@@ -25,6 +25,6 @@ const HEALTH_STATE_INSTRUCTIONS = {
   },
 };
 
-export function getInstructionForHealthChange(oldHealthState, newHealthState) {
+export function getKeyForHealthChange(oldHealthState, newHealthState) {
   return HEALTH_STATE_INSTRUCTIONS[oldHealthState]?.[newHealthState]?.key;
 }

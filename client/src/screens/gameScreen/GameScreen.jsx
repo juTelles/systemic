@@ -11,7 +11,7 @@ import ModalDialog from '../../components/modalDialog/ModalDialog.jsx';
 import { deleteRoom } from '../../api/roomsApi';
 
 function GameScreen({ roomId, localPlayerId, onSessionInvalid }) {
-  const { submitDecision, endDecision, drawCard } = useRoomActions(
+  const { submitDecision, endDecision } = useRoomActions(
     roomId,
     localPlayerId,
   );
@@ -69,8 +69,6 @@ function GameScreen({ roomId, localPlayerId, onSessionInvalid }) {
     }
   }
 
-  // TODO: Investigate: should I show the real error message instead of a
-  // generic one? It could confuse the player
   async function handleFinishDecision() {
     const result = await endDecision();
     if (!result.ok) {
@@ -81,16 +79,6 @@ function GameScreen({ roomId, localPlayerId, onSessionInvalid }) {
     setSelectedDecisionUIId(null);
     return;
   }
-
-  const handleCardDraw = async () => {
-    const result = await drawCard();
-    if (!result.ok) {
-      console.error('Error drawing card:', result.error);
-      setShowErrorDialog({
-        content: 'DRAW_CARD_ERROR',
-      });
-    }
-  };
 
   useEffect(() => {
     if (isLoading) return;
@@ -165,7 +153,6 @@ function GameScreen({ roomId, localPlayerId, onSessionInvalid }) {
           isReadOnlyTurn={isReadOnlyTurn}
           roomId={roomId}
           handleFinishDecision={handleFinishDecision}
-          handleCardDraw={handleCardDraw}
         />
       </div>
       {showGameStartDialog ? (

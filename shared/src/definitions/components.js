@@ -1,9 +1,15 @@
+
+export const NODE_TYPES = Object.freeze({
+  REQUESTS: 'REQUESTS',
+  STRUCTURAL: 'STRUCTURAL',
+  LOCAL: 'LOCAL',
+});
+
 export const components = {
   nodes: {
     applicationRequests: {
       id: 'applicationRequests',
-      namePT: 'Requisições de Aplicação',
-      type: 'REQUESTS',
+      type: NODE_TYPES.REQUESTS,
       saturationLimit: 3,
       level: 1,
       parentIds: [],
@@ -15,8 +21,7 @@ export const components = {
     },
     dataRequests: {
       id: 'dataRequests',
-      namePT: 'Requisições de Dados',
-      type: 'REQUESTS',
+      type: NODE_TYPES.REQUESTS,
       saturationLimit: 3,
       level: 1,
       parentIds: [],
@@ -28,8 +33,7 @@ export const components = {
     },
     frontend: {
       id: 'frontend',
-      namePT: 'Frontend',
-      type: 'STRUCTURAL',
+      type: NODE_TYPES.STRUCTURAL,
       saturationLimit: 3,
       level: 2,
       parentIds: ['applicationRequests'],
@@ -41,8 +45,7 @@ export const components = {
     },
     backend: {
       id: 'backend',
-      namePT: 'Backend',
-      type: 'STRUCTURAL',
+      type: NODE_TYPES.STRUCTURAL,
       saturationLimit: 3,
       level: 2,
       parentIds: ['applicationRequests', 'dataRequests'],
@@ -54,8 +57,7 @@ export const components = {
     },
     database: {
       id: 'database',
-      namePT: 'Banco de Dados',
-      type: 'STRUCTURAL',
+      type: NODE_TYPES.STRUCTURAL,
       saturationLimit: 3,
       level: 2,
       parentIds: ['dataRequests'],
@@ -67,8 +69,7 @@ export const components = {
     },
     interface: {
       id: 'interface',
-      namePT: 'Interface',
-      type: 'LOCAL',
+      type: NODE_TYPES.LOCAL,
       saturationLimit: 3,
       level: 1,
       parentIds: ['frontend'],
@@ -80,8 +81,7 @@ export const components = {
     },
     interaction: {
       id: 'interaction',
-      namePT: 'Interação',
-      type: 'LOCAL',
+      type: NODE_TYPES.LOCAL,
       saturationLimit: 3,
       level: 1,
       parentIds: ['frontend'],
@@ -93,8 +93,7 @@ export const components = {
     },
     logic: {
       id: 'logic',
-      namePT: 'Lógica',
-      type: 'LOCAL',
+      type: NODE_TYPES.LOCAL,
       saturationLimit: 3,
       level: 1,
       parentIds: ['backend'],
@@ -106,8 +105,7 @@ export const components = {
     },
     integrations: {
       id: 'integrations',
-      namePT: 'Integrações',
-      type: 'LOCAL',
+      type: NODE_TYPES.LOCAL,
       saturationLimit: 3,
       level: 1,
       parentIds: ['backend'],
@@ -119,8 +117,7 @@ export const components = {
     },
     data: {
       id: 'data',
-      namePT: 'Dados',
-      type: 'LOCAL',
+      type: NODE_TYPES.LOCAL,
       saturationLimit: 3,
       level: 1,
       parentIds: ['database'],
@@ -132,8 +129,7 @@ export const components = {
     },
     structure: {
       id: 'structure',
-      namePT: 'Estrutura',
-      type: 'LOCAL',
+      type: NODE_TYPES.LOCAL,
       saturationLimit: 3,
       level: 1,
       parentIds: ['database'],

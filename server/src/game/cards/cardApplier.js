@@ -1,3 +1,4 @@
+import { ERRORS } from '../../../../shared/src/constants/errors.js';
 import { applyBug, addPointsToPlayerBank } from '../gameHelpers.js';
 import { getTotalPlayersPoints } from '../selectors.js';
 
@@ -47,7 +48,7 @@ function pointsCardApplier(state, card) {
   if (!currentPlayer) {
     return {
       ok: false,
-      error: 'CURRENT_PLAYER_NOT_FOUND',
+      error: ERRORS.CURRENT_PLAYER_NOT_FOUND,
       ...next,
      };
   }

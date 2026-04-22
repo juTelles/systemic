@@ -5,7 +5,7 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  justify-content: space-between;
+  justify-content: space-around;
   gap:10px
 }
 .menuContainer {
@@ -29,22 +29,14 @@
   align-items: center;
   justify-content: center;
 }
-.barBottomContainer {
-  width: 100%;
-  height: 25%;
+.nextButtonContainer {
+  width: 75%;
+  height: 20%;
   display: flex;
   justify-content: center;
-  flex-direction: row;
   align-items: center;
 }
-.exitContainer {
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  align-self: flex-end;
-  margin-bottom: 5px;
-}
-.menuButton, .helpButton, .exitButton {
+.menuButton, .helpButton {
   background-color: var(--bg-pure);
   display: flex;
   align-items: center;
@@ -53,7 +45,7 @@
   color: var( --color-ciano-extra-light);
   cursor: pointer;
 }
-.menuButton:hover, .helpButton:hover, .exitButton:hover {
+.menuButton:hover, .helpButton:hover {
   color: var(--color-ciano-neon);
   text-shadow: 0 0 60px var(--color-ciano-neon);
 }

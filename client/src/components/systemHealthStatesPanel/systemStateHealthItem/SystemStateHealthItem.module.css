@@ -15,7 +15,7 @@
   --led-light: var(--color-red-light);
     animation: pulse 0.2s infinite alternate ease-in-out;
 }
-.systemStateItemWrapper {
+.systemHealthStateItemWrapper {
   width: 100%;
   height: 100%;
   display: flex;
@@ -32,7 +32,7 @@
   padding: 2px;
   border-radius: 50%;
 }
-.systemStatelabel {
+.systemHealthStateItemlabel {
   font-weight: bolder;
   color: var(--text-main);
   font-family: var(--font-family);

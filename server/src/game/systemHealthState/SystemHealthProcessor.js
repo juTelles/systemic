@@ -1,12 +1,11 @@
-import { SYSTEM_HEALTH_STATES } from '../../../../shared/src/constants/systemHealthStates.js';
+import { SYSTEM_HEALTH_STATES } from '../../../../shared/src/constants/gameEnums.js';
 import { verifySystemHealthChange } from './systemHealthChangeVerifier.js';
-import { getInstructionForHealthChange } from './systemHealthInstructionResolver.js';
+import { getKeyForHealthChange } from './systemHealthInstructionResolver.js';
 
 export function processSystemHealth(gameState) {
   validateSystemHealthProcessInput(gameState);
 
   const system = { ...gameState.system };
-  const step = { ...gameState.flow.step };
 
   const changeObject = verifySystemHealthChange(gameState);
 
@@ -14,15 +13,11 @@ export function processSystemHealth(gameState) {
   if (!healthStateChanged) return { updated: false };
 
   const updatedSystem = updateSystemHealthState(system, changeObject);
+  const changeKey = getKeyForHealthChange(oldHealthState, newHealthState);
 
-  const updatedStep = { ...step };
-  updatedStep.stepInstructionKey = getInstructionForHealthChange(
-    oldHealthState,
-    newHealthState,
-  );
   return {
     system: updatedSystem,
-    step: updatedStep,
+    stepInstructionKey: changeKey,
     updated: true,
   };
 }

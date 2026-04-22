@@ -1,12 +1,30 @@
 import { ACTION_TYPES } from '../constants/actionsTypes.js';
+import { ACTION_TRIGGER } from '../constants/gameEnums.js';
+
+export const STEP_NAME = Object.freeze({
+  WAITING_PLAYERS_READY: 'WAITING_PLAYERS_READY',
+  GAME_START: 'GAME_START',
+  ROUND_START: 'ROUND_START',
+  CRISIS_ROUND_START: 'CRISIS_ROUND_START',
+  TURN_START: 'TURN_START',
+  AWAIT_DECISION: 'AWAIT_DECISION',
+  PROCESSING_DECISION: 'PROCESSING_DECISION',
+  AWAIT_CARD_DRAW: 'AWAIT_CARD_DRAW',
+  SHOWING_CARD: 'SHOWING_CARD',
+  PROCESSING_CARD: 'PROCESSING_CARD',
+  PROCESSING_SYSTEM_HEALTH: 'PROCESSING_SYSTEM_HEALTH',
+  END_TURN: 'END_TURN',
+  END_ROUND: 'END_ROUND',
+  END_GAME: 'END_GAME',
+});
 
 export const steps = Object.freeze({
-  WAITING_PLAYERS_READY: {
-    name: 'WAITING_PLAYERS_READY',
+  [STEP_NAME.WAITING_PLAYERS_READY]: {
+    name: STEP_NAME.WAITING_PLAYERS_READY,
     stepInstructionKey: null,
     flowControl: {
       current: {
-        accepts: 'PLAYER_INPUT',
+        accepts: ACTION_TRIGGER.PLAYER_INPUT,
       },
       nextTransition: {
         actionType: null,
@@ -22,17 +40,17 @@ export const steps = Object.freeze({
     ],
     // IF all players ready -> 'GAME_START' ELSE null
   },
-  GAME_START: {
-    name: 'GAME_START',
+  [STEP_NAME.GAME_START]: {
+    name: STEP_NAME.GAME_START,
     stepInstructionKey: null,
     flowControl: {
       current: {
-        accepts: 'AUTO',
+        accepts: ACTION_TRIGGER.AUTO,
         delayMs: 7000,
       },
       nextTransition: {
         actionType: ACTION_TYPES.START_ROUND,
-        trigger: 'AUTO',
+        trigger: ACTION_TRIGGER.AUTO,
       },
     },
     effects: [
@@ -42,61 +60,61 @@ export const steps = Object.freeze({
       'TIME_OUT',
     ],
   },
-  ROUND_START: {
-    name: 'ROUND_START',
+  [STEP_NAME.ROUND_START]: {
+    name: STEP_NAME.ROUND_START,
     stepInstructionKey: null,
     flowControl: {
       current: {
-        accepts: 'AUTO',
+        accepts: ACTION_TRIGGER.AUTO,
         delayMs: 5000,
       },
       nextTransition: {
         actionType: ACTION_TYPES.START_TURN,
-        trigger: 'AUTO',
+        trigger: ACTION_TRIGGER.AUTO,
       },
     },
     effects: ['DEAL_POINTS', 'DEFINE_IS_CRISIS_ROUND', 'TIME_OUT'],
   },
-  CRISIS_ROUND_START: {
-    name: 'CRISIS_ROUND_START',
+  [STEP_NAME.CRISIS_ROUND_START]: {
+    name: STEP_NAME.CRISIS_ROUND_START,
     stepInstructionKey: null,
     flowControl: {
       current: {
-        accepts: 'AUTO',
+        accepts: ACTION_TRIGGER.AUTO,
         delayMs: 10000,
       },
       nextTransition: {
         actionType: ACTION_TYPES.START_TURN,
-        trigger: 'AUTO',
+        trigger: ACTION_TRIGGER.AUTO,
       },
     },
     effects: ['DEAL_POINTS', 'DEFINE_IS_CRISIS_ROUND', 'TIME_OUT'],
   },
-  TURN_START: {
-    name: 'TURN_START',
+  [STEP_NAME.TURN_START]: {
+    name: STEP_NAME.TURN_START,
     stepInstructionKey: null,
     flowControl: {
       current: {
-        accepts: 'AUTO',
+        accepts: ACTION_TRIGGER.AUTO,
         delayMs: 2000,
       },
       nextTransition: {
         actionType: ACTION_TYPES.ASK_FOR_DECISION,
-        trigger: 'AUTO',
+        trigger: ACTION_TRIGGER.AUTO,
       },
     },
     effects: ['CONFIG_CURRENT_PLAYER', 'SHOW_PLAYER_TURN', 'TIME_OUT'],
   },
-  AWAIT_DECISION: {
-    name: 'AWAIT_DECISION',
+  [STEP_NAME.AWAIT_DECISION]: {
+    name: STEP_NAME.AWAIT_DECISION,
     stepInstructionKey: null,
     flowControl: {
       current: {
-        accepts: 'PLAYER_INPUT',
+        accepts: ACTION_TRIGGER.PLAYER_INPUT,
       },
       nextTransition: {
         actionType: ACTION_TYPES.SUBMIT_DECISION,
-        trigger: 'PLAYER_INPUT',
+        trigger: ACTION_TRIGGER.PLAYER_INPUT,
       },
     },
     effects: [
@@ -105,12 +123,12 @@ export const steps = Object.freeze({
       'WAIT_FOR_DECISION',
     ],
   },
-  PROCESSING_DECISION: {
-    name: 'PROCESSING_DECISION',
+  [STEP_NAME.PROCESSING_DECISION]: {
+    name: STEP_NAME.PROCESSING_DECISION,
     stepInstructionKey: null,
     flowControl: {
       current: {
-        accepts: 'AUTO',
+        accepts: ACTION_TRIGGER.AUTO,
         delayMs: 0,
       },
       nextTransition: {
@@ -126,59 +144,58 @@ export const steps = Object.freeze({
     ],
     // IF allComponentsTested -> 'FINISH_GAME' with win ELSE decisionsAvailable.length > 0 -> 'ASK_FOR_DECISION' ELSE 'PROCEED_TO_CARD_DRAW'
   },
-  AWAIT_CARD_DRAW: {
-    name: 'AWAIT_CARD_DRAW',
+  [STEP_NAME.AWAIT_CARD_DRAW]: {
+    name: STEP_NAME.AWAIT_CARD_DRAW,
     stepInstructionKey: null,
     flowControl: {
       current: {
-        accepts: 'PLAYER_INPUT',
+        accepts: ACTION_TRIGGER.PLAYER_INPUT,
       },
       nextTransition: {
         actionType: ACTION_TYPES.DRAW_CARD,
-        trigger: 'PLAYER_INPUT',
+        trigger: ACTION_TRIGGER.PLAYER_INPUT,
       },
     },
     effects: ['WAIT_FOR_DRAW', 'SHOW_DRAWN_CARD'],
   },
-  SHOWING_CARD: {
-    name: 'SHOWING_CARD',
+  [STEP_NAME.SHOWING_CARD]: {
+    name: STEP_NAME.SHOWING_CARD,
     stepInstructionKey: null,
     flowControl: {
       current: {
-        accepts: 'PLAYER_INPUT',
+        accepts: ACTION_TRIGGER.PLAYER_INPUT,
       },
       nextTransition: {
         actionType: ACTION_TYPES.APPLY_CARD_EFFECT,
-        trigger: 'PLAYER_INPUT',
+        trigger: ACTION_TRIGGER.PLAYER_INPUT,
       },
     },
     effects: ['APPLY_CARD_EFFECT', 'PROCESSING_SYSTEM_HEALTH', 'TIME_OUT'],
   },
 
-  PROCESSING_CARD: {
-    name: 'PROCESSING_CARD',
+  [STEP_NAME.PROCESSING_CARD]: {
+    name: STEP_NAME.PROCESSING_CARD,
     stepInstructionKey: null,
     flowControl: {
       current: {
-        accepts: 'AUTO',
-        delayMs: 7000,
+        accepts: ACTION_TRIGGER.AUTO,
       },
       nextTransition: {
         actionType: ACTION_TYPES.CHECK_SYSTEM_HEALTH,
-        trigger: 'AUTO',
+        trigger: ACTION_TRIGGER.AUTO,
       },
     },
     effects: ['APPLY_CARD_EFFECT', 'PROCESSING_SYSTEM_HEALTH', 'TIME_OUT'],
     // IF criticalState > 'FINISH_TURN' with startCriticalRoundFlag ELSE IF cardsToDrawRemaining > 0> 'PROCEED_TO_CARD_DRAW' ELSE 'FINISH_TURN'
   },
 
-  PROCESSING_SYSTEM_HEALTH: {
-    name: 'PROCESSING_SYSTEM_HEALTH',
+  [STEP_NAME.PROCESSING_SYSTEM_HEALTH]: {
+    name: STEP_NAME.PROCESSING_SYSTEM_HEALTH,
     stepInstructionKey: null,
     flowControl: {
       current: {
-        accepts: 'AUTO',
-        delayMs: 3000,
+        accepts: ACTION_TRIGGER.AUTO,
+        delayMs: 10000,
       },
       nextTransition: {
         actionType: null,
@@ -191,12 +208,12 @@ export const steps = Object.freeze({
       'UPDATE_NEXT_VALID_STEP',
     ],
   },
-  END_TURN: {
-    name: 'END_TURN',
+  [STEP_NAME.END_TURN]: {
+    name: STEP_NAME.END_TURN,
     stepInstructionKey: null,
     flowControl: {
       current: {
-        accepts: 'AUTO',
+        accepts: ACTION_TRIGGER.AUTO,
       },
       nextTransition: {
         actionType: null,
@@ -214,12 +231,12 @@ export const steps = Object.freeze({
     ],
     // IF  criticalState -> 'FINISH_ROUND' with startCriticalRoundFlag ELSE islastRoundTurn -> 'FINISH_ROUND' ELSE 'START_TURN'
   },
-  END_ROUND: {
-    name: 'END_ROUND',
+  [STEP_NAME.END_ROUND]: {
+    name: STEP_NAME.END_ROUND,
     stepInstructionKey: null,
     flowControl: {
       current: {
-        accepts: 'AUTO',
+        accepts: ACTION_TRIGGER.AUTO,
         delayMs: 3000,
       },
       nextTransition: {
@@ -236,47 +253,18 @@ export const steps = Object.freeze({
     ],
     // IF  isCriticalRound & isCriticalState -> 'FINISH_GAME' with lost ELSE startCriticalRoundFlag ->'START_ROUND' with isCriticalRound true ELSE -> 'START_ROUND'
   },
-  END_GAME: {
-    name: 'END_GAME',
+  [STEP_NAME.END_GAME]: {
+    name: STEP_NAME.END_GAME,
     stepInstructionKey: null,
     flowControl: {
       current: {
-        accepts: 'PLAYER_INPUT',
+        accepts: ACTION_TRIGGER.PLAYER_INPUT,
       },
       nextTransition: {
-        actionType: ACTION_TYPES.CLEAN_ROOM_STATE,
-        trigger: 'PLAYER_INPUT',
+        actionType: null,
+        trigger: null
       },
     },
     effects: ['SHOW_GAME_RESULT'],
-  },
-  CLEANING_ROOM_STATE: {
-    name: 'CLEANING_ROOM_STATE',
-    stepInstructionKey: null,
-    flowControl: {
-      current: {
-        accepts: 'AUTO',
-      },
-      nextTransition: {
-        actionType: null,
-        trigger: null,
-      },
-    },
-    effects: ['CLEANING_ROOM_STATE'],
-  },
-
-  CLEANING_PLAYER_ROOM_STATE: {
-    name: 'CLEANING_PLAYER_ROOM_STATE',
-    stepInstructionKey: null,
-    flowControl: {
-      current: {
-        accepts: 'AUTO',
-      },
-      nextTransition: {
-        actionType: null,
-        trigger: null,
-      },
-    },
-    effects: ['CLEANING_PLAYER_ROOM_STATE'],
   },
 });

@@ -3,6 +3,7 @@
   --font-xs: clamp(10px, 1.6vh, 18px);
   --font-sm: clamp(12px, 1.8vh, 20px);
   --font-md: clamp(14px, 2vh, 22px);
+  --font-md-lg: clamp(16px, 2.2vh, 24px);
   --font-lg: clamp(18px, 2.5vh, 28px);
   --font-xl: clamp(24px, 3.5vh, 40px);
 
@@ -49,6 +50,7 @@
   --color-ciano-neon: #22d3ee;
   --color-ciano-light: rgba(0, 242, 255, 0.6);
   --color-ciano-extra-light: rgba(0, 242, 255, 0.4);
+  --color-ciano-bg: rgb(105, 224, 242);
 
   --card-width: 145px;
   --card-height: 195px;
