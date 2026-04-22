@@ -1,8 +1,29 @@
+export const CARD_TYPES = Object.freeze({
+  LOCAL: 'LOCAL',
+  STRUCTURAL: 'STRUCTURAL',
+  REQUESTS: 'REQUESTS',
+  POINTS: 'POINTS',
+  EVENT: 'EVENT',
+});
+
+export const EVENT_CARDS_ID = Object.freeze({
+  EVENT_HACKER_ATTACK: 'EVENT_HACKER_ATTACK',
+  EVENT_REQUEST_OVERLOAD: 'EVENT_REQUEST_OVERLOAD',
+  EVENT_VULNERABLE_AUTH_LIBRARY: 'EVENT_VULNERABLE_AUTH_LIBRARY',
+  EVENT_COMMUNICATION_BREAKDOWN: 'EVENT_COMMUNICATION_BREAKDOWN',
+  EVENT_RACE_CONDITIONS: 'EVENT_RACE_CONDITIONS',
+  EVENT_API_CONGESTION: 'EVENT_API_CONGESTION',
+  EVENT_ARCHITECTURE_STRAIN: 'EVENT_ARCHITECTURE_STRAIN',
+  EVENT_BACKEND_CORE_REGRESSION: 'EVENT_BACKEND_CORE_REGRESSION',
+  EVENT_FORGOT_WHERE_CLAUSE: 'EVENT_FORGOT_WHERE_CLAUSE',
+  EVENT_FRONTEND_INSTABILITY: 'EVENT_FRONTEND_INSTABILITY',
+});
+
 export const cards = Object.freeze({
   regular: {
     LOCAL: {
       drawId: null,
-      type: 'LOCAL',
+      type: CARD_TYPES.LOCAL,
     effect: {
       id: 'APPLY_BUG',
       componentsAffected: null,
@@ -11,7 +32,7 @@ export const cards = Object.freeze({
     },
     STRUCTURAL: {
       drawId: null,
-      type: 'STRUCTURAL',
+      type: CARD_TYPES.STRUCTURAL,
       effect: {
         id: 'APPLY_BUG',
         componentsAffected: null,
@@ -20,8 +41,8 @@ export const cards = Object.freeze({
     },
     REQUESTS: {
       drawId: null,
-      type: 'REQUESTS',
-            effect: {
+      type: CARD_TYPES.REQUESTS,
+      effect: {
         id: 'APPLY_BUG',
         componentsAffected: null,
         amount: null,
@@ -29,7 +50,7 @@ export const cards = Object.freeze({
     },
     POINTS: {
       drawId: null,
-      type: 'POINTS',
+      type: CARD_TYPES.POINTS,
       effect: {
         id: 'ADD_POINTS',
         componentsAffected: null,
@@ -41,8 +62,8 @@ export const cards = Object.freeze({
     eventCards: {
       EVENT_HACKER_ATTACK: {
         drawId: null,
-        type: 'EVENT',
-        eventId: 'EVENT_HACKER_ATTACK',
+        type: CARD_TYPES.EVENT,
+        eventId: EVENT_CARDS_ID.EVENT_HACKER_ATTACK,
         pressureLevel: 'CRITICAL',
         effect: {
           id: 'APPLY_BUGS_TO_COMPONENTS',
@@ -52,8 +73,8 @@ export const cards = Object.freeze({
       },
       EVENT_REQUEST_OVERLOAD: {
         drawId: null,
-        type: 'EVENT',
-        eventId: 'EVENT_REQUEST_OVERLOAD',
+        type: CARD_TYPES.EVENT,
+        eventId: EVENT_CARDS_ID.EVENT_REQUEST_OVERLOAD,
         pressureLevel: 'CRITICAL',
         effect: {
           id: 'APPLY_BUGS_TO_COMPONENTS',
@@ -63,8 +84,8 @@ export const cards = Object.freeze({
       },
       EVENT_VULNERABLE_AUTH_LIBRARY: {
         drawId: null,
-        type: 'EVENT',
-        eventId: 'EVENT_VULNERABLE_AUTH_LIBRARY',
+        type: CARD_TYPES.EVENT,
+        eventId: EVENT_CARDS_ID.EVENT_VULNERABLE_AUTH_LIBRARY,
         pressureLevel: 'CRITICAL',
         effect: {
           id: 'APPLY_BUGS_TO_COMPONENTS',
@@ -74,8 +95,8 @@ export const cards = Object.freeze({
       },
       EVENT_COMMUNICATION_BREAKDOWN: {
         drawId: null,
-        type: 'EVENT',
-        eventId: 'EVENT_COMMUNICATION_BREAKDOWN',
+        type: CARD_TYPES.EVENT,
+        eventId: EVENT_CARDS_ID.EVENT_COMMUNICATION_BREAKDOWN,
         pressureLevel: 'WARNING',
         effect: {
           id: 'APPLY_BUGS_TO_COMPONENTS',
@@ -85,8 +106,8 @@ export const cards = Object.freeze({
       },
       EVENT_RACE_CONDITIONS: {
         drawId: null,
-        type: 'EVENT',
-        eventId: 'EVENT_RACE_CONDITIONS',
+        type: CARD_TYPES.EVENT,
+        eventId: EVENT_CARDS_ID.EVENT_RACE_CONDITIONS,
         pressureLevel: 'WARNING',
         effect: {
           id: 'APPLY_BUGS_TO_COMPONENTS',
@@ -96,8 +117,8 @@ export const cards = Object.freeze({
       },
       EVENT_API_CONGESTION: {
         drawId: null,
-        type: 'EVENT',
-        eventId: 'EVENT_API_CONGESTION',
+        type: CARD_TYPES.EVENT,
+        eventId: EVENT_CARDS_ID.EVENT_API_CONGESTION,
         pressureLevel: 'WARNING',
         effect: {
           id: 'APPLY_BUGS_TO_COMPONENTS',
@@ -107,8 +128,8 @@ export const cards = Object.freeze({
       },
       EVENT_ARCHITECTURE_STRAIN: {
         drawId: null,
-        type: 'EVENT',
-        eventId: 'EVENT_ARCHITECTURE_STRAIN',
+        type: CARD_TYPES.EVENT,
+        eventId: EVENT_CARDS_ID.EVENT_ARCHITECTURE_STRAIN,
         pressureLevel: 'WARNING',
         effect: {
           id: 'APPLY_BUGS_TO_COMPONENTS',
@@ -118,8 +139,8 @@ export const cards = Object.freeze({
       },
       EVENT_BACKEND_CORE_REGRESSION: {
         drawId: null,
-        type: 'EVENT',
-        eventId: 'EVENT_BACKEND_CORE_REGRESSION',
+        type: CARD_TYPES.EVENT,
+        eventId: EVENT_CARDS_ID.EVENT_BACKEND_CORE_REGRESSION,
         pressureLevel: 'LOW',
         effect: {
           id: 'APPLY_BUGS_TO_COMPONENTS',
@@ -129,8 +150,8 @@ export const cards = Object.freeze({
       },
       EVENT_FORGOT_WHERE_CLAUSE: {
         drawId: null,
-        type: 'EVENT',
-        eventId: 'EVENT_FORGOT_WHERE_CLAUSE',
+        type: CARD_TYPES.EVENT,
+        eventId: EVENT_CARDS_ID.EVENT_FORGOT_WHERE_CLAUSE,
         pressureLevel: 'LOW',
         effect: {
           id: 'APPLY_BUGS_TO_COMPONENTS',
@@ -140,8 +161,8 @@ export const cards = Object.freeze({
       },
       EVENT_FRONTEND_INSTABILITY: {
         drawId: null,
-        type: 'EVENT',
-        eventId: 'EVENT_FRONTEND_INSTABILITY',
+        type: CARD_TYPES.EVENT,
+        eventId: EVENT_CARDS_ID.EVENT_FRONTEND_INSTABILITY,
         pressureLevel: 'LOW',
         effect: {
           id: 'APPLY_BUGS_TO_COMPONENTS',
@@ -151,20 +172,20 @@ export const cards = Object.freeze({
       },
       byPressureLevel: {
         CRITICAL: [
-          'EVENT_HACKER_ATTACK',
-          'EVENT_REQUEST_OVERLOAD',
-          'EVENT_VULNERABLE_AUTH_LIBRARY',
+          EVENT_CARDS_ID.EVENT_HACKER_ATTACK,
+          EVENT_CARDS_ID.EVENT_REQUEST_OVERLOAD,
+          EVENT_CARDS_ID.EVENT_VULNERABLE_AUTH_LIBRARY,
         ],
         WARNING: [
-          'EVENT_COMMUNICATION_BREAKDOWN',
-          'EVENT_RACE_CONDITIONS',
-          'EVENT_API_CONGESTION',
-          'EVENT_ARCHITECTURE_STRAIN',
+          EVENT_CARDS_ID.EVENT_COMMUNICATION_BREAKDOWN,
+          EVENT_CARDS_ID.EVENT_RACE_CONDITIONS,
+          EVENT_CARDS_ID.EVENT_API_CONGESTION,
+          EVENT_CARDS_ID.EVENT_ARCHITECTURE_STRAIN,
         ],
         LOW: [
-          'EVENT_BACKEND_CORE_REGRESSION',
-          'EVENT_FORGOT_WHERE_CLAUSE',
-          'EVENT_FRONTEND_INSTABILITY',
+          EVENT_CARDS_ID.EVENT_BACKEND_CORE_REGRESSION,
+          EVENT_CARDS_ID.EVENT_FORGOT_WHERE_CLAUSE,
+          EVENT_CARDS_ID.EVENT_FRONTEND_INSTABILITY,
         ],
       },
     },
