@@ -1,5 +1,0 @@
-export const SYSTEM_HEALTH_STATES = Object.freeze({
-  HEALTHY: 'HEALTHY',
-  WARNING: 'WARNING',
-  CRITICAL: 'CRITICAL',
-});
