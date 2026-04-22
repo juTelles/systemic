@@ -408,18 +408,6 @@ export function applyAction(state, action, ctx = {}) {
       return next;
     }
 
-    case ACTION_TYPES.CLEAN_ROOM_STATE: {
-      next.flow.step = structuredClone(steps['CLEANING_ROOM_STATE']);
-      next.meta.rev += 1;
-      next.meta.updatedAt = now;
-      next.log.lastEvent = {
-        type: ACTION_TYPES.CLEAN_ROOM_STATE,
-        by: action.payload.senderId ?? null,
-        at: now,
-      };
-      return next;
-    }
-
     default:
       const err = new Error('Unknown action type');
       err.code = 'UNKNOWN_ACTION_TYPE';
