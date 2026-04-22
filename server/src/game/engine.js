@@ -226,9 +226,9 @@ export function applyAction(state, action, ctx = {}) {
         if (systemChange.updated) {
           decisionNext.system = systemChange.system;
           decisionNext.flow.step.stepInstructionKey =
-            systemChange.step.stepInstructionKey;
+            systemChange.stepInstructionKey;
           decisionNext.flow.blockedUntil =
-            now + steps['PROCESSING_DECISION'].flowControl.current.delayMs;
+            now + next.flow.step.flowControl.current.delayMs;
         }
       }
       if (action.payload.chosen === 'DEVELOP_TESTS') {
@@ -322,10 +322,9 @@ export function applyAction(state, action, ctx = {}) {
       const systemChange = processSystemHealth(next);
       if (systemChange.updated) {
         next.system = systemChange.system;
-        next.flow.step.stepInstructionKey =
-          systemChange.step.stepInstructionKey;
+        next.flow.step.stepInstructionKey = systemChange.stepInstructionKey;
         next.flow.blockedUntil =
-          now + steps['PROCESSING_SYSTEM_HEALTH'].flowControl.current.delayMs;
+          now + next.flow.step.flowControl.current.delayMs;
       }
 
       next.flow.step.flowControl.nextTransition =
@@ -373,10 +372,9 @@ export function applyAction(state, action, ctx = {}) {
         const systemChange = processSystemHealth(next);
         if (systemChange.updated) {
           next.system = systemChange.system;
-          next.flow.step.stepInstructionKey =
-            systemChange.step.stepInstructionKey;
+          next.flow.step.stepInstructionKey = systemChange.stepInstructionKey;
           next.flow.blockedUntil =
-            now + steps['END_ROUND'].flowControl.current.delayMs + 5000;
+            now + next.flow.step.flowControl.current.delayMs + 5000;
         }
       }
       const isGameOver = verifyGameOverCondition(next.system);
