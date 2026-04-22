@@ -261,8 +261,8 @@ export const steps = Object.freeze({
         accepts: ACTION_TRIGGER.PLAYER_INPUT,
       },
       nextTransition: {
-        actionType: ACTION_TYPES.CLEAN_ROOM_STATE,
-        trigger: ACTION_TRIGGER.PLAYER_INPUT,
+        actionType: null,
+        trigger: null
       },
     },
     effects: ['SHOW_GAME_RESULT'],
