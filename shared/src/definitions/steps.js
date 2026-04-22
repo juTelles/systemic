@@ -179,7 +179,6 @@ export const steps = Object.freeze({
     flowControl: {
       current: {
         accepts: ACTION_TRIGGER.AUTO,
-        delayMs: 7000,
       },
       nextTransition: {
         actionType: ACTION_TYPES.CHECK_SYSTEM_HEALTH,
