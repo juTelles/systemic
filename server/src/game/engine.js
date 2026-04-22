@@ -2,7 +2,7 @@ import { ACTION_TYPES } from '../../../shared/src/constants/actionsTypes.js';
 import { PLAYER_STATUS } from '../../../shared/src/constants/playerStatus.js';
 import { SYSTEM_HEALTH_STATES } from '../../../shared/src/constants/systemHealthStates.js';
 import { decisions as decisionsDefinitions } from '../../../shared/src/definitions/decisions.js';
-import { steps } from '../../../shared/src/definitions/steps.js';
+import { steps, STEP_NAME } from '../../../shared/src/definitions/steps.js';
 import { components } from '../../../shared/src/definitions/components.js';
 import { getAvailableDecisions } from './decisions/decisionAvailability.js';
 import { applyDecision } from './decisions/decisionProcessing.js';
@@ -25,6 +25,7 @@ import {
 import {
   createDecisionState,
   createValidationErrorState,
+  createStepState,
 } from './roomStateFactories.js';
 
 export function applyAction(state, action, ctx = {}) {
@@ -78,9 +79,8 @@ export function applyAction(state, action, ctx = {}) {
         console.warn('[GAME_START] skipped: conditions not met');
         return next;
       }
-      next.flow.blockedUntil =
-        now + steps['GAME_START'].flowControl.current.delayMs;
-      next.flow.step = steps['GAME_START'];
+      next.flow.step = createStepState(STEP_NAME.GAME_START);
+      next.flow.blockedUntil = now + next.flow.step.flowControl.current.delayMs;
       next.components = structuredClone(components);
       next.components = applyGameStartBugs(next.components);
       const deck = composeDeck(next.gameConfig.deckComposition);
@@ -104,9 +104,8 @@ export function applyAction(state, action, ctx = {}) {
     }
 
     case ACTION_TYPES.START_ROUND: {
-      next.flow.step = steps['ROUND_START'];
-      next.flow.blockedUntil =
-        now + steps['ROUND_START'].flowControl.current.delayMs;
+      next.flow.step = createStepState(STEP_NAME.ROUND_START);
+      next.flow.blockedUntil = now + next.flow.step.flowControl.current.delayMs;
 
       if (next.system.isCrisisRound) {
         next.system.isCrisisRound = false;
@@ -131,9 +130,8 @@ export function applyAction(state, action, ctx = {}) {
     }
 
     case ACTION_TYPES.START_CRISIS_ROUND: {
-      next.flow.step = steps['CRISIS_ROUND_START'];
-      next.flow.blockedUntil =
-        now + steps['CRISIS_ROUND_START'].flowControl.current.delayMs;
+      next.flow.step = createStepState(STEP_NAME.CRISIS_ROUND_START);
+      next.flow.blockedUntil = now + next.flow.step.flowControl.current.delayMs;
 
       next.system.isCrisisRound = true;
       next.system.pendingCrisisRound = false;
@@ -159,9 +157,8 @@ export function applyAction(state, action, ctx = {}) {
     }
 
     case ACTION_TYPES.START_TURN: {
-      next.flow.step = steps['TURN_START'];
-      next.flow.blockedUntil =
-        now + steps['TURN_START'].flowControl.current.delayMs;
+      next.flow.step = createStepState(STEP_NAME.TURN_START);
+      next.flow.blockedUntil = now + next.flow.step.flowControl.current.delayMs;
       next.flow.currentPlayerId = next.players[next.flow.turn].id;
       next.cardState.cardsRemainingInTurn = next.gameConfig.cardsPerTurn;
       next.meta.rev += 1;
@@ -175,7 +172,7 @@ export function applyAction(state, action, ctx = {}) {
     }
 
     case ACTION_TYPES.ASK_FOR_DECISION: {
-      next.flow.step = steps['AWAIT_DECISION'];
+      next.flow.step = createStepState(STEP_NAME.AWAIT_DECISION);
       let decisionsAvailable = [];
       if (next.decisionState.available.length === 0) {
         decisionsAvailable = getAvailableDecisions(next, decisionsDefinitions);
@@ -217,7 +214,7 @@ export function applyAction(state, action, ctx = {}) {
         throw error;
       }
       const decisionNext = result.next;
-      decisionNext.flow.step = steps['PROCESSING_DECISION'];
+      decisionNext.flow.step = createStepState(STEP_NAME.PROCESSING_DECISION);
 
       if (
         action.payload.chosen === 'RESOLVE_REQUESTS_BUG_TESTED' ||
@@ -258,7 +255,7 @@ export function applyAction(state, action, ctx = {}) {
     }
 
     case ACTION_TYPES.PROCEED_TO_CARD_DRAW: {
-      next.flow.step = steps['AWAIT_CARD_DRAW'];
+      next.flow.step = createStepState(STEP_NAME.AWAIT_CARD_DRAW);
       next.decisionState = createDecisionState();
 
       next.players = cleanPlayerHandPoints(
@@ -289,7 +286,7 @@ export function applyAction(state, action, ctx = {}) {
     }
 
     case ACTION_TYPES.DRAW_CARD: {
-      next.flow.step = structuredClone(steps['SHOWING_CARD']);
+      next.flow.step = createStepState(STEP_NAME.SHOWING_CARD);
       next.meta.rev += 1;
       next.meta.updatedAt = now;
       next.log.lastEvent = {
@@ -301,10 +298,7 @@ export function applyAction(state, action, ctx = {}) {
     }
 
     case ACTION_TYPES.APPLY_CARD_EFFECT: {
-      next.flow.step = steps['PROCESSING_CARD'];
-      next.flow.blockedUntil =
-        now + steps['PROCESSING_CARD'].flowControl.current.delayMs;
-
+      next.flow.step = createStepState(STEP_NAME.PROCESSING_CARD);
       let nextCard = next;
       try {
         nextCard = applyCardEffect(next, next.cardState.current);
@@ -323,7 +317,7 @@ export function applyAction(state, action, ctx = {}) {
       return nextCard;
     }
     case ACTION_TYPES.CHECK_SYSTEM_HEALTH: {
-      next.flow.step = structuredClone(steps['PROCESSING_SYSTEM_HEALTH']);
+      next.flow.step = createStepState(STEP_NAME.PROCESSING_SYSTEM_HEALTH);
 
       const systemChange = processSystemHealth(next);
       if (systemChange.updated) {
@@ -347,7 +341,7 @@ export function applyAction(state, action, ctx = {}) {
     }
 
     case ACTION_TYPES.FINISH_TURN: {
-      next.flow.step = steps['END_TURN'];
+      next.flow.step = createStepState(STEP_NAME.END_TURN);
       if (next.cardState.current !== null) {
         next.deck.discardPile.push(next.cardState.current);
         next.cardState.current = null;
@@ -366,9 +360,8 @@ export function applyAction(state, action, ctx = {}) {
     }
 
     case ACTION_TYPES.FINISH_ROUND: {
-      next.flow.step = steps['END_ROUND'];
-      next.flow.blockedUntil =
-        now + steps['END_ROUND'].flowControl.current.delayMs;
+      next.flow.step = createStepState(STEP_NAME.END_ROUND);
+      next.flow.blockedUntil = now + next.flow.step.flowControl.current.delayMs;
 
       if (
         next.system.healthState === SYSTEM_HEALTH_STATES.WARNING ||
@@ -407,7 +400,7 @@ export function applyAction(state, action, ctx = {}) {
     }
 
     case ACTION_TYPES.FINISH_GAME: {
-      next.flow.step = structuredClone(steps['END_GAME']);
+      next.flow.step = createStepState(STEP_NAME.END_GAME);
       next.meta.rev += 1;
       next.meta.updatedAt = now;
       next.log.lastEvent = {
