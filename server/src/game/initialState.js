@@ -50,6 +50,7 @@ export function createInitialState({ roomId }) {
       current: null,
     },
     components: {},
+    absorbedBugs: [],
     gameConfig: {
       maxPlayers: 4,
       minPlayers: 2,
