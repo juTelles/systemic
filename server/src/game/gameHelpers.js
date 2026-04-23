@@ -1,9 +1,10 @@
-import { getTotalPlayersPoints } from './selectors.js';
 import { isComponentEligibleForTests } from '../../../shared/src/game/helpers.js';
 import { createError } from '../utils/createErrors.js';
 import { ERRORS } from '../../../shared/src/constants/errors.js';
+import { getTotalPlayersPoints } from './selectors.js';
 
 export {
+  cloneNodesForUpdate,
   existsComponentEligibleForBugResolvByType,
   existsComponentEligibleForTests,
   applyBug,
@@ -21,6 +22,18 @@ export {
   addComponentToAbsorbedBugs,
   removeComponentFromAbsorbedBugs,
 };
+
+function cloneNodesForUpdate(stateComponents) {
+  const updatedNodes = { ...stateComponents.nodes };
+
+  return {
+    updatedNodes,
+    updatedComponents : {
+      ...stateComponents,
+      nodes: updatedNodes,
+    },
+  };
+}
 
 function existsComponentEligibleForBugResolvByType(
   components,
