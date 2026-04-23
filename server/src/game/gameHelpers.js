@@ -18,6 +18,8 @@ export {
   addStartRoundPointsToPlayers,
   cleanPlayerHandPoints,
   bankPlayersPointsForCrisisRound,
+  addComponentToAbsorbedBugs,
+  removeComponentFromAbsorbedBugs,
 };
 
 function existsComponentEligibleForBugResolvByType(
@@ -226,4 +228,12 @@ function cleanPlayerHandPoints(playerId, players) {
   return players.map((player) => {
     return player.id === playerId ? { ...player, handPoints: 0 } : player;
   });
+}
+
+function addComponentToAbsorbedBugs(absorbedBugsArray, componentId) {
+  return [...absorbedBugsArray, componentId];
+}
+
+function removeComponentFromAbsorbedBugs(absorbedBugsArray, componentId) {
+  return absorbedBugsArray.filter((id) => id !== componentId);
 }
