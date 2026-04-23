@@ -1,13 +1,14 @@
 import { ERRORS } from '../../../../shared/src/constants/errors.js';
-import { applyBug, cloneNodesForUpdate , addPointsToPlayerBank } from '../gameHelpers.js';
+import { applyBug, cloneNodesForUpdate, addPointsToPlayerBank } from '../gameHelpers.js';
 import { getTotalPlayersPoints } from '../selectors.js';
 import { updateAbsorbBugsState } from '../absorbedBugsLogic.js';
+import { createError } from '../../utils/createErrors.js';
 
 export function applyCardEffect(roomState, card) {
   const applyCard = cardAppliers[card.type];
 
   if (!applyCard) {
-    throw new Error(`No applier function defined for card type: ${card.type}`);
+    throw createError(ERRORS.CARD_TYPE_NOT_FOUND);
   }
   return applyCard(roomState, card);
 }
@@ -24,6 +25,8 @@ function applyBugCard(clonedState, card) {
   const { components, absorbedBugs } = clonedState;
   const componentAffectedId = card.effect.componentsAffected[0];
   const component = clonedState.components.nodes[componentAffectedId];
+  
+  if (!component) throw createError(ERRORS.COMPONENT_NOT_FOUND);
 
   if (component.hasTests === true) {
     const absorbBugResult = updateAbsorbBugsState(absorbedBugs, component);
@@ -48,13 +51,7 @@ function applyPointsCard(clonedState, card) {
   const currentPlayer = clonedState.players.find(
     (player) => player.id === clonedState.flow.currentPlayerId,
   );
-  if (!currentPlayer) {
-    return {
-      ok: false,
-      error: ERRORS.CURRENT_PLAYER_NOT_FOUND,
-      next: clonedState,
-    };
-  }
+  if (!currentPlayer) throw createError(ERRORS.CURRENT_PLAYER_NOT_FOUND);
 
   const totalPoints = getTotalPlayersPoints(currentPlayer);
   if (totalPoints >= clonedState.gameConfig.taskPoints.maxPlayerPoints) {
@@ -76,6 +73,10 @@ export function applyEventCard(clonedState, card) {
   const amount = card.effect.amount;
   const { components } = clonedState;
   const affectedComponents = card.effect.componentsAffected;
+
+  if (!affectedComponents || !Array.isArray(affectedComponents)) {
+    throw createError(ERRORS.INVALID_CARD);
+  }
 
   const { updatedNodes, updatedComponents } = cloneNodesForUpdate(
     components,
