@@ -39,3 +39,29 @@
 .absorbedBugsContainer::-webkit-scrollbar-thumb:hover {
   background: var(--bg-hover);
 }
+
+/* AbsorbedIem styles */
+
+.AbsorbedBugItemWrapper {
+  width: 95%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.6rem;
+  margin: 0.1rem 0;
+}
+.AbsorbedBugItemLabel {
+  color: #ffffff;
+  font-size: var(--font-sm);
+  font-family: var(--font-family);
+  text-wrap: nowrap;
+}
+/* A "mágica" do brilho */
+.updated {
+  animation: flash 0.50s ease-out;
+}
+
+@keyframes flash {
+  0% { background-color: rgba(28, 234, 253, 0.919); } /* Amarelo ou a cor do seu tema */
+  100% { background-color: transparent; }
+}

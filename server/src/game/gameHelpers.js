@@ -1,9 +1,10 @@
-import { getTotalPlayersPoints } from './selectors.js';
 import { isComponentEligibleForTests } from '../../../shared/src/game/helpers.js';
 import { createError } from '../utils/createErrors.js';
 import { ERRORS } from '../../../shared/src/constants/errors.js';
+import { getTotalPlayersPoints } from './selectors.js';
 
 export {
+  cloneNodesForUpdate,
   existsComponentEligibleForBugResolvByType,
   existsComponentEligibleForTests,
   applyBug,
@@ -18,7 +19,21 @@ export {
   addStartRoundPointsToPlayers,
   cleanPlayerHandPoints,
   bankPlayersPointsForCrisisRound,
+  addComponentToAbsorbedBugs,
+  removeComponentFromAbsorbedBugs,
 };
+
+function cloneNodesForUpdate(stateComponents) {
+  const updatedNodes = { ...stateComponents.nodes };
+
+  return {
+    updatedNodes,
+    updatedComponents: {
+      ...stateComponents,
+      nodes: updatedNodes,
+    },
+  };
+}
 
 function existsComponentEligibleForBugResolvByType(
   components,
@@ -167,15 +182,10 @@ function addPointsToPlayerBank(player, pointsToAdd, maxPlayerPoints) {
   };
 }
 
-function addPointsToPlayerBankByHolding(
-  player,
-  pointsToHold,
-) {
+function addPointsToPlayerBankByHolding(player, pointsToHold) {
 
-  const allowedPointsToHold = Math.min(
-    pointsToHold,
-    player.handPoints,
-  );
+  const allowedPointsToHold = Math.min(pointsToHold, player.handPoints);
+
   return {
     ...player,
     bankPoints: player.bankPoints + allowedPointsToHold,
@@ -199,6 +209,7 @@ function addPointsToPlayerHand(player, pointsToAdd, maxPlayerPoints) {
     handPoints: player.handPoints + allowedPointsToAdd,
   };
 }
+
 function addStartRoundPointsToPlayers(players, pointsToAdd, maxPlayerPoints) {
   const updatedPlayers = players.map((player) => {
     return addPointsToPlayerHand(player, pointsToAdd, maxPlayerPoints);
@@ -226,4 +237,12 @@ function cleanPlayerHandPoints(playerId, players) {
   return players.map((player) => {
     return player.id === playerId ? { ...player, handPoints: 0 } : player;
   });
+}
+
+function addComponentToAbsorbedBugs(absorbedBugsArray, componentId) {
+  return [...absorbedBugsArray, componentId];
+}
+
+function removeComponentFromAbsorbedBugs(absorbedBugsArray, componentId) {
+  return absorbedBugsArray.filter((id) => id !== componentId);
 }
