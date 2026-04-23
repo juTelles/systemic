@@ -4,7 +4,7 @@ import AbsorbedBugItem from './AbsorbedBugItem';
 import styles from './AbsorbedBugsPanel.module.css';
 import { componentsTxt as txt } from '../../texts/componentsTxt.js';
 
-function AbsorbedBugsPanel({ absorbedBugs}) {
+function AbsorbedBugsPanel({ absorbedBugs }) {
 
   return (
     <div className={styles.absorbedBugsPanelWrapper}>

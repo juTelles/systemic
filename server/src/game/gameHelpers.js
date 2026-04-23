@@ -28,7 +28,7 @@ function cloneNodesForUpdate(stateComponents) {
 
   return {
     updatedNodes,
-    updatedComponents : {
+    updatedComponents: {
       ...stateComponents,
       nodes: updatedNodes,
     },
