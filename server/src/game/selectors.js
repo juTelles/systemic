@@ -5,7 +5,8 @@ export {
   getNodeById,
   getNodesByIds,
   getNodeIdsByType,
-  getSaturatedNodesIdsByType
+  getSaturatedNodesIdsByType,
+  componentIdHasAbsorbedBug,
 };
 
 function getPlayerObject(playerId, playersArray) {
@@ -47,4 +48,8 @@ function getSaturatedNodesIdsByType(components, type) {
     return node.saturated && node.bugAmount >= node.saturationLimit;
   });
   return SaturatedRequestsIds;
+}
+
+function componentIdHasAbsorbedBug(absorbedBugsArray, componentId) {
+  return absorbedBugsArray.includes(componentId);
 }
