@@ -6,6 +6,7 @@ export const gameConfigs = Object.freeze({
     maxPlayers: 4,
     minPlayers: 2,
     cardsPerTurn: 2,
+    bugSaturationLimit: 3,
     taskPoints: {
       maxPlayerPoints: 6,
       maxDonationPerPlayer: 2,
