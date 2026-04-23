@@ -182,15 +182,10 @@ function addPointsToPlayerBank(player, pointsToAdd, maxPlayerPoints) {
   };
 }
 
-function addPointsToPlayerBankByHolding(
-  player,
-  pointsToHold,
-) {
+function addPointsToPlayerBankByHolding(player, pointsToHold) {
 
-  const allowedPointsToHold = Math.min(
-    pointsToHold,
-    player.handPoints,
-  );
+  const allowedPointsToHold = Math.min(pointsToHold, player.handPoints);
+
   return {
     ...player,
     bankPoints: player.bankPoints + allowedPointsToHold,
@@ -214,6 +209,7 @@ function addPointsToPlayerHand(player, pointsToAdd, maxPlayerPoints) {
     handPoints: player.handPoints + allowedPointsToAdd,
   };
 }
+
 function addStartRoundPointsToPlayers(players, pointsToAdd, maxPlayerPoints) {
   const updatedPlayers = players.map((player) => {
     return addPointsToPlayerHand(player, pointsToAdd, maxPlayerPoints);
