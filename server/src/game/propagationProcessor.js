@@ -1,5 +1,5 @@
 import { getSaturatedNodesIdsByType, getNodesByIds } from './selectors.js';
-import { applyBug } from './gameHelpers.js';
+import { applyBug, cloneNodesForUpdate } from './gameHelpers.js';
 import { createError } from '../utils/createErrors.js';
 import { ERRORS } from '../../../shared/src/constants/errors.js';
 
@@ -22,18 +22,15 @@ export function processEndRoundRequestPropagation(stateComponents) {
   }
 
   const updatedComponents = applyRequestPropagation(
-    saturatedRequestNodes,
     stateComponents,
+    saturatedRequestNodes,
   );
   return updatedComponents;
 }
 
-function applyRequestPropagation(saturatedRequestsNodes, stateComponents) {
-  const updatedNodes = { ...stateComponents.nodes };
-  const componentsWithUpdatedNodes = {
-    ...stateComponents,
-    nodes: updatedNodes,
-  };
+function applyRequestPropagation(stateComponents, saturatedRequestsNodes) {
+  const { updatedNodes, updatedComponents } =
+    cloneNodesForUpdate(stateComponents);
 
   const saturatedRequestChildren = saturatedRequestsNodes.flatMap(
     (node) => node.childrenIds,
@@ -42,12 +39,12 @@ function applyRequestPropagation(saturatedRequestsNodes, stateComponents) {
   saturatedRequestChildren.forEach((componentId) => {
     updatedNodes[componentId] = applyBug(
       updatedNodes[componentId],
-      componentsWithUpdatedNodes,
+      updatedComponents,
     );
   });
 
   return {
-    ...stateComponents,
+    ...updatedComponents,
     nodes: updatedNodes,
   };
 }
