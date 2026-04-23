@@ -4,36 +4,35 @@ import { getTotalPlayersPoints } from '../selectors.js';
 import { updateAbsorbBugsState } from '../absorbedBugsLogic.js';
 
 export function applyCardEffect(roomState, card) {
-  const applier = cardAppliers[card.type];
+  const applyCard = cardAppliers[card.type];
 
-  if (!applier) {
+  if (!applyCard) {
     throw new Error(`No applier function defined for card type: ${card.type}`);
   }
-  return applier(roomState, card);
+  return applyCard(roomState, card);
 }
 
 const cardAppliers = {
-  LOCAL: bugCardApplier,
-  STRUCTURAL: bugCardApplier,
-  REQUESTS: bugCardApplier,
-  POINTS: pointsCardApplier,
-  EVENT: eventCardApplier,
+  LOCAL: applyBugCard,
+  STRUCTURAL: applyBugCard,
+  REQUESTS: applyBugCard,
+  POINTS: applyPointsCard,
+  EVENT: applyEventCard,
 };
 
-function bugCardApplier(clonedState, card) {
+function applyBugCard(clonedState, card) {
   const { components, absorbedBugs } = clonedState;
   const componentAffectedId = card.effect.componentsAffected[0];
   const component = clonedState.components.nodes[componentAffectedId];
 
-function bugCardApplier(state, card) {
-  const next = structuredClone(state);
-  const updatedNodes = { ...next.components.nodes };
-  const componentsWithUpdatedNodes = {
-    ...next.components,
-    nodes: updatedNodes,
-  };
-  const componentId = card.effect.componentsAffected[0];
-  const component = next.components.nodes[componentId];
+  if (component.hasTests === true) {
+    const absorbBugResult = updateAbsorbBugsState(absorbedBugs, component);
+    clonedState.absorbedBugs = absorbBugResult.absorbedBugs;
+
+    if (absorbBugResult.wasAbsorbed) {
+      return clonedState;
+    }
+  }
   const { updatedNodes, updatedComponents } = cloneNodesForUpdate(components);
 
   updatedNodes[componentAffectedId] = applyBug(component, updatedComponents);
@@ -44,7 +43,7 @@ function bugCardApplier(state, card) {
   return clonedState;
 }
 
-function pointsCardApplier(clonedState, card) {
+function applyPointsCard(clonedState, card) {
   const pointsToAdd = card.effect.amount;
   const currentPlayer = clonedState.players.find(
     (player) => player.id === clonedState.flow.currentPlayerId,
@@ -73,7 +72,7 @@ function pointsCardApplier(clonedState, card) {
   return clonedState;
 }
 
-export function eventCardApplier(clonedState, card) {
+export function applyEventCard(clonedState, card) {
   const amount = card.effect.amount;
   const { components } = clonedState;
   const affectedComponents = card.effect.componentsAffected;
