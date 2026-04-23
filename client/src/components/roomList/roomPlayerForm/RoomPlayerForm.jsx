@@ -1,8 +1,8 @@
 // eslint-disable-next-line no-unused-vars
-import Button from '../button/Button';
+import Button from '../../button/Button';
 import styles from './RoomPlayerForm.module.css';
 import { useState } from 'react';
-import { getErrorMessage } from '../../texts/errorsMessages';
+import { getErrorMessage } from '../../../texts/errorsMessages';
 
 function RoomPlayerForm({ room, onJoinRoom }) {
   const [inputValue, setInputValue] = useState('');
