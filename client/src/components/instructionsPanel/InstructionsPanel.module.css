@@ -1,0 +1,95 @@
+.instructionsPanelContainer {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid;
+  border-image-slice: 1;
+  border-image-source: linear-gradient(to bottom, #2c2c2c, #121212);
+  background-color: var(--bg-elevated);
+}
+.instructionsPanelTitleBox {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 0.2rem;
+}
+.instructionsPanelTitle {
+  width: 100%;
+  font-size: var(--font-md-lg);
+  margin: 0.3rem 0 0 0;
+  font-family: var(--font-family);
+  color: #ffffff;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  text-shadow:
+    1px 0px 0px rgba(255, 0, 0, 0.5),
+    -1px 0px 0px rgba(0, 255, 255, 0.5);
+}
+.instructionsPanelTextBox {
+  width: 97%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0.5rem 0;;
+  overflow-y: auto;
+}
+.instructionsPanelText {
+  color: white;
+  font-family: var(--font-family);
+  font-size: var(--font-sm);
+  white-space: pre-line;
+  letter-spacing: 0.5px;
+  text-shadow:
+    1px 0px 0px rgba(255, 0, 0, 0.5),
+    -1px 0px 0px rgba(0, 255, 255, 0.5);
+}
+/* Custom Scrollbar para Chrome/Edge/Safari */
+.instructionsPanelTextBox::-webkit-scrollbar {
+  width: 6px;
+}
+.instructionsPanelTextBox::-webkit-scrollbar-track {
+  background: #020202;
+}
+.instructionsPanelTextBox::-webkit-scrollbar-thumb {
+  background: #333;
+  border-radius: 10px;
+}
+.instructionsPanelTextBox::-webkit-scrollbar-thumb:hover {
+  background: var(--bg-hover);
+}
+.redShine {
+  box-shadow: 0 0 5px var(--color-red-dark),
+    0 0 8px var(--color-red-neon),
+    0 0 16px var(--color-red-light);
+  border-color: var(--color-red-dark);
+}
+.yellowShine {
+  box-shadow: 0 0 5px var(--color-yellow-dark),
+    0 0 8px var(--color-yellow-neon),
+    0 0 16px var(--color-yellow-light);
+  border-color: var(--color-yellow-dark);
+}
+.cianoShine {
+  box-shadow: 0 0 5px var(--color-ciano-neon),
+    0 0 8px var(--color-ciano-neon),
+    0 0 16px var(--color-ciano-light);
+  border-color: var(--color-ciano-dark);
+}
+.greenShine {
+  box-shadow: 0 0 5px var(--color-green-dark),
+    0 0 8px var(--color-green-neon),
+    0 0 16px var(--color-green-light);
+  border-color: var(--color-green-dark);
+}
+.whiteShine {
+  box-shadow: 0 0 2px rgb(205, 205, 176),
+    0 0 5px rgb(248, 245, 220),
+    0 0 10px rgb(238, 233, 209);
+  border-color: white;
+}
