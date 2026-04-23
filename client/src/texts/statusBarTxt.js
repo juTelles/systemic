@@ -1,8 +1,8 @@
 export const statusBarTxt = {
   playersPanelTxt: {
     playerTitle: {
-      pt: `Jogador`,
-      en: `Player`,
+      pt: `Nome`,
+      en: `Name`,
     },
     handPointsTitle: {
       pt: `Mão`,
@@ -19,8 +19,8 @@ export const statusBarTxt = {
   },
   playersPanelPreGameTxt: {
     preGamePlayersTitle: {
-      pt: `Jogadores`,
-      en: `Players`,
+      pt: `Nome`,
+      en: `Name`,
     },
     preGameStatusDescription: {
       READY: {
