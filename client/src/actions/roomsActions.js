@@ -9,6 +9,12 @@ export function useRoomActions(roomId, localPlayerId) {
     });
   }
 
+  async function unsetReady() {
+    return sendAction(roomId, ACTION_TYPES.UNSET_READY, {
+      senderId: localPlayerId,
+    });
+  }
+
   async function submitDecision(decision) {
     return sendAction(roomId, ACTION_TYPES.SUBMIT_DECISION, {
       senderId: localPlayerId,
@@ -44,6 +50,7 @@ export function useRoomActions(roomId, localPlayerId) {
 
   return {
     setReady,
+    unsetReady,
     submitDecision,
     endDecision,
     returnToLobby,
