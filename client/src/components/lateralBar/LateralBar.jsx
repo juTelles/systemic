@@ -91,7 +91,10 @@ function LateralBar({
           />
         </div>
         <div className={styles.absorbedBugsPanelContainer}>
-          <AbsorbedBugsPanel absorbedBugs={roomState?.absorbedBugs} />
+          <AbsorbedBugsPanel
+            absorbedBugs={roomState?.absorbedBugs}
+            txt={txt.absorbedBugsTxt}
+          />
         </div>
         <div className={styles.nextButtonContainer}>
           {!isReadOnlyTurn && (isDecisionStep || isShowCardStep) ? (
