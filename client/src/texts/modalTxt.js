@@ -12,31 +12,31 @@ export const modalTxt = {
   GAME_START: {
     title: {
       pt: 'Iniciando partida',
-      en: 'Game Starting Soon'
+      en: 'Game Starting Soon',
     },
     content: {
       pt: 'Preparando ambiente...',
-      en: 'Setting up the environment...'
-    }
+      en: 'Setting up the environment...',
+    },
   },
   GAME_WIN: {
     title: {
       pt: 'Parabéns, vocês venceram!',
-      en: 'Congratulations, you won!'
+      en: 'Congratulations, you won!',
     },
     content: {
-      pt: 'Vocês conseguiram salvar o sistema e impedir a crise. Ótimo trabalho em equipe!',
-      en: 'You managed to save the system and prevent the crisis. Great teamwork!'
-    }
+      pt: 'Vocês conseguiram salvar o Sistema e evitar a crise. Excelente trabalho em equipe!',
+      en: 'You managed to save the System and prevent the crisis. Excellent teamwork!',
+    },
   },
   GAME_OVER: {
     title: {
-      pt: 'Infelizmente, vocês perderam.',
-      en: 'Unfortunately, you lost.'
+      pt: 'O Sistema entrou em Paralisação!',
+      en: 'The System entered Paralysis!',
     },
     content: {
-      pt: 'O sistema entrou em colapso e a crise se instaurou. Não desanimem, aprendam com os erros e tentem novamente!',
-      en: 'The system collapsed and the crisis unfolded. Don\'t be discouraged, learn from the mistakes and try again!'
-    }
+      pt: 'Infelizmente, o Time não conseguiu recuperar o Sistema a tempo. Reorganizem a estratégia e tentem novamente!',
+      en: 'Unfortunately, the Team could not recover the System in time. Regroup your strategy and try again!',
+    },
   },
-}
+};

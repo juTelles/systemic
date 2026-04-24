@@ -1,3 +1,5 @@
+@import url('https://jsdelivr.net');
+
 html {
   font-size: 14px;
   font-size: calc(14px + 6 * ((100vw - 280px) / 653));

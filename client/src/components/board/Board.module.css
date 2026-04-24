@@ -147,8 +147,14 @@ label {
   font-family: var(--font-family);
   font-size: var(--font-md);
   text-wrap: wrap;
-  letter-spacing: -0.01em;
-  user-select: none
+  letter-spacing: 1px;
+  user-select: none;
+  color: #ffffff;
+  font-weight: 800;
+  text-transform: uppercase;
+  text-shadow:
+    1px 0px 0px rgba(255, 0, 0, 0.5),
+    -1px 0px 0px rgba(0, 255, 255, 0.5);
 }
 .labelUp {
   margin: 0 0 0.3rem 0;
@@ -214,4 +220,10 @@ label {
   grid-column: 1 / -1;
   padding: 5px;
   align-self: start;
+}
+.cianoShine {
+  box-shadow: 0 0 5px var(--color-ciano-neon),
+    0 0 8px var(--color-ciano-neon),
+    0 0 16px var(--color-ciano-light);
+  border-color: var(--color-ciano-dark);
 }

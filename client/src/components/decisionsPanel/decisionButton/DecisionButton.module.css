@@ -10,24 +10,30 @@
   width: 100%;
   height: 100%;
   background: var(--bg-button);
-  color: var(--text-main);
+  color: white;
   font-family: var(--font-family);
   font-weight: 600;
   font-size: var(--font-md);
-  letter-spacing: -0.01rem;
+  letter-spacing: 0.5px;
   border: 2px solid var(--category-color);
   border-radius: 5px;
   cursor: pointer;
   transition: all 0.2s ease;
   box-shadow: 0 0 4px var(--category-color);
   white-space: pre-line;
+  text-shadow:
+    1px 0px 0px rgba(255, 0, 0, 0.5),
+    -1px 0px 0px rgba(0, 255, 255, 0.5);
 }
 .decisionButton:hover, .decisionButtonChosen {
   background: var(--category-color);
   color: var(--bg-pure);
-  text-shadow: 0 0 1px #ffffff;
+  text-shadow: 0 0 3px #ffffff;
   box-shadow: 0 0 20px var(--category-color);
   transition: all 0.4s ease;
+  text-shadow:
+    1px 0px 0px rgba(255, 0, 0, 0.5),
+    -1px 0px 0px rgba(0, 255, 255, 0.5);
 }
 .decisionButton:disabled {
   background: var(--bg-elevated);
@@ -40,4 +46,5 @@
 }
 .grayText {
   color: var(--text-muted);
+    text-shadow: none;
 }

@@ -77,7 +77,7 @@ export const errorMessages = {
   },
 
   [ERRORS.REQUIRES_COMPONENT]: {
-    pt: 'Nenhum componente foi selecionado.',
+    pt: 'Nenhum Componente foi selecionado.',
     en: 'No component was selected.',
   },
 
@@ -97,17 +97,17 @@ export const errorMessages = {
   },
 
   [ERRORS.COMPONENT_MUST_HAVE_BUG]: {
-    pt: 'O componente selecionado não possui bugs.',
+    pt: 'O Componente selecionado não possui bugs.',
     en: 'The selected component has no bugs.',
   },
 
   [ERRORS.COMPONENT_MUST_NOT_HAVE_TESTS]: {
-    pt: 'O componente selecionado já possui testes.',
+    pt: 'O Componente selecionado já possui testes.',
     en: 'The selected component already has tests.',
   },
 
   [ERRORS.COMPONENT_MUST_HAVE_TESTS]: {
-    pt: 'O componente selecionado não possui testes.',
+    pt: 'O Componente selecionado não possui testes.',
     en: 'The selected component has no tests.',
   },
 
@@ -151,7 +151,7 @@ export const errorMessages = {
     en: 'An error occurred while applying the card effect.',
   },
 
-    [ERRORS.DRAW_CARD_ERROR]: {
+  [ERRORS.DRAW_CARD_ERROR]: {
     pt: 'Ocorreu um erro ao comprar a carta.',
     en: 'An error occurred while drawing the card.',
   },

@@ -1,6 +1,6 @@
 // eslint-disable-next-line no-unused-vars
 import styles from '../playersPanel/PlayersPanel.module.css';
-import Button from '../button/Button';
+import Button from '../button/Button.jsx';
 import { GiCheckMark } from 'react-icons/gi';
 import { useState } from 'react';
 import { resolveDecision } from '../../helpers/decisionResolver.js';
@@ -55,6 +55,7 @@ function PlayerPointsForm({
         borderRadius={'0px'}
         padding={'0'}
         color={'var(--ciano)'}
+        inverted
         onClick={() =>
           handleSubmit(roomState, selectedDecisionUIId, targetPlayer, value)
         }

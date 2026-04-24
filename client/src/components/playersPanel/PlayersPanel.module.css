@@ -12,20 +12,25 @@
   color: #e0e0e0;
   overflow: hidden;
 }
-.playersPanelHeader {
-  letter-spacing: 1px;
-}
 .playersPanelTitle {
   color: var(--text-main);
   font-size: var(--font-md);
   font-family: var(--font-family);
+  color: #ffffff;
+  font-weight: 800;
+  text-transform: uppercase;
+  text-shadow:
+    1px 0px 0px rgba(255, 0, 0, 0.5),
+    -1px 0px 0px rgba(0, 255, 255, 0.5);
 }
+
+/* player and playerPointsForm Styles */
 
 .gridRow {
   display: grid;
   grid-template-columns: 30% 1fr 1fr 1fr;
   width: 100%;
-  padding: 10px 5px;
+  padding: 5px 5px;
   justify-items: center;
   align-items: center;
   box-sizing: border-box;
@@ -53,6 +58,9 @@
   text-wrap: nowrap;
   font-family: var(--font-family);
   line-height: 1;
+  text-shadow:
+    1px 0px 0px rgba(255, 0, 0, 0.5),
+    -1px 0px 0px rgba(0, 255, 255, 0.5);
 }
 .playerPoints {
   color: var(--text-main);
@@ -62,6 +70,14 @@
   font-weight: bolder;
   cursor: none;
 }
+.playerPointsTotal {
+  width: 50%;
+  font-size: var(--font-md-lg);
+  border: 1px solid var(--text-main);
+  border-radius: 5px;
+  padding: 0px 10px;
+}
+
 /* Custom Scrollbar para Chrome/Edge/Safari */
 .playersItemsContainer::-webkit-scrollbar {
   width: 6px;
@@ -79,6 +95,9 @@
 .playerSelected {
   color: var(--ciano);
 }
+.playerPointsTotal.playerSelected {
+  border-color: var(--ciano);
+}
 .inputPoints{
   width: 50%;
   padding: 4px;
@@ -95,4 +114,10 @@
   line-height: 15px;
   grid-column: 1 / -1;
   padding-top: 5px;
+}
+.cianoShine {
+  box-shadow: 0 0 5px var(--color-ciano-neon),
+    0 0 8px var(--color-ciano-neon),
+    0 0 16px var(--color-ciano-light);
+  border-color: var(--color-ciano-dark);
 }

@@ -1,5 +1,57 @@
 import { getComponentName } from './componentsTxt';
 
+export function getCardText(
+  currentCard = null,
+  textType = 'title',
+  lang = 'pt',
+) {
+  const textGetter = getCardTextGetters?.[currentCard?.type];
+  if (!textGetter) return 'Text not found for this card type';
+
+  return textGetter(currentCard, textType, lang);
+}
+
+const getCardTextGetters = {
+  LOCAL: getRegularCardText,
+  STRUCTURAL: getRegularCardText,
+  REQUESTS: getRegularCardText,
+  POINTS: getRegularCardText,
+  EVENT: getEventCardText,
+};
+
+function getRegularCardText(currentCard, textType, lang) {
+  const { type, effect } = currentCard || {};
+
+  if (textType === 'description') {
+    const argument =
+      type === 'POINTS' ? effect.amount : effect.componentsAffected[0];
+
+    if (textType === 'description' && argument === null)
+      return `A argument is required for description text of ${type} cards`;
+
+    return (
+      cardsTxt?.regularCards?.[type]?.[textType]?.[lang](argument) ||
+      'Text not found for this card type'
+    );
+  } else {
+    return (
+      cardsTxt?.regularCards?.[type]?.[textType]?.[lang] ||
+      'Text not found for this card type'
+    );
+  }
+}
+
+function getEventCardText(currentCard, textType, lang) {
+  const { eventId } = currentCard || {};
+
+  if (eventId === null) return 'eventId is required for text of Event cards';
+
+  return (
+    cardsTxt?.specialCards?.[eventId]?.[textType]?.[lang] ||
+    'Text not found for this event card'
+  );
+}
+
 export const cardsTxt = {
   regularCards: {
     LOCAL: {
@@ -52,8 +104,8 @@ export const cardsTxt = {
         en: 'Hacker Attack',
       },
       description: {
-        pt: 'Aplique 3 bugs nos componentes de Requisições de Aplicação e Requisições de Dados.',
-        en: 'Apply 3 bugs to the Application Requests and Data Requests components.',
+        pt: 'Aplique 3 Bugs em Requisições de Aplicação e Requisições de Dados',
+        en: 'Apply 3 Bugs to Application Requests and Data Requests',
       },
     },
 
@@ -63,8 +115,8 @@ export const cardsTxt = {
         en: 'Request Overload',
       },
       description: {
-        pt: 'Aplique 3 bugs nos componentes de Requisições de Aplicação e Requisições de Dados.',
-        en: 'Apply 3 bugs to the Application Requests and Data Requests components.',
+        pt: 'Aplique 3 Bugs em Requisições de Aplicação e Requisições de Dados',
+        en: 'Apply 3 Bugs to Application Requests and Data Requests',
       },
     },
 
@@ -74,8 +126,8 @@ export const cardsTxt = {
         en: 'Vulnerable Authentication Library',
       },
       description: {
-        pt: 'Aplique 3 bugs nos componentes de Requisições de Aplicação e Requisições de Dados.',
-        en: 'Apply 3 bugs to the Application Requests and Data Requests components.',
+        pt: 'Aplique 3 Bugs em Requisições de Aplicação e Requisições de Dados',
+        en: 'Apply 3 Bugs to Application Requests and Data Requests',
       },
     },
 
@@ -85,8 +137,8 @@ export const cardsTxt = {
         en: 'Communication Breakdown',
       },
       description: {
-        pt: 'Aplique 2 bugs nos componentes de Requisições de Aplicação e Requisições de Dados.',
-        en: 'Apply 2 bugs to the Application Requests and Data Requests components.',
+        pt: 'Aplique 2 Bugs em Requisições de Aplicação e Requisições de Dados',
+        en: 'Apply 2 Bugs to Application Requests and Data Requests',
       },
     },
 
@@ -96,8 +148,8 @@ export const cardsTxt = {
         en: 'Race Conditions',
       },
       description: {
-        pt: 'Aplique 3 bugs no componente de Requisições de Aplicação.',
-        en: 'Apply 3 bugs to the Application Requests component.',
+        pt: 'Aplique 3 Bugs no Componente de Requisições de Aplicação',
+        en: 'Apply 3 Bugs to Application Requests component',
       },
     },
 
@@ -107,8 +159,8 @@ export const cardsTxt = {
         en: 'API Congestion',
       },
       description: {
-        pt: 'Aplique 3 bugs no componente de Requisições de Dados.',
-        en: 'Apply 3 bugs to the Data Requests component.',
+        pt: 'Aplique 3 Bugs no Componente de Requisições de Dados',
+        en: 'Apply 3 Bugs to Data Requests component',
       },
     },
 
@@ -118,8 +170,8 @@ export const cardsTxt = {
         en: 'Architecture Strain',
       },
       description: {
-        pt: 'Aplique 2 bugs nos componentes Banco de Dados, Back-end e Front-end.',
-        en: 'Apply 2 bugs to the Database, Backend, and Frontend components.',
+        pt: 'Aplique 2 Bugs em Banco de Dados, Back-end e Front-end',
+        en: 'Apply 2 Bugs to Database, Backend and Frontend components',
       },
     },
 
@@ -129,19 +181,19 @@ export const cardsTxt = {
         en: 'Backend Core Regression',
       },
       description: {
-        pt: 'Aplique 2 bugs nos componentes Backend, Lógica e Integrações.',
-        en: 'Apply 2 bugs to the Backend, Logic, and Integrations components.',
+        pt: 'Aplique 2 Bugs em Backend, Lógica e Integrações',
+        en: 'Apply 2 Bugs to Backend, Logic and Integrations components',
       },
     },
 
     EVENT_FORGOT_WHERE_CLAUSE: {
       title: {
         pt: 'O estagiário esqueceu o WHERE',
-        en: 'The Intern Forgot the WHERE Clause',
+        en: 'The Intern Forgot WHERE Clause',
       },
       description: {
-        pt: 'Aplique 2 bugs nos componentes Banco de Dados, Dados e Estrutura.',
-        en: 'A database operation affected more data than expected. Apply 2 bugs to the Database, Data, and Structure components.',
+        pt: 'Aplique 2 Bugs em Banco de Dados, Estrutura e Dados',
+        en: 'Apply 2 Bugs to Database, Structure and Data components',
       },
     },
 
@@ -151,65 +203,12 @@ export const cardsTxt = {
         en: 'Frontend Instability',
       },
       description: {
-        pt: 'Aplique 2 bugs nos componentes Frontend, Interação e Interface.',
-        en: ' Apply 2 bugs to the Frontend, Interaction, and Interface components.',
+        pt: 'Aplique 2 Bugs em Frontend, Interação e Interface',
+        en: 'Apply 2 Bugs to Frontend, Interaction, and Interface components',
       },
     },
   },
 };
 
-export function getCardText(
-  currentCard = null,
-  textType = 'title',
-  lang = 'pt',
-) {
-  const textGetter = getCardTextGetters?.[currentCard?.type];
-  if (!textGetter) return 'Text not found for this card type';
-
-  return textGetter(currentCard, textType, lang);
-}
-
-const getCardTextGetters = {
-  LOCAL: getRegularCardText,
-  STRUCTURAL: getRegularCardText,
-  REQUESTS: getRegularCardText,
-  POINTS: getRegularCardText,
-  EVENT: getEventCardText,
-};
-
-function getRegularCardText(currentCard, textType, lang) {
-  const { type, effect } = currentCard || {};
-
-  if (textType === 'description') {
-    const argument =
-      type === 'POINTS' ? effect.amount : effect.componentsAffected[0];
-
-    if (textType === 'description' && argument === null)
-      return `A argument is required for description text of ${type} cards`;
-
-    return (
-      cardsTxt?.regularCards?.[type]?.[textType]?.[lang](argument) ||
-      'Text not found for this card type'
-    );
-  } else {
-    return (
-      cardsTxt?.regularCards?.[type]?.[textType]?.[lang] ||
-      'Text not found for this card type'
-    );
-  }
-}
-
-function getEventCardText(currentCard, textType, lang) {
-  const { eventId } = currentCard || {};
-
-  if (eventId === null)
-    return 'eventId is required for text of Event cards';
-
-  return (
-    cardsTxt?.specialCards?.[eventId]?.[textType]?.[lang] ||
-    'Text not found for this event card'
-  );
-}
-
-// pt: (componentIds, amount) => `Aplique ${amount} bugs aos componentes: ${componentIds.map(nodeId => getComponentName(nodeId, 'pt')).join(', ')}.`,
-// en: (componentIds, amount) => `Apply ${amount} bugs to the following components: ${componentIds.map(nodeId => getComponentName(nodeId, 'en')).join(', ')}.`,
+// pt: (componentIds, amount) => `Aplique ${amount} Bugs aos componentes: ${componentIds.map(nodeId => getComponentName(nodeId, 'pt')).join(', ')}.`,
+// en: (componentIds, amount) => `Apply ${amount} Bugs to following components: ${componentIds.map(nodeId => getComponentName(nodeId, 'en')).join(', ')}.`,

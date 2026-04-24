@@ -4,6 +4,7 @@ export function buildSystemHealthChangeInstruction(
     bugSaturationLimit,
     playerPerCrisisRound,
     playersCount,
+    isCrisisRound,
   },
   textType,
   lang = 'pt',
@@ -20,86 +21,75 @@ export function buildSystemHealthChangeInstruction(
     bugSaturationLimit,
     playerPerCrisisRound,
     playersCount,
+    isCrisisRound,
 }) || '';
 }
 
-const systemHealthChangeInstructionsTxt = {
+export const systemHealthChangeInstructionsTxt = {
   HEALTHY_TO_WARNING: {
     title: {
-      pt: `Atenção: Sistema em estado de Alerta`,
-      en: `Alert: System in Warning State`,
+      pt: `Sistema em Estado de ALERTA!`,
+      en: `System in WARNING State!`,
     },
     description: {
-      pt: ({bugSaturationLimit}) =>
-        `O sistema entrou em estado de alerta: Algum dos Componentes de Requisições ultrapassou o limite de Saturação de ${bugSaturationLimit} Bugs.\nSe até o final dessa rodada o Time não conseguir sair do Estado de Alerta componentes de Requisições saturados irão propagar bugs para todos os seus componentes filhos imediatos!\n\nCuidado, se todos os componentes de requisição ficarem saturados o Sistema entra em Estado de Crise, iniciando uma rodada de crise e colocando o Time em risco de derrota!`,
-      en: ({bugSaturationLimit}) =>
-        `The system has entered a warning state: Some of the Request Components have exceeded the Saturation limit of ${bugSaturationLimit} Bugs.\nIf by the end of this round the Team cannot get out of the Warning State, saturated Request components will propagate bugs to all their immediate child components!\n\nBe careful, if all request components become saturated the System enters a Crisis State, starting a crisis round and putting the Team at risk of defeat!`,
-    },
+      pt: ({ bugSaturationLimit, isCrisisRound }) =>
+        `ALERTA: Um dos Componentes de Requisições ultrapassou o limite de saturação (${bugSaturationLimit} Bugs).\nSe não sair de ALERTA até o final da rodada, Componentes de Requisições saturados propagarão Bugs aos seus Componentes filhos.\n\nCUIDADO: Se todos os Componentes de Requisições ficarem saturados, entrará em Estado CRÍTICO,${!isCrisisRound ? ' iniciando uma Rodada de Crise imediatamente e colocando o Time em risco de derrota' : ''}.\n\nAcompanhe o Estado atual do Sistema no painel de Estados ao lado.`,
+      en: ({ bugSaturationLimit, isCrisisRound }) =>
+        `WARNING: One of the Request Components has exceeded the saturation limit (${bugSaturationLimit} Bugs).\nIf the System does not get out of the WARNING State by the end of the round, Saturated Request Components will propagate Bugs to their Child Components.\n\nBE CAREFUL: If all Request Components become saturated, will enter CRITICAL state,${!isCrisisRound ? ' immediately starting a Crisis Round and putting the Team at risk of defeat' : ''}.\n\nKeep track of the current State of the System in the Status panel on the side.`,
+      },
   },
   HEALTHY_TO_CRITICAL: {
     title: {
-      pt: `Perigo: Sistema em estado Crítico! Rodada de Crise será iniciada`,
-      en: `Danger: System in Critical State! Crisis Round will be initiated`,
+      pt: `Estado CRÍTICO!!! Rodada de Crise será iniciada`,
+      en: `CRITICAL State! Crisis Round will be initiated`,
     },
     description: {
-      pt: ({bugSaturationLimit}) =>
-        `O sistema entrou em Estado de Crítico! Todos os Componentes de Requisições ultrapassarão o limite de Saturação de ${bugSaturationLimit} Bugs.\n Essa rodada será finalizada imediatamente e uma rodada de crise será iniciada, o Time tem até o final da Rodada de Crise para recuperar o sistema, caso contrário, o jogo termina com a derrota do Time!\n\n Lembre-se: Componentes de Requisições saturados propagam bugs para seus componentes filhos imediatos! `,
-      en: ({bugSaturationLimit}) =>
-        `The system has entered a Critical State! All Request Components will exceed the Saturation limit of ${bugSaturationLimit} Bugs.\n This round will end immediately and a crisis round will begin, the Team has until the end of the Crisis Round to recover the system, otherwise, the game ends with the Team's defeat!\n\n Remember: Saturated Request components propagate bugs to their immediate child components!`,
-    },
+      pt: ({ bugSaturationLimit, isCrisisRound }) =>
+        `PERIGO: Todos os Componentes de Requisições ultrapassaram o limite de saturação (${bugSaturationLimit} Bugs).\n\n${!isCrisisRound? `Esta rodada será encerrada imediatamente, e uma Rodada de Crise será iniciada. O Time tem até o final dela` : `CUIDADO: Time tem até o final da Rodada de Crise`} para recuperar o Sistema; caso contrário, perde o jogo.\n\nLembre-se: Componentes de Requisições saturados propagam Bugs aos Componentes filhos imediatos ao final da rodada.\n\nAcompanhe o Estado atual do Sistema no painel de Estados ao lado.`,
+      en: ({ bugSaturationLimit, isCrisisRound }) =>
+        `DANGER: All Request Components have exceeded the saturation limit (${bugSaturationLimit} Bugs).\n\n${!isCrisisRound? `This round will end immediately, and a Crisis Round will begin. The Team has until the end of it` : `BE CAREFUL: The Team has until the end of the Crisis Round`} to recover the System; otherwise, they lose the game.\n\nRemember: Saturated Request Components propagate Bugs to their immediate child Components at the end of the round.\n\nKeep track of the current State of the System in the Status panel on the side.`,
+      },
   },
   WARNING_TO_HEALTHY: {
     title: {
-      pt: `O sistema voltou a um estado saudável!`,
-      en: `The system has returned to a healthy state!`,
+      pt: `Sistema em Estado SAUDÁVEL!`,
+      en: `System in HEALTHY State!`,
     },
     description: {
-      pt: `Parabens! O time conseguiu normalizar o Sistema a um Estado Saudável!`,
-      en: `Congratulations! The team managed to normalize the System to a Healthy State!`,
+      pt: `Parabéns! O Time conseguiu restaurar o Sistema ao Estado SAUDÁVEL!`,
+      en: `Congratulations! The Team managed to restore the System to a HEALTHY State!`,
     },
   },
   WARNING_TO_CRITICAL: {
     title: {
-      pt: `Perigo: Sistema em estado Crítico! Rodada de Crise será iniciada`,
-      en: `Danger: System in Critical State! Crisis Round will be initiated`,
+      pt: `Sistema em Estado CRÍTICO!`,
+      en: `System in CRITICAL State!`,
     },
     description: {
-      pt: ({bugSaturationLimit}) =>
-        `O sistema entrou em Estado de Crítico! Todos os Componentes de Requisições ultrapassarão o limite de Saturação de ${bugSaturationLimit} Bugs.\n Essa rodada será finalizada imediatamente e uma rodada de crise será iniciada, o Time tem até o final da Rodada de Crise para recuperar o sistema, caso contrário, o jogo termina com a derrota do Time!\n\n Lembre-se: Componentes de Requisições saturados propagam bugs para seus componentes filhos imediatos! `,
-      en: ({bugSaturationLimit}) =>
-        `The system has entered a Critical State! All Request Components will exceed the Saturation limit of ${bugSaturationLimit} Bugs.\n This round will end immediately and a crisis round will begin, the Team has until the end of the Crisis Round to recover the system, otherwise, the game ends with the Team's defeat!\n\n Remember: Saturated Request components propagate bugs to their immediate child components!`,
+      pt: ({ bugSaturationLimit, isCrisisRound }) =>
+        `PERIGO: Todos os Componentes de Requisições ultrapassaram o limite de saturação (${bugSaturationLimit} Bugs).\n\n${!isCrisisRound? `Esta rodada será encerrada imediatamente, e uma Rodada de Crise será iniciada. O Time tem até o final dela` : `CUIDADO: Time tem até o final da Rodada de Crise`} para recuperar o Sistema; caso contrário, perde o jogo.\n\nLembre-se: Componentes de Requisições saturados propagam Bugs aos Componentes filhos imediatos ao final da rodada.\n\nAcompanhe o Estado atual do Sistema no painel de Estados ao lado.`,
+      en: ({ bugSaturationLimit, isCrisisRound }) =>
+        `DANGER: All Request Components have exceeded the saturation limit (${bugSaturationLimit} Bugs).\n\n${isCrisisRound? `This round will end immediately, and a Crisis Round will begin. The Team has until the end of it` : `BE CAREFUL: The Team has until the end of the Crisis Round`} to recover the System; otherwise, they lose the game.\n\nRemember: Saturated Request Components propagate Bugs to their immediate child Components at the end of the round.\n\nKeep track of the current State of the System in the Status panel on the side.`,
     },
   },
   CRITICAL_TO_HEALTHY: {
     title: {
-      pt: `O sistema voltou a um estado saudável!`,
-      en: `The system has returned to a healthy state!`,
+      pt: `Sistema em Estado SAUDÁVEL!`,
+      en: `System in HEALTHY State!`,
     },
     description: {
-      pt: `Parabens! O time conseguiu normalizar o Sistema a um Estado Saudável!\nSe o sistema não voltar ao Estado Crítico até o final da partida, o time vai sobreviver a Rodada de Crise!`,
-      en: `Congratulations! The team managed to normalize the System to a Healthy State!\nIf the system does not return to the Critical State until the end of the game, the team will survive the Crisis Round!`,
+      pt: `Parabéns! O Time conseguiu restaurar o Sistema ao Estado SAUDÁVEL!\n\nSe não voltar a CRÍTICO até o final da partida, o Time vai sobreviver à Rodada de Crise!`,
+      en: `Congratulations! The Team managed to restore the System to a HEALTHY State!\n\nIf it does not return to CRITICAL by the end of the game, the Team will survive the Crisis Round!`,
     },
   },
   CRITICAL_TO_WARNING: {
     title: {
-      pt: `O sistema em estado de Alerta`,
-      en: `System in Warning State`,
+      pt: `Sistema em Estado de ALERTA!`,
+      en: `System in WARNING State!`,
     },
     description: {
-      pt: `Parabens! O Time conseguil reverter o Estado Crítico para um Estado de Alerta.\nSe o sistema não voltar ao Estado Crítico até o final da partida, o Time vai sobreviver a Rodade de Crise!`,
-      en: `Congratulations! The Team managed to revert the Critical State to a Warning State.\nIf the system does not return to the Critical State until the end of the game, the team will survive the Crisis Round!`,
-    },
-  },
-  CRISIS_ROUND_START: {
-    title: {
-      pt: `Rodada de Crise Iniciada!`,
-      en: `Crisis Round Started!`,
-    },
-    description: {
-      pt: ({playerPerCrisisRound, playersCount}) =>
-        `A Rodada de Crise foi iniciada!\n O Time ganha ${playerPerCrisisRound * playersCount}, pontos adicionais a serem divididos igualmente entre os seus membros, além dos pontos de Rodada habituais, mas tem até o final dessa rodada para recuperar o sistema, caso contrário, o jogo termina com a derrota do Time!\n\nLembre-se: Componentes de Requisições saturados propagam bugs para seus componentes filhos imediatos!`,
-      en: ({playerPerCrisisRound, playersCount}) =>
-        `The Crisis Round has started!\n The Team gains ${playerPerCrisisRound * playersCount} additional points to be divided equally among its members, but has until the end of this round to recover the system, otherwise, the game ends with the Team's defeat!\n\nRemember: Saturated Request components propagate bugs to their immediate child components!`,
+      pt: `Parabéns! O Time conseguiu reverter o Estado CRÍTICO.\n\nSe não voltar a CRÍTICO até o final da partida, o Time vai sobreviver à Rodada de Crise!`,
+      en: `Congratulations! The Team managed to reverse the CRITICAL State.\n\nIf it does not return to CRITICAL by the end of the game, the Team will survive the Crisis Round!`,
     },
   },
 };

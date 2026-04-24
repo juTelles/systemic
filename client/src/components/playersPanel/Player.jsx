@@ -40,7 +40,7 @@ function Player({
         {pointsBank}
       </span>
       <span
-        className={`${styles.cell} ${styles.playerPoints} ${
+        className={`${styles.cell} ${styles.playerPointsTotal} ${
           paintPlayer ? styles.playerSelected : ''
         }`}
       >

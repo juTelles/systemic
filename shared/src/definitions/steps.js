@@ -96,7 +96,7 @@ export const steps = Object.freeze({
     flowControl: {
       current: {
         accepts: ACTION_TRIGGER.AUTO,
-        delayMs: 2000,
+        delayMs: 3000,
       },
       nextTransition: {
         actionType: ACTION_TYPES.ASK_FOR_DECISION,
@@ -237,7 +237,7 @@ export const steps = Object.freeze({
     flowControl: {
       current: {
         accepts: ACTION_TRIGGER.AUTO,
-        delayMs: 3000,
+        delayMs: 5000,
       },
       nextTransition: {
         actionType: null,

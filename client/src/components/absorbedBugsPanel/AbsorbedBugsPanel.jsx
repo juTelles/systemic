@@ -2,20 +2,23 @@
 // import react, { Children, useEffect, useState } from 'react';
 import AbsorbedBugItem from './AbsorbedBugItem';
 import styles from './AbsorbedBugsPanel.module.css';
-import { componentsTxt as txt } from '../../texts/componentsTxt.js';
+import { componentsTxt } from '../../texts/componentsTxt.js';
 
-function AbsorbedBugsPanel({ absorbedBugs }) {
-
+function AbsorbedBugsPanel({ absorbedBugs, txt }) {
   return (
     <div className={styles.absorbedBugsPanelWrapper}>
-      <h2 className={styles.absorbedBugsPanelTitle}>Bugs absorvidos</h2>
+      <h2 className={styles.absorbedBugsPanelTitle}>{txt?.title?.pt}</h2>
       <div className={styles.absorbedBugsContainer}>
-        {absorbedBugs?.map((componentId) => (
-          <AbsorbedBugItem
-            key={componentId}
-            component={txt?.[componentId]?.label?.pt}
-          />
-        ))}
+        {absorbedBugs?.length === 0 ? (
+          <p className={styles.noAbsorbedBugsMessage}>Nenhum bug absorvido</p>
+        ) : (
+          absorbedBugs?.map((componentId) => (
+            <AbsorbedBugItem
+              key={componentId}
+              component={componentsTxt?.[componentId]?.label?.pt}
+            />
+          ))
+        )}
       </div>
     </div>
   );

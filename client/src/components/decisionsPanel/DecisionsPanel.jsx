@@ -1,9 +1,9 @@
 // eslint-disable-next-line no-unused-vars
 // import react, { Children, useEffect, useState } from 'react';
-import DecisionButton from '../decisionButton/DecisionButton';
+import DecisionButton from './decisionButton/DecisionButton.jsx';
 import styles from './DecisionsPanel.module.css';
 import { decisions as decisionsDefinitions } from '../../../../shared/src/definitions/decisions.js';
-import { decisionsTxt as txt } from '../../texts/decisionsTxt.js';
+import { getDecisionTxt } from '../../texts/decisionsTxt.js';
 
 function DecisionsPanel({
   roomState,
@@ -24,16 +24,16 @@ function DecisionsPanel({
       {Object.entries(decisionsUI).map(([decisionUIId, decisionUI]) => {
         const regularDecisionId = decisionUI.regularDecisionId;
         const testedDecisionId = decisionUI.testedDecisionId;
-        const instructionKey = decisionUI.instructionKey;
+        const instructionKey = decisionUIId;
 
         const cost = costs[regularDecisionId];
-        const costLabel = txt(cost)?.[decisionUIId]?.costLabel?.pt ?? null;
+        const costLabel = getDecisionTxt(decisionUIId, cost, 'costLabel', 'pt')?? null;
         const isRegularDecisionAvailable = availableSet.has(regularDecisionId);
 
         const costTested = costs[testedDecisionId] ?? null;
         const costTestedLabel =
           costTested != null
-            ? txt(costTested)?.[decisionUIId]?.costTestedLabel?.pt ?? null
+            ? getDecisionTxt(decisionUIId, costTested, 'costTestedLabel', 'pt')
             : null;
         const isTestedDecisionAvailable = availableSet.has(testedDecisionId);
 
@@ -52,8 +52,8 @@ function DecisionsPanel({
             key={decisionUIId}
             id={decisionUIId}
             decisionIds={decisionUI.decisionIds}
-            label={txt()?.[decisionUIId]?.label?.pt ?? ''}
-            categoryColor={txt()?.[decisionUIId]?.categoryColor}
+            label={getDecisionTxt(decisionUIId, null, 'label', 'pt') ?? ''}
+            categoryColor={getDecisionTxt(decisionUIId, null, 'categoryColor')}
             localPlayerId={localPlayerId}
             isDisabled={!isAvailable && !isPreGame}
             costLabel={costLabel}

@@ -26,6 +26,7 @@ function Board({
   isPreGame,
   selectedDecisionUIId,
   handleDecisionSubmit,
+  isReadOnly,
 }) {
   const boardRef = useRef(null);
   const nodeRefs = useRef({});
@@ -42,6 +43,10 @@ function Board({
   );
 
   const decisionUI = decisionsDefinitions?.forUI[selectedDecisionUIId];
+  const targetMode =
+    !isReadOnly &&
+    (decisionUI?.type === 'RESOLVE_BUG' ||
+      decisionUI?.type === 'DEVELOP_TESTS');
   const decisionsAvailable = roomState?.decisionState?.available ?? [];
   const chosenButtonDecisionIds = decisionUI?.decisionIds ?? [];
   const availableChosen = chosenButtonDecisionIds.filter((id) =>
@@ -123,7 +128,9 @@ function Board({
   };
 
   return (
-    <div className={styles.boardContainer}>
+    <div
+      className={`${styles.boardContainer} ${targetMode ? styles.cianoShine : ''}`}
+    >
       <div ref={boardRef} className={styles.board}>
         <svg className={styles.connectionsLayer}>
           {lines.map((ln) => (

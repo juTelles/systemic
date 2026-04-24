@@ -11,6 +11,7 @@ function ArrowButton({
     <div className={styles.container}>
     <button
       className={styles.body}
+      style={label.length < 7 ? { fontSize: 'var(--font-lg )' } : {}}
       onClick={onClick}
       disabled={disabled}
       >

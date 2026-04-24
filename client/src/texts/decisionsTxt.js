@@ -1,16 +1,31 @@
-export const decisionsTxt = (cost = 0) => ({
+export function getDecisionTxt(decisionKey, cost = 0, txtType, lang = 'pt') {
+  const decisionTxt = buildDecisionTxt({ decisionKey, cost, lang });
+
+  return txtType ? (decisionTxt?.[txtType] ?? null) : decisionTxt;
+}
+
+const buildDecisionTxt = ({ decisionKey, cost, lang = 'pt' }) => ({
+  label: decisionsTxt[decisionKey]?.label?.[lang] ?? '',
+  costLabel: decisionsTxt[decisionKey]?.costLabel?.[lang]?.(cost) ?? null,
+  costTestedLabel:
+    decisionsTxt[decisionKey]?.costTestedLabel?.[lang]?.(cost) ?? null,
+  categoryColor: decisionsTxt[decisionKey]?.categoryColor ?? '#00ccff',
+  object: decisionsTxt[decisionKey] ?? null,
+});
+
+const decisionsTxt = {
   LOCAL: {
     label: {
       pt: `Bug Local\n`,
       en: `Local Bug\n`,
     },
     costLabel: {
-      pt: `${cost} Pontos`,
-      en: `${cost} Points`,
+      pt: (cost) => `${cost} Pontos`,
+      en: (cost) => `${cost} Points`,
     },
     costTestedLabel: {
-      pt: `\nTestado: ${cost} Pontos`,
-      en: `\nTested: ${cost} Points`,
+      pt: (cost) => `\nTestado: ${cost} Pontos`,
+      en: (cost) => `\nTested: ${cost} Points`,
     },
     categoryColor: '#FDE047',
   },
@@ -20,12 +35,12 @@ export const decisionsTxt = (cost = 0) => ({
       en: `Structural Bug\n`,
     },
     costLabel: {
-      pt: `${cost} Pontos`,
-      en: `${cost} Points`,
+      pt: (cost) => `${cost} Pontos`,
+      en: (cost) => `${cost} Points`,
     },
     costTestedLabel: {
-      pt: `\nTestado: ${cost} Pontos`,
-      en: `\nTested: ${cost} Points`,
+      pt: (cost) => `\nTestado: ${cost} Pontos`,
+      en: (cost) => `\nTested: ${cost} Points`,
     },
     categoryColor: '#FF8A00',
   },
@@ -35,34 +50,34 @@ export const decisionsTxt = (cost = 0) => ({
       en: `Requests Bug\n`,
     },
     costLabel: {
-      pt: `${cost} Pontos`,
-      en: `${cost} Points`,
+      pt: (cost) => `${cost} Pontos`,
+      en: (cost) => `${cost} Points`,
     },
     costTestedLabel: {
-      pt: `\nTestado: ${cost} Pontos`,
-      en: `\nTested: ${cost} Points`,
+      pt: (cost) => `\nTestado: ${cost} Pontos`,
+      en: (cost) => `\nTested: ${cost} Points`,
     },
     categoryColor: '#FF0055',
   },
   DONATE_POINTS: {
     label: {
       pt: `Doar Pontos \n `,
-      en: `Donate Points \n Limit: ${cost} Points`,
+      en: `Donate Points \n`,
     },
     costLabel: {
-      pt: `Limite: ${cost} Pontos`,
-      en: `${cost} Points`,
+      pt: (cost) => `Limite: ${cost} Pontos`,
+      en: (cost) => `${cost} Points`,
     },
     categoryColor: '#22d3ee',
   },
   HOLD_POINTS: {
     label: {
       pt: `Guardar Pontos\n`,
-      en: `Hold Points \n Limit: ${cost} Points`,
+      en: `Hold Points \n`,
     },
     costLabel: {
-      pt: ` Limite: ${cost} Pontos`,
-      en: `${cost} Points`,
+      pt: (cost) => ` Limite: ${cost} Pontos`,
+      en: (cost) => `${cost} Points`,
     },
     categoryColor: '#22d3ee',
   },
@@ -72,9 +87,9 @@ export const decisionsTxt = (cost = 0) => ({
       en: `Develop Tests\n`,
     },
     costLabel: {
-      pt: `${cost} Pontos`,
-      en: `${cost} Points`,
+      pt: (cost) => `${cost} Pontos`,
+      en: (cost) => `${cost} Points`,
     },
     categoryColor: '#00FF9F',
   },
-});
+};

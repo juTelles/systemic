@@ -7,6 +7,7 @@ function TableTop({
   isPreGame,
   handleDecisionSubmit,
   selectedDecisionUIId,
+  isReadOnly
 }) {
 
   return (
@@ -16,6 +17,7 @@ function TableTop({
         isPreGame={isPreGame}
         handleDecisionSubmit={handleDecisionSubmit}
         selectedDecisionUIId={selectedDecisionUIId}
+        isReadOnly={isReadOnly}
       />
     </div>
   );
