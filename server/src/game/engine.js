@@ -64,6 +64,36 @@ export function applyAction(state, action, ctx = {}) {
       return next;
     }
 
+    case ACTION_TYPES.UNSET_READY: {
+      const localPlayerId = action.payload?.senderId;
+
+      if (!localPlayerId) {
+        const err = new Error('Player ID is required for UNSET_READY action');
+        err.status = 400;
+        err.code = 'PLAYER_ID_REQUIRED';
+        throw err;
+      }
+
+      const player = next.players.find((player) => player.id === localPlayerId);
+
+      if (!player) {
+        const err = new Error(`Player with ID ${localPlayerId} not found`);
+        err.status = 404;
+        err.code = 'PLAYER_NOT_FOUND';
+        throw err;
+      }
+      player.status = PLAYER_STATUS.WAITING;
+
+      next.meta.rev += 1;
+      next.meta.updatedAt = now;
+      next.log.lastEvent = {
+        type: ACTION_TYPES.UNSET_READY,
+        by: localPlayerId,
+        at: now,
+      };
+      return next;
+    }
+
     case ACTION_TYPES.START_GAME: {
       // const gameConfig = structuredClone(next.gameConfig);
       // TODO: add feat to change config possibilities
