@@ -4,7 +4,7 @@ import Button from '../button/Button';
 import { GiCheckMark } from 'react-icons/gi';
 
 function PlayersPanelPreGame({ players, localPlayerId, roomId, txt }) {
-  const { setReady } = useRoomActions(roomId, localPlayerId);
+  const { setReady, unsetReady } = useRoomActions(roomId, localPlayerId);
   //TODO: add action to unset ready if player is already ready
 
   async function handleReady() {
@@ -14,9 +14,18 @@ function PlayersPanelPreGame({ players, localPlayerId, roomId, txt }) {
     }
   }
 
+  const handleUnsetReady = async () => {
+    const result = await unsetReady();
+    if (!result.ok) {
+      console.error('Error unsetting ready:', result.error);
+    }
+  };
+
   return (
     <div className={styles.playersPanelContainer}>
-      <h2 className={styles.playersPanelTitle}>{txt?.preGamePlayersTitle?.pt}</h2>
+      <h2 className={styles.playersPanelTitle}>
+        {txt?.preGamePlayersTitle?.pt}
+      </h2>
       <div className={styles.playersItemsContainer}>
         {players?.map((player) => (
           <div className={styles.preGamePanelItemWrapper} key={player.id}>
@@ -25,12 +34,16 @@ function PlayersPanelPreGame({ players, localPlayerId, roomId, txt }) {
               {txt.preGameStatusDescription[player.status]?.pt || ''}
             </span>
             <Button
-              label={player?.status === 'READY' ? 'X' : <GiCheckMark size={14} />}
+              label={
+                player?.status === 'READY' ? 'X' : <GiCheckMark size={14} />
+              }
               width={'15%'}
               height={'1.2rem'}
               margin={'3px 0px 3px 7px'}
               borderRadius={'0px'}
-              onClick={handleReady}
+              onClick={
+                player.status === 'READY' ? handleUnsetReady : handleReady
+              }
               padding={'0'}
               disabled={localPlayerId === player.id ? false : true}
               color={'var(--ciano)'}
