@@ -16,8 +16,6 @@ export function resolveInstructionTxt(
   if (typeof template === 'function') {
     return template(context);
   }
-  console.log('Resolving instruction text with context:', template);
-
   return template ?? '';
 }
 

@@ -5,10 +5,7 @@ export function buildDecisionInstruction(
   textType,
   lang = 'pt',
 ) {
-  console.log(
-    'Building instruction with key:',
-    gameConfig?.decisionCosts?.[instructionKey],
-  );
+
   if (!instructionKey) return null;
   const instruction = decisionInstructionTxt[instructionKey];
   if (!instruction) return null;

@@ -115,7 +115,7 @@ export const cardsTxt = {
         en: 'Request Overload',
       },
       description: {
-        pt: 'Aplique 3 Bugs de Requisições de Aplicação e Requisições de Dados',
+        pt: 'Aplique 3 Bugs em Requisições de Aplicação e Requisições de Dados',
         en: 'Apply 3 Bugs to Application Requests and Data Requests',
       },
     },
