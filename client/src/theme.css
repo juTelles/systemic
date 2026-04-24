@@ -7,7 +7,7 @@
   --font-lg: clamp(18px, 2.5vh, 28px);
   --font-xl: clamp(24px, 3.5vh, 40px);
 
-  --font-family: 'ui-monospace', monospace;
+  --font-family: 'Fira Code', monospace;
 
   --bg-pure: #020202;
   --bg-surface: #121212;
@@ -35,7 +35,7 @@
   --color-green-neon-dark: #4ADE80;
   --color-green-light: rgba(74, 222, 128, 0.4);
 
-  --color-red-dark: #450A0A;
+  --color-red-dark: #591010;
   --color-red-neon: #FF003C;
   --color-red-light: rgba(255, 0, 60, 0.4);
 
@@ -50,6 +50,7 @@
   --color-ciano-neon: #22d3ee;
   --color-ciano-light: rgba(0, 242, 255, 0.6);
   --color-ciano-extra-light: rgba(0, 242, 255, 0.4);
+  --color-ciano-dark: rgba(2, 85, 89, 0.9);
   --color-ciano-bg: rgb(105, 224, 242);
 
   --card-width: 145px;
