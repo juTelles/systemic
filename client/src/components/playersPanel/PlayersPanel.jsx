@@ -1,5 +1,5 @@
-import Player from '../player/Player';
-import PlayerPointsForm from '../playerPointsForm/PlayerPointsForm';
+import Player from './Player';
+import PlayerPointsForm from './PlayerPointsForm';
 import styles from './PlayersPanel.module.css';
 import { useState } from 'react';
 
@@ -13,13 +13,15 @@ function PlayersPanel({
   handleDecisionSubmit,
 }) {
   const [selectedTargetPlayerId, setSelectedTargetPlayerId] = useState(null);
-  const [prevSelectedDecisionUIId, setPrevSelectedDecisionUIId] = useState(null);
+  const [prevSelectedDecisionUIId, setPrevSelectedDecisionUIId] =
+    useState(null);
   const currentPlayerId = roomState?.flow?.currentPlayerId;
   const targetPlayer = players?.find((p) => p.id === selectedTargetPlayerId);
 
   if (prevSelectedDecisionUIId !== selectedDecisionUIId) {
     setPrevSelectedDecisionUIId(selectedDecisionUIId);
-    if (selectedDecisionUIId === 'HOLD_POINTS') setSelectedTargetPlayerId(currentPlayerId);
+    if (selectedDecisionUIId === 'HOLD_POINTS')
+      setSelectedTargetPlayerId(currentPlayerId);
     else setSelectedTargetPlayerId(null);
   }
 
@@ -36,7 +38,7 @@ function PlayersPanel({
   };
 
   return (
-    <div className={styles.playersPanelContainer}>
+    <div className={`${styles.playersPanelContainer} ${inputMode ? styles.cianoShine : ''}`}>
       <div className={`${styles.gridRow} ${styles.playersPanelHeader}`}>
         <h2 className={styles.playersPanelTitle}>{txt.playerTitle.pt}</h2>
         <h2 className={styles.playersPanelTitle}>{txt.handPointsTitle.pt}</h2>
