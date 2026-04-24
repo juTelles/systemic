@@ -19,4 +19,10 @@ export const lateralBarTxt = {
       },
     },
   },
+  absorbedBugsTxt: {
+    title: {
+      pt: 'Bugs Absorvidos',
+      en: 'Absorbed Bugs',
+    },
+  },
 };
