@@ -41,6 +41,25 @@ export function applyAction(state, action, ctx = {}) {
   const next = structuredClone(state); // Node 18+ (Render geralmente usa)
 
   switch (action?.type) {
+    case ACTION_TYPES.SET_CONFIG: {
+      const { playerCount, difficulty } = action.payload;
+
+      if (!playerCount || !difficulty) {
+        throw createError(ERRORS.MISSING_GAME_CONFIG, 400);
+      }
+      next.gameConfig = buildGameConfig({ playerCount, difficulty });
+      next.flow.step.flowControl.nextTransition =
+        transitionResolvers[STEP_NAME.WAITING_PLAYERS_READY](next);
+      next.meta.rev += 1;
+      next.meta.updatedAt = now;
+      next.log.lastEvent = {
+        type: ACTION_TYPES.SET_CONFIG,
+        by: action.payload?.senderId,
+        at: now,
+      };
+      return next;
+    }
+
     case ACTION_TYPES.SET_READY: {
       const localPlayerId = action.payload?.senderId;
 
