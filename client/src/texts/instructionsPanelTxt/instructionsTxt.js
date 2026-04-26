@@ -42,9 +42,9 @@ export const instructionsTxt = (ctx) => {
       },
       description: {
         pt: (ctx) =>
-          `O Time recebe ${ctx.startRoundPoints} Pontos de Tarefa divididos igualmente entre o Time, para gastarem em Decisões Técnicas.`,
+          `O Time recebe ${ctx.startRoundPoints} Pontos de Tarefa divididos igualmente entre os membros, para gastarem em Decisões Técnicas.`,
         en: (ctx) =>
-          `The team receives ${ctx.startRoundPoints} Task Points to be divided equally among the players to spend on Technical Decisions.`,
+          `The team receives ${ctx.startRoundPoints} Task Points to be divided equally among the members, to spend on Technical Decisions.`,
       },
     },
     CRISIS_ROUND_START: {
