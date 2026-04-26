@@ -58,9 +58,9 @@ const instructionBuilders = {
     },
     description: {
       pt: ({ playerNickname, cardDescription, maxPointsPerPlayer }) =>
-        `Parabéns ${playerNickname}! ${cardDescription}. Seu bônus será creditado no seu banco.\n\nLembre-se: Cada membro do Time pode ter no máximo ${maxPointsPerPlayer} pontos. Os pontos da carta só serão aplicados até esse limite.`,
+        `Parabéns ${playerNickname}! ${cardDescription}. Seu bônus será creditado no seu banco.\n\nLembre-se: Cada membro do Time pode ter no máximo ${maxPointsPerPlayer} Pontos. Os Pontos da carta só serão aplicados até esse limite.`,
       en: ({ playerNickname, cardDescription, maxPointsPerPlayer }) =>
-        `Congratulations ${playerNickname}! ${cardDescription}. Your bonus will be credited to your bank.\n\nRemember: Each Team member can have a maximum of ${maxPointsPerPlayer} points. The card will only be applied up to this limit.`,
+        `Congratulations ${playerNickname}! ${cardDescription}. Your bonus will be credited to your bank.\n\nRemember: Each Team member can have a maximum of ${maxPointsPerPlayer} Points. The card will only be applied up to this limit.`,
     },
   },
   EVENT: {
