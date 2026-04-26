@@ -42,8 +42,9 @@ export function useRoomActions(roomId, localPlayerId) {
     });
   }
 
-  async function returnToLobby() {
-    return sendAction(roomId, ACTION_TYPES.RETURN_TO_LOBBY, {
+  async function leaveRoom() {
+    console.log('Leaving room...', roomId, localPlayerId);
+    return sendAction(roomId, ACTION_TYPES.LEAVE_ROOM, {
       senderId: localPlayerId,
     });
   }
@@ -56,5 +57,6 @@ export function useRoomActions(roomId, localPlayerId) {
     returnToLobby,
     drawCard,
     applyCard,
+    leaveRoom,
   };
 }
