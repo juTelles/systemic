@@ -61,7 +61,6 @@ export function useRoomActions(roomId, localPlayerId) {
     unsetReady,
     submitDecision,
     endDecision,
-    returnToLobby,
     drawCard,
     applyCard,
     setConfig,
