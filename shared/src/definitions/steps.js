@@ -74,7 +74,7 @@ export const steps = Object.freeze({
       current: {
         allowedActions: [ACTION_TYPES.START_TURN],
         accepts: ACTION_TRIGGER.AUTO,
-        delayMs: 5000,
+        delayMs: 3000,
       },
       nextTransition: {
         actionType: ACTION_TYPES.START_TURN,
@@ -90,7 +90,7 @@ export const steps = Object.freeze({
       current: {
         allowedActions: [ACTION_TYPES.START_TURN],
         accepts: ACTION_TRIGGER.AUTO,
-        delayMs: 10000,
+        delayMs: 7000,
       },
       nextTransition: {
         actionType: ACTION_TYPES.START_TURN,
@@ -106,7 +106,7 @@ export const steps = Object.freeze({
       current: {
         allowedActions: [ACTION_TYPES.ASK_FOR_DECISION],
         accepts: ACTION_TRIGGER.AUTO,
-        delayMs: 3000,
+        delayMs: 2000,
       },
       nextTransition: {
         actionType: ACTION_TYPES.ASK_FOR_DECISION,
@@ -220,7 +220,7 @@ export const steps = Object.freeze({
           ACTION_TYPES.PROCEED_TO_CARD_DRAW,
         ],
         accepts: ACTION_TRIGGER.AUTO,
-        delayMs: 10000,
+        delayMs: 7000,
       },
       nextTransition: {
         actionType: null,
@@ -268,7 +268,7 @@ export const steps = Object.freeze({
           ACTION_TYPES.START_CRISIS_ROUND,
         ],
         accepts: ACTION_TRIGGER.AUTO,
-        delayMs: 5000,
+        delayMs: 3000,
       },
       nextTransition: {
         actionType: null,
