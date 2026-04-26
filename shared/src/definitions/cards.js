@@ -101,7 +101,7 @@ export const cards = Object.freeze({
         effect: {
           id: 'APPLY_BUGS_TO_COMPONENTS',
           componentsAffected: ['applicationRequests', 'dataRequests'],
-          amount: 2,
+          amount: 1,
         },
       },
       EVENT_RACE_CONDITIONS: {
@@ -112,7 +112,7 @@ export const cards = Object.freeze({
         effect: {
           id: 'APPLY_BUGS_TO_COMPONENTS',
           componentsAffected: ['applicationRequests'],
-          amount: 3,
+          amount: 2,
         },
       },
       EVENT_API_CONGESTION: {
@@ -123,7 +123,7 @@ export const cards = Object.freeze({
         effect: {
           id: 'APPLY_BUGS_TO_COMPONENTS',
           componentsAffected: ['dataRequests'],
-          amount: 3,
+          amount: 2,
         },
       },
       EVENT_ARCHITECTURE_STRAIN: {
