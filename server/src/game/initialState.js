@@ -6,7 +6,7 @@ export function createInitialState({ roomId }) {
   const now = Date.now();
   const initialStep = createStepState('WAITING_PLAYERS_READY');
   const defaultGameConfig = buildGameConfig({
-  playersCount: 2,
+  playerCount: 4,
   difficulty: 'REGULAR',
 });
 
