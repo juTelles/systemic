@@ -48,6 +48,13 @@ export function useRoomActions(roomId, localPlayerId) {
       senderId: localPlayerId,
     });
   }
+  async function setConfig(config) {
+    return sendAction(roomId, ACTION_TYPES.SET_CONFIG, {
+      senderId: localPlayerId,
+      playerCount: config.playerCount,
+      difficulty: config.difficulty,
+    });
+  }
 
   return {
     setReady,
@@ -57,6 +64,7 @@ export function useRoomActions(roomId, localPlayerId) {
     returnToLobby,
     drawCard,
     applyCard,
+    setConfig,
     leaveRoom,
   };
 }
