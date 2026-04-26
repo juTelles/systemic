@@ -20,7 +20,12 @@ export function buildGameConfig({ playerCount = 4, difficulty = 'REGULAR' }) {
   return structuredClone(gameConfig);
 }
 
-export const getConfigIdGameOrText = (playerCount, difficulty, type = 'text', lang = 'pt') => {
+export const getConfigIdGameOrText = (
+  playerCount,
+  difficulty,
+  type = 'text',
+  lang = 'pt',
+) => {
   const playerCountOption = CONFIG_DEFINITIONS['playerCount'].options.find(
     (option) => option.value === playerCount,
   );
@@ -78,7 +83,7 @@ const REGULAR_BY_PLAYERS = {
     cardsPerTurn: 1,
     bugSaturationLimit: 3,
     taskPoints: {
-      maxPlayerPoints: 8,
+      maxPlayerPoints: 6,
       maxDonationPerPlayer: 2,
       maxHoldPerPlayer: 2,
       playerPerRound: 3,
@@ -136,10 +141,10 @@ const REGULAR_BY_PLAYERS = {
     bugSaturationLimit: 3,
     taskPoints: {
       maxPlayerPoints: 9,
-      maxDonationPerPlayer: 3,
-      maxHoldPerPlayer: 3,
-      playerPerRound: 4,
-      playerPerCrisisRound: 4,
+      maxDonationPerPlayer: 2,
+      maxHoldPerPlayer: 2,
+      playerPerRound: 3,
+      playerPerCrisisRound: 3,
     },
     decisionCosts: {
       RESOLVE_LOCAL_BUG: 2,
@@ -148,7 +153,7 @@ const REGULAR_BY_PLAYERS = {
       RESOLVE_LOCAL_BUG_TESTED: 1,
       RESOLVE_STRUCTURAL_BUG_TESTED: 2,
       RESOLVE_REQUESTS_BUG_TESTED: 3,
-      DEVELOP_TESTS: 5,
+      DEVELOP_TESTS: 6,
       DONATE_POINTS: 2,
       HOLD_POINTS: 2,
     },
@@ -191,11 +196,11 @@ const REGULAR_BY_PLAYERS = {
     cardsPerTurn: 1,
     bugSaturationLimit: 3,
     taskPoints: {
-      maxPlayerPoints: 10,
+      maxPlayerPoints: 12,
       maxDonationPerPlayer: 3,
       maxHoldPerPlayer: 3,
       playerPerRound: 4,
-      playerPerCrisisRound: 5,
+      playerPerCrisisRound: 4,
     },
     decisionCosts: {
       RESOLVE_LOCAL_BUG: 2,
@@ -204,9 +209,9 @@ const REGULAR_BY_PLAYERS = {
       RESOLVE_LOCAL_BUG_TESTED: 1,
       RESOLVE_STRUCTURAL_BUG_TESTED: 2,
       RESOLVE_REQUESTS_BUG_TESTED: 3,
-      DEVELOP_TESTS: 5,
-      DONATE_POINTS: 2,
-      HOLD_POINTS: 2,
+      DEVELOP_TESTS: 6,
+      DONATE_POINTS: 3,
+      HOLD_POINTS: 3,
     },
     deckComposition: {
       regularCards: [
