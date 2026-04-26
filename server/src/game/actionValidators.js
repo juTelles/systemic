@@ -35,7 +35,7 @@ function isBlockedState(state) {
 
 function validateAutoActionStep(step, nextAction) {
   const stepAcceptanceRule =
-    nextAction?.trigger === ACTION_TRIGGER.AUTO ?? null;
+    (nextAction?.trigger ?? null) === ACTION_TRIGGER.AUTO;
   const isActionAllowedInStep =
     step?.flowControl?.current?.allowedActions?.includes(
       nextAction.actionType,
