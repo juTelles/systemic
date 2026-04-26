@@ -1,6 +1,6 @@
 import styles from './SideBarMenu.module.css';
 import { sideBarTxt } from '../../texts/sideBarTxt.js';
-import DropdownRules from '../dropDownRules/DropdownRules';
+import DropdownRules from '../dropdownRules/DropdownRules.jsx';
 import DropdownMenu from '../dropdownMenu/DropdownMenu';
 
 function SideBarMenu({
