@@ -28,6 +28,7 @@ import {
   applyGameStartBugs,
   addStartRoundPointsToPlayers,
   cleanPlayerHandPoints,
+  removePlayerFromRoom,
 } from './gameHelpers.js';
 import {
   createDecisionState,
@@ -440,6 +441,40 @@ export function applyAction(state, action, ctx = {}) {
       next.log.lastEvent = {
         type: ACTION_TYPES.FINISH_GAME,
         by: action.payload.senderId ?? null,
+        at: now,
+      };
+      return next;
+    }
+
+    case ACTION_TYPES.LEAVE_ROOM: {
+      const localPlayerId = action.payload?.senderId;
+
+      if (!localPlayerId) {
+        throw createError(ERRORS.MISSING_SENDER_ID, 400);
+      }
+      if (!next.players.some((p) => p.id === localPlayerId)) {
+        throw createError(ERRORS.PLAYER_NOT_FOUND, 404);
+      }
+      if (localPlayerId === next.flow?.currentPlayerId) {
+        throw createError(ERRORS.CANNOT_LEAVE_DURING_OWN_TURN, 400);
+      }
+      const leavingPlayerIndex = next.players.findIndex(
+        (p) => p.id === localPlayerId,
+      );
+
+      const shouldAdjustTurnIndex =
+        next.flow.turn > 0 && leavingPlayerIndex < next.flow.turn;
+
+      if (shouldAdjustTurnIndex) {
+        next.flow.turn -= 1;
+      }
+
+      next.players = removePlayerFromRoom(next.players, localPlayerId);
+      next.meta.rev += 1;
+      next.meta.updatedAt = now;
+      next.log.lastEvent = {
+        type: ACTION_TYPES.LEAVE_ROOM,
+        by: localPlayerId,
         at: now,
       };
       return next;
