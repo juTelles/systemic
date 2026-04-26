@@ -68,7 +68,7 @@ export const cards = Object.freeze({
         effect: {
           id: 'APPLY_BUGS_TO_COMPONENTS',
           componentsAffected: ['applicationRequests', 'dataRequests'],
-          amount: 3,
+          amount: 2,
         },
       },
       EVENT_REQUEST_OVERLOAD: {
@@ -79,7 +79,7 @@ export const cards = Object.freeze({
         effect: {
           id: 'APPLY_BUGS_TO_COMPONENTS',
           componentsAffected: ['applicationRequests', 'dataRequests'],
-          amount: 3,
+          amount: 2,
         },
       },
       EVENT_VULNERABLE_AUTH_LIBRARY: {
@@ -90,7 +90,7 @@ export const cards = Object.freeze({
         effect: {
           id: 'APPLY_BUGS_TO_COMPONENTS',
           componentsAffected: ['applicationRequests', 'dataRequests'],
-          amount: 3,
+          amount: 2,
         },
       },
       EVENT_COMMUNICATION_BREAKDOWN: {
