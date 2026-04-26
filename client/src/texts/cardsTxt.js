@@ -42,16 +42,30 @@ function getRegularCardText(currentCard, textType, lang) {
 }
 
 function getEventCardText(currentCard, textType, lang) {
-  const { eventId } = currentCard || {};
+  const { eventId, effect } = currentCard || {};
 
-  if (eventId === null) return 'eventId is required for text of Event cards';
+  if (textType === 'description') {
+    const argument = effect.amount;
 
-  return (
-    cardsTxt?.specialCards?.[eventId]?.[textType]?.[lang] ||
-    'Text not found for this event card'
-  );
+    if (textType === 'description' && argument === null)
+      return `A argument is required for description text of event cards`;
+
+    return (
+      cardsTxt?.specialCards?.[eventId]?.[textType]?.[lang](
+        argument,
+      ) || 'Text not found for this card type'
+    );
+  } else {
+    return (
+      cardsTxt?.specialCards?.[eventId]?.[textType]?.[lang] ||
+      'Text not found for this card type'
+    );
+  }
 }
-
+//TODO: Refactor getCardText function to be more scalable and maintainable,
+// avoiding hardcoded checks for card types and text types. Consider using a
+// more dynamic approach to retrieve the appropriate text based on the card's
+//  properties.
 export const cardsTxt = {
   regularCards: {
     LOCAL: {
@@ -104,8 +118,10 @@ export const cardsTxt = {
         en: 'Hacker Attack',
       },
       description: {
-        pt: 'Aplique 3 Bugs em Requisições de Aplicação e Requisições de Dados',
-        en: 'Apply 3 Bugs to Application Requests and Data Requests',
+        pt: (amount) =>
+          `Aplique ${Number(amount) === 1 ? '1 bug' : Number(amount) > 1 ? `${amount} bugs` : 'bugs'} em Requisições de Aplicação e Requisições de Dados`,
+        en: (amount) =>
+          `Apply ${Number(amount) === 1 ? '1 bug' : Number(amount) > 1 ? `${amount} bugs` : 'bugs'} to Application Requests and Data Requests`,
       },
     },
 
@@ -115,8 +131,10 @@ export const cardsTxt = {
         en: 'Request Overload',
       },
       description: {
-        pt: 'Aplique 3 Bugs em Requisições de Aplicação e Requisições de Dados',
-        en: 'Apply 3 Bugs to Application Requests and Data Requests',
+        pt: (amount) =>
+          `Aplique ${Number(amount) === 1 ? '1 bug' : Number(amount) > 1 ? `${amount} bugs` : 'bugs'} em Requisições de Aplicação e Requisições de Dados`,
+        en: (amount) =>
+          `Apply ${Number(amount) === 1 ? '1 bug' : Number(amount) > 1 ? `${amount} bugs` : 'bugs'} to Application Requests and Data Requests`,
       },
     },
 
@@ -126,8 +144,10 @@ export const cardsTxt = {
         en: 'Vulnerable Authentication Library',
       },
       description: {
-        pt: 'Aplique 3 Bugs em Requisições de Aplicação e Requisições de Dados',
-        en: 'Apply 3 Bugs to Application Requests and Data Requests',
+        pt: (amount) =>
+          `Aplique ${Number(amount) === 1 ? '1 bug' : Number(amount) > 1 ? `${amount} bugs` : 'bugs'} em Requisições de Aplicação e Requisições de Dados`,
+        en: (amount) =>
+          `Apply ${Number(amount) === 1 ? '1 bug' : Number(amount) > 1 ? `${amount} bugs` : 'bugs'} to Application Requests and Data Requests`,
       },
     },
 
@@ -137,8 +157,10 @@ export const cardsTxt = {
         en: 'Communication Breakdown',
       },
       description: {
-        pt: 'Aplique 2 Bugs em Requisições de Aplicação e Requisições de Dados',
-        en: 'Apply 2 Bugs to Application Requests and Data Requests',
+        pt: (amount) =>
+          `Aplique ${Number(amount) === 1 ? '1 bug' : Number(amount) > 1 ? `${amount} bugs` : 'bugs'} em Requisições de Aplicação e Requisições de Dados`,
+        en: (amount) =>
+          `Apply ${Number(amount) === 1 ? '1 bug' : Number(amount) > 1 ? `${amount} bugs` : 'bugs'} to Application Requests and Data Requests`,
       },
     },
 
@@ -148,8 +170,10 @@ export const cardsTxt = {
         en: 'Race Conditions',
       },
       description: {
-        pt: 'Aplique 3 Bugs no Componente de Requisições de Aplicação',
-        en: 'Apply 3 Bugs to Application Requests component',
+        pt: (amount) =>
+          `Aplique ${Number(amount) === 1 ? '1 bug' : Number(amount) > 1 ? `${amount} bugs` : 'bugs'} no Componente de Requisições de Aplicação`,
+        en: (amount) =>
+          `Apply ${Number(amount) === 1 ? '1 bug' : Number(amount) > 1 ? `${amount} bugs` : 'bugs'} to Application Requests component`,
       },
     },
 
@@ -159,8 +183,10 @@ export const cardsTxt = {
         en: 'API Congestion',
       },
       description: {
-        pt: 'Aplique 3 Bugs no Componente de Requisições de Dados',
-        en: 'Apply 3 Bugs to Data Requests component',
+        pt: (amount) =>
+          `Aplique ${Number(amount) === 1 ? '1 bug' : Number(amount) > 1 ? `${amount} bugs` : 'bugs'} no Componente de Requisições de Dados`,
+        en: (amount) =>
+          `Apply ${Number(amount) === 1 ? '1 bug' : Number(amount) > 1 ? `${amount} bugs` : 'bugs'} to Data Requests component`,
       },
     },
 
@@ -170,8 +196,10 @@ export const cardsTxt = {
         en: 'Architecture Strain',
       },
       description: {
-        pt: 'Aplique 2 Bugs em Banco de Dados, Back-end e Front-end',
-        en: 'Apply 2 Bugs to Database, Backend and Frontend components',
+        pt: (amount) =>
+          `Aplique ${Number(amount) === 1 ? '1 bug' : Number(amount) > 1 ? `${amount} bugs` : 'bugs'} em Banco de Dados, Back-end e Front-end`,
+        en: (amount) =>
+          `Apply ${Number(amount) === 1 ? '1 bug' : Number(amount) > 1 ? `${amount} bugs` : 'bugs'} to Database, Backend and Frontend components`,
       },
     },
 
@@ -181,8 +209,10 @@ export const cardsTxt = {
         en: 'Backend Core Regression',
       },
       description: {
-        pt: 'Aplique 2 Bugs em Backend, Lógica e Integrações',
-        en: 'Apply 2 Bugs to Backend, Logic and Integrations components',
+        pt: (amount) =>
+          `Aplique ${Number(amount) === 1 ? '1 bug' : Number(amount) > 1 ? `${amount} bugs` : 'bugs'} em Backend, Lógica e Integrações`,
+        en: (amount) =>
+          `Apply ${Number(amount) === 1 ? '1 bug' : Number(amount) > 1 ? `${amount} bugs` : 'bugs'} to Backend, Logic and Integrations components`,
       },
     },
 
@@ -192,8 +222,10 @@ export const cardsTxt = {
         en: 'The Intern Forgot WHERE Clause',
       },
       description: {
-        pt: 'Aplique 2 Bugs em Banco de Dados, Estrutura e Dados',
-        en: 'Apply 2 Bugs to Database, Structure and Data components',
+        pt: (amount) =>
+          `Aplique ${Number(amount) === 1 ? '1 bug' : Number(amount) > 1 ? `${amount} bugs` : 'bugs'} em Banco de Dados, Estrutura e Dados`,
+        en: (amount) =>
+          `Apply ${Number(amount) === 1 ? '1 bug' : Number(amount) > 1 ? `${amount} bugs` : 'bugs'} to Database, Structure and Data components`,
       },
     },
 
@@ -203,8 +235,10 @@ export const cardsTxt = {
         en: 'Frontend Instability',
       },
       description: {
-        pt: 'Aplique 2 Bugs em Frontend, Interação e Interface',
-        en: 'Apply 2 Bugs to Frontend, Interaction, and Interface components',
+        pt: (amount) =>
+          `Aplique ${Number(amount) === 1 ? '1 bug' : Number(amount) > 1 ? `${amount} bugs` : 'bugs'} em Frontend, Interação e Interface`,
+        en: (amount) =>
+          `Apply ${Number(amount) === 1 ? '1 bug' : Number(amount) > 1 ? `${amount} bugs` : 'bugs'} to Frontend, Interaction, and Interface components`,
       },
     },
   },
