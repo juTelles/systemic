@@ -121,8 +121,6 @@ export function createRoomsService() {
     }
 
     let nextState = applyAction(room.state, action, ctx);
-    console.log(`Applied action to room ${roomId} with action:`, action, 'and context:', ctx);
-
     room.state = nextState;
     return room.state;
   }
