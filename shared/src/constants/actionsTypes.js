@@ -1,5 +1,5 @@
 export const ACTION_TYPES = Object.freeze({
-  SET_PHASE: 'SET_PHASE',
+  SET_CONFIG: 'SET_CONFIG',
   SET_READY: 'SET_READY',
   UNSET_READY: 'UNSET_READY',
   START_GAME: 'START_GAME',
@@ -16,4 +16,10 @@ export const ACTION_TYPES = Object.freeze({
   FINISH_ROUND: 'FINISH_ROUND',
   FINISH_GAME: 'FINISH_GAME',
   GO_BACK_TO_LOBBY: 'RETURN_TO_LOBBY',
+  LEAVE_ROOM: 'LEAVE_ROOM',
+});
+
+export const ACTION_TRIGGER = Object.freeze({
+  AUTO: 'AUTO',
+  PLAYER_INPUT: 'PLAYER_INPUT',
 });
