@@ -42,6 +42,7 @@ function StatusBar({
             localPlayerId={localPlayerId}
             roomId={roomId}
             txt={statusBarTxt.playersPanelPreGameTxt}
+            gameConfigId={roomState?.gameConfig.id}
           />
         ) : (
           <PlayersPanel
