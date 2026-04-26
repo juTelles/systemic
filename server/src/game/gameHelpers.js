@@ -21,6 +21,7 @@ export {
   bankPlayersPointsForCrisisRound,
   addComponentToAbsorbedBugs,
   removeComponentFromAbsorbedBugs,
+  removePlayerFromRoom,
 };
 
 function cloneNodesForUpdate(stateComponents) {
@@ -246,3 +247,16 @@ function addComponentToAbsorbedBugs(absorbedBugsArray, componentId) {
 function removeComponentFromAbsorbedBugs(absorbedBugsArray, componentId) {
   return absorbedBugsArray.filter((id) => id !== componentId);
 }
+
+function removePlayerFromRoom(players, playerId){
+    const exists = players.some((player) => player.id === playerId);
+    if (!exists) {
+      throw createError(ERRORS.PLAYER_NOT_FOUND, 404);
+    }
+
+    players = players.filter(
+      (player) => player.id !== playerId
+    );
+
+    return players;
+  }

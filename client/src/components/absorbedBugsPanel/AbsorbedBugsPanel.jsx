@@ -1,5 +1,3 @@
-// eslint-disable-next-line no-unused-vars
-// import react, { Children, useEffect, useState } from 'react';
 import AbsorbedBugItem from './AbsorbedBugItem';
 import styles from './AbsorbedBugsPanel.module.css';
 import { componentsTxt } from '../../texts/componentsTxt.js';

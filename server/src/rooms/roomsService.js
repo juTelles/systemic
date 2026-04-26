@@ -12,9 +12,6 @@ import {
 } from '../../../shared/src/validations/validations.js';
 
 
-const MAX_PLAYERS = 4;
-const MIN_PLAYERS = 2;
-
 export function createRoomsService() {
   const store = createRoomsStore();
 
@@ -24,7 +21,6 @@ export function createRoomsService() {
     applyRoomAction,
     listRooms,
     createRoom,
-    leaveRoom,
     cleanRoomState,
   };
 
@@ -76,7 +72,7 @@ export function createRoomsService() {
     if (room.state.phase !== 'LOBBY') {
       return { ok: false, code: ERRORS.GAME_ALREADY_STARTED };
     }
-    if (room.state.players.length >= MAX_PLAYERS) {
+    if (room.state.players.length >= room.state.gameConfig.playerCountConfig) {
       return { ok: false, code: ERRORS.ROOM_FULL };
     }
 
@@ -96,29 +92,6 @@ export function createRoomsService() {
   }
   //TODO: ADD OK objects to joinRoom normal return.
 
-  function leaveRoom(roomId, playerId) {
-    const room = store.get(roomId);
-
-    if (!room) {
-      throw createError(ERRORS.ROOM_NOT_FOUND, 404);
-    }
-    const initialCount = room.state.players.length;
-
-    const exists = room.state.players.some((player) => player.id === playerId);
-    if (!exists) {
-      throw createError(ERRORS.PLAYER_NOT_FOUND, 404);
-    }
-    room.state.players = room.state.players.filter(
-      (player) => player.id !== playerId
-    );
-    room.state.meta.rev += 1;
-
-    return {
-      removed: true,
-      state: room.state,
-    };
-  }
-
   function listRooms() {
     return store.getAll().map((room) => ({
       id: room.id,
@@ -129,6 +102,7 @@ export function createRoomsService() {
         status: player.status,
       })),
       phase: room.state.phase,
+      gameConfig: room.state.gameConfig,
     }));
   }
 
@@ -147,8 +121,6 @@ export function createRoomsService() {
     }
 
     let nextState = applyAction(room.state, action, ctx);
-    console.log(`Applied action to room ${roomId} with action:`, action, 'and context:', ctx);
-
     room.state = nextState;
     return room.state;
   }

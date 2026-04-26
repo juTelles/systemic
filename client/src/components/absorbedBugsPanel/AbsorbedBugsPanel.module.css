@@ -36,24 +36,8 @@
   text-align: center;
   margin-top: 0.3rem;
 }
-/* Custom Scrollbar para Chrome/Edge/Safari */
-.absorbedBugsContainer::-webkit-scrollbar {
-  width: 6px;
-  height: 9px;
-}
-.absorbedBugsContainer::-webkit-scrollbar-track {
-  background: #020202;
-}
-.absorbedBugsContainer::-webkit-scrollbar-thumb {
-  background: #333;
-  border-radius: 10px;
-}
-.absorbedBugsContainer::-webkit-scrollbar-thumb:hover {
-  background: var(--bg-hover);
-}
 
-/* AbsorbedIem styles */
-
+/* AbsorbedBugsItem styles */
 .AbsorbedBugItemWrapper {
   width: 95%;
   display: flex;
@@ -69,15 +53,32 @@
   text-wrap: nowrap;
   text-transform: uppercase;
   text-shadow:
-    1px 0px 0px rgba(255, 0, 0, 0.5),
-    -1px 0px 0px rgba(0, 255, 255, 0.5);
+  1px 0px 0px rgba(255, 0, 0, 0.5),
+  -1px 0px 0px rgba(0, 255, 255, 0.5);
 }
-/* A "mágica" do brilho */
+
 .updated {
   animation: flash 0.50s ease-out;
 }
 
 @keyframes flash {
-  0% { background-color: rgba(28, 234, 253, 0.919); } /* Amarelo ou a cor do seu tema */
+  0% { background-color: rgba(28, 234, 253, 0.919); }
   100% { background-color: transparent; }
+}
+
+
+/* Custom Scrollbar para Chrome/Edge/Safari */
+.absorbedBugsContainer::-webkit-scrollbar {
+  width: 6px;
+  height: 9px;
+}
+.absorbedBugsContainer::-webkit-scrollbar-track {
+  background: #020202;
+}
+.absorbedBugsContainer::-webkit-scrollbar-thumb {
+  background: #333;
+  border-radius: 10px;
+}
+.absorbedBugsContainer::-webkit-scrollbar-thumb:hover {
+  background: var(--bg-hover);
 }

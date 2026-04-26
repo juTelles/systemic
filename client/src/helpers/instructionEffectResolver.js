@@ -2,14 +2,8 @@ import { STEP_NAME } from '../../../shared/src/definitions/steps.js';
 
 const SHINE_RULES = [
   {
-    when: ({ isReadOnly, decisionUIId, step }) =>
-      !isReadOnly &&
-      decisionUIId === null &&
-      step !== STEP_NAME.AWAIT_CARD_DRAW,
-    key: 'cianoShine',
-  },
-  {
-    when: ({ stepInstructionKey }) =>
+    when: ({ step, stepInstructionKey }) =>
+      step === STEP_NAME.CRISIS_ROUND_START ||
       stepInstructionKey === 'WARNING_TO_CRITICAL' ||
       stepInstructionKey === 'HEALTHY_TO_CRITICAL',
     key: 'redShine',
@@ -28,10 +22,16 @@ const SHINE_RULES = [
   },
   {
     when: ({ step }) =>
+      step === STEP_NAME.END_GAME ||
       step === STEP_NAME.GAME_START ||
       step === STEP_NAME.ROUND_START ||
       step === STEP_NAME.END_ROUND,
     key: 'whiteShine',
+  },
+  {
+    when: ({ isReadOnly, decisionUIId }) =>
+      !isReadOnly && decisionUIId === null,
+    key: 'cianoShine',
   },
   {
     when: () => true,
@@ -39,12 +39,13 @@ const SHINE_RULES = [
   },
 ];
 
-export function resolveInstructionEffect(
+export function resolveInstructionEffect({
   step,
   isReadOnly,
   decisionUIId,
   stepInstructionKey,
-) {
+}) {
   const input = { step, isReadOnly, decisionUIId, stepInstructionKey };
+
   return SHINE_RULES.find((rule) => rule.when(input)).key;
 }

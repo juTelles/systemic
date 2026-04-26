@@ -9,6 +9,12 @@ export function useRoomActions(roomId, localPlayerId) {
     });
   }
 
+  async function unsetReady() {
+    return sendAction(roomId, ACTION_TYPES.UNSET_READY, {
+      senderId: localPlayerId,
+    });
+  }
+
   async function submitDecision(decision) {
     return sendAction(roomId, ACTION_TYPES.SUBMIT_DECISION, {
       senderId: localPlayerId,
@@ -36,18 +42,27 @@ export function useRoomActions(roomId, localPlayerId) {
     });
   }
 
-  async function returnToLobby() {
-    return sendAction(roomId, ACTION_TYPES.RETURN_TO_LOBBY, {
+  async function leaveRoom() {
+    return sendAction(roomId, ACTION_TYPES.LEAVE_ROOM, {
       senderId: localPlayerId,
+    });
+  }
+  async function setConfig(config) {
+    return sendAction(roomId, ACTION_TYPES.SET_CONFIG, {
+      senderId: localPlayerId,
+      playerCount: config.playerCount,
+      difficulty: config.difficulty,
     });
   }
 
   return {
     setReady,
+    unsetReady,
     submitDecision,
     endDecision,
-    returnToLobby,
     drawCard,
     applyCard,
+    setConfig,
+    leaveRoom,
   };
 }

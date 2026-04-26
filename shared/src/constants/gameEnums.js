@@ -26,8 +26,3 @@ export const COMPONENT_TYPE = Object.freeze({
   STRUCTURAL: 'STRUCTURAL',
   REQUESTS: 'REQUESTS',
 });
-
-export const ACTION_TRIGGER = Object.freeze({
-  AUTO: 'AUTO',
-  PLAYER_INPUT: 'PLAYER_INPUT',
-});

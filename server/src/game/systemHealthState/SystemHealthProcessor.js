@@ -25,7 +25,11 @@ export function processSystemHealth(gameState) {
 function updateSystemHealthState(systemObject, changeObject) {
   const { healthStateChanged, newHealthState } = changeObject;
 
-  if (healthStateChanged && newHealthState === SYSTEM_HEALTH_STATES.CRITICAL) {
+  if (
+    healthStateChanged &&
+    newHealthState === SYSTEM_HEALTH_STATES.CRITICAL &&
+    !systemObject.isCrisisRound
+  ) {
     systemObject.pendingCrisisRound = true;
   }
   systemObject.healthState = newHealthState;

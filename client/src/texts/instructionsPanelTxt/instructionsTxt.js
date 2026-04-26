@@ -21,8 +21,8 @@ export const instructionsTxt = (ctx) => {
         en: 'Welcome to Systemic!',
       },
       description: {
-        pt: `Todos devem clicar em "PRONTO" para iniciar o jogo!\n\nEnquanto isso, aproveite para se familiarizar com o tabuleiro, painéis e conhecer as regras do jogo, localizadas no topo direito da tela, identificadas pelo botão '?'.`,
-        en: `All players must click the "READY" button to start the game!\n\nIn the meantime, take the opportunity to familiarize yourself with the board, panels, and get to know the game rules, located at the top right of the screen, identified by the '?' button.`,
+        pt: `Todos devem clicar em 'PRONTO' para iniciar o jogo!\n\nDefina a quantidade de jogadores e a dificuldade clicando no ícone de engrenagem (canto superior direito). Enquanto aguarda, aproveite para conhecer o tabuleiro e as regras no ícone '?' no topo da tela.`,
+        en: `Everyone must click 'READY' to start the game!\n\nSet the number of players and difficulty by clicking on the gear icon (top right corner). While waiting, take the opportunity to get to know the board and the rules in the '?' icon at the top of the screen.`,
       },
     },
     GAME_START: {
@@ -42,9 +42,9 @@ export const instructionsTxt = (ctx) => {
       },
       description: {
         pt: (ctx) =>
-          `O Time recebe ${ctx.startRoundPoints} Pontos de Tarefa divididos igualmente entre o Time, para gastarem em Decisões Técnicas.`,
+          `O Time recebe ${ctx.startRoundPoints} Pontos de Tarefa divididos igualmente entre os membros, para gastarem em Decisões Técnicas.`,
         en: (ctx) =>
-          `The team receives ${ctx.startRoundPoints} Task Points to be divided equally among the players to spend on Technical Decisions.`,
+          `The team receives ${ctx.startRoundPoints} Task Points to be divided equally among the members, to spend on Technical Decisions.`,
       },
     },
     CRISIS_ROUND_START: {

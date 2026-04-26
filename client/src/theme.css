@@ -62,10 +62,41 @@
   --POINTS: #24924d;
 }
 
+@media (min-width: 1000px) {
+  :root {
+    --card-width: 150px;
+    --card-height: 160px;
+    --font-xs: clamp(8px, 1.1vh, 16px);
+    --font-sm: clamp(10px, 1.3vh, 18px);
+    --font-md: clamp(12px, 1.5vh, 20px);
+    --font-md-lg: clamp(14px, 1.7vh, 22px);
+    --font-lg: clamp(16px, 2vh, 26px);
+    --font-xl: clamp(20px, 2.5vh, 35px);
+  }
+}
+
+@media (min-width: 1200px) {
+  :root {
+    --card-width: 160px;
+    --card-height: 220px;
+    --font-xs: clamp(10px, 1.3vh, 16px);
+    --font-sm: clamp(12px, 1.5vh, 18px);
+    --font-md: clamp(14px, 1.7vh, 20px);
+    --font-md-lg: clamp(16px, 1.9vh, 22px);
+    --font-lg: clamp(18px, 2.2vh, 26px);
+    --font-xl: clamp(22px, 2.9vh, 35px);
+  }
+}
 @media (min-width: 1600px) {
   :root {
     --card-width: 170px;
     --card-height: 240px;
+    --font-xs: clamp(10px, 1.5vh, 18px);
+    --font-sm: clamp(12px, 1.8vh, 18px);
+    --font-md: clamp(14px, 2.1vh, 20px);
+    --font-md-lg: clamp(16px, 2.1vh, 22px);
+    --font-lg: clamp(18px, 2.5vh, 26px);
+    --font-xl: clamp(22px, 3.2vh, 35px);
   }
 }
 

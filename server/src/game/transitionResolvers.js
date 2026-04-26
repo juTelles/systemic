@@ -1,8 +1,7 @@
-import { ACTION_TYPES } from '../../../shared/src/constants/actionsTypes.js';
+import { ACTION_TYPES, ACTION_TRIGGER } from '../../../shared/src/constants/actionsTypes.js';
 import { isGameReadyToStart } from './selectors.js';
 import {
   PLAYER_STATUS,
-  ACTION_TRIGGER,
   GAME_PHASE,
   GAME_RESULT,
 } from '../../../shared/src/constants/gameEnums.js';
@@ -34,7 +33,7 @@ export const transitionResolvers = {
   },
 
   PROCESSING_SYSTEM_HEALTH: (state) => {
-    return state.system.pendingCrisisRound ||
+    return (state.system.pendingCrisisRound && !state.system.isCrisisRound) ||
       state.cardState.cardsRemainingInTurn === 0
       ? { actionType: ACTION_TYPES.FINISH_TURN, trigger: ACTION_TRIGGER.AUTO }
       : {
@@ -44,7 +43,7 @@ export const transitionResolvers = {
   },
 
   END_TURN: (state) => {
-    return state.system.pendingCrisisRound ||
+    return (state.system.pendingCrisisRound && !state.system.isCrisisRound) ||
       state.flow.turn >= state.players.length
       ? { actionType: ACTION_TYPES.FINISH_ROUND, trigger: ACTION_TRIGGER.AUTO }
       : { actionType: ACTION_TYPES.START_TURN, trigger: ACTION_TRIGGER.AUTO };

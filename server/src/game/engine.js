@@ -1,5 +1,13 @@
+import { createError } from '../utils/createErrors.js';
+import { ERRORS } from '../../../shared/src/constants/errors.js';
+import { buildGameConfig } from '../../../shared/src/definitions/gameConfigOptions.js';
 import { ACTION_TYPES } from '../../../shared/src/constants/actionsTypes.js';
-import { GAME_RESULT, PLAYER_STATUS, SYSTEM_HEALTH_STATES, GAME_PHASE } from '../../../shared/src/constants/gameEnums.js';
+import {
+  GAME_RESULT,
+  PLAYER_STATUS,
+  SYSTEM_HEALTH_STATES,
+  GAME_PHASE,
+} from '../../../shared/src/constants/gameEnums.js';
 import { decisions as decisionsDefinitions } from '../../../shared/src/definitions/decisions.js';
 import { STEP_NAME } from '../../../shared/src/definitions/steps.js';
 import { components } from '../../../shared/src/definitions/components.js';
@@ -20,6 +28,7 @@ import {
   applyGameStartBugs,
   addStartRoundPointsToPlayers,
   cleanPlayerHandPoints,
+  removePlayerFromRoom,
 } from './gameHelpers.js';
 import {
   createDecisionState,
@@ -32,23 +41,36 @@ export function applyAction(state, action, ctx = {}) {
   const next = structuredClone(state); // Node 18+ (Render geralmente usa)
 
   switch (action?.type) {
+    case ACTION_TYPES.SET_CONFIG: {
+      const { playerCount, difficulty } = action.payload;
+
+      if (!playerCount || !difficulty) {
+        throw createError(ERRORS.MISSING_GAME_CONFIG, 400);
+      }
+      next.gameConfig = buildGameConfig({ playerCount, difficulty });
+      next.flow.step.flowControl.nextTransition =
+        transitionResolvers[STEP_NAME.WAITING_PLAYERS_READY](next);
+      next.meta.rev += 1;
+      next.meta.updatedAt = now;
+      next.log.lastEvent = {
+        type: ACTION_TYPES.SET_CONFIG,
+        by: action.payload?.senderId,
+        at: now,
+      };
+      return next;
+    }
+
     case ACTION_TYPES.SET_READY: {
       const localPlayerId = action.payload?.senderId;
 
       if (!localPlayerId) {
-        const err = new Error('Player ID is required for SET_READY action');
-        err.status = 400;
-        err.code = 'PLAYER_ID_REQUIRED';
-        throw err;
+        throw createError(ERRORS.MISSING_SENDER_ID, 400);
       }
 
       const player = next.players.find((player) => player.id === localPlayerId);
 
       if (!player) {
-        const err = new Error(`Player with ID ${localPlayerId} not found`);
-        err.status = 404;
-        err.code = 'PLAYER_NOT_FOUND';
-        throw err;
+        throw createError(ERRORS.PLAYER_NOT_FOUND, 404);
       }
       player.status = PLAYER_STATUS.READY;
 
@@ -64,10 +86,31 @@ export function applyAction(state, action, ctx = {}) {
       return next;
     }
 
-    case ACTION_TYPES.START_GAME: {
-      // const gameConfig = structuredClone(next.gameConfig);
-      // TODO: add feat to change config possibilities
+    case ACTION_TYPES.UNSET_READY: {
+      const localPlayerId = action.payload?.senderId;
 
+      if (!localPlayerId) {
+        throw createError(ERRORS.MISSING_SENDER_ID, 400);
+      }
+
+      const player = next.players.find((player) => player.id === localPlayerId);
+
+      if (!player) {
+        throw createError(ERRORS.PLAYER_NOT_FOUND, 404);
+      }
+      player.status = PLAYER_STATUS.WAITING;
+
+      next.meta.rev += 1;
+      next.meta.updatedAt = now;
+      next.log.lastEvent = {
+        type: ACTION_TYPES.UNSET_READY,
+        by: localPlayerId,
+        at: now,
+      };
+      return next;
+    }
+
+    case ACTION_TYPES.START_GAME: {
       if (!isGameReadyToStart(next, 'LOBBY', PLAYER_STATUS.READY)) {
         //TODO: Fix this log, applyRoomAction returns only the new state, so we passing
         // would means nothing without refactoring the applyRoomAction to return both
@@ -75,7 +118,6 @@ export function applyAction(state, action, ctx = {}) {
         // triggers the cleanUp function in the client, which is not what we want in this case,
         // since it's not an error from the user, but from the game state, so we should just log
         //  it and return the next state without applying the GAME_START action
-        console.warn('[GAME_START] skipped: conditions not met');
         return next;
       }
       next.flow.step = createStepState(STEP_NAME.GAME_START);
@@ -305,7 +347,6 @@ export function applyAction(state, action, ctx = {}) {
         console.error('[ENGINE]', error);
         throw error;
       }
-
       nextCard.meta.rev += 1;
       nextCard.meta.updatedAt = now;
       nextCard.log.lastEvent = {
@@ -315,6 +356,7 @@ export function applyAction(state, action, ctx = {}) {
       };
       return nextCard;
     }
+
     case ACTION_TYPES.CHECK_SYSTEM_HEALTH: {
       next.flow.step = createStepState(STEP_NAME.PROCESSING_SYSTEM_HEALTH);
 
@@ -325,9 +367,8 @@ export function applyAction(state, action, ctx = {}) {
         next.flow.blockedUntil =
           now + next.flow.step.flowControl.current.delayMs;
       }
-
       next.flow.step.flowControl.nextTransition =
-        transitionResolvers['PROCESSING_SYSTEM_HEALTH'](next);
+        transitionResolvers[STEP_NAME.PROCESSING_SYSTEM_HEALTH](next);
 
       next.meta.rev += 1;
       next.meta.updatedAt = now;
@@ -407,10 +448,42 @@ export function applyAction(state, action, ctx = {}) {
       return next;
     }
 
+    case ACTION_TYPES.LEAVE_ROOM: {
+      const localPlayerId = action.payload?.senderId;
+
+      if (!localPlayerId) {
+        throw createError(ERRORS.MISSING_SENDER_ID, 400);
+      }
+      if (!next.players.some((p) => p.id === localPlayerId)) {
+        throw createError(ERRORS.PLAYER_NOT_FOUND, 404);
+      }
+      if (localPlayerId === next.flow?.currentPlayerId) {
+        throw createError(ERRORS.CANNOT_LEAVE_DURING_OWN_TURN, 400);
+      }
+      const leavingPlayerIndex = next.players.findIndex(
+        (p) => p.id === localPlayerId,
+      );
+
+      const shouldAdjustTurnIndex =
+        next.flow.turn > 0 && leavingPlayerIndex < next.flow.turn;
+
+      if (shouldAdjustTurnIndex) {
+        next.flow.turn -= 1;
+      }
+
+      next.players = removePlayerFromRoom(next.players, localPlayerId);
+      next.meta.rev += 1;
+      next.meta.updatedAt = now;
+      next.log.lastEvent = {
+        type: ACTION_TYPES.LEAVE_ROOM,
+        by: localPlayerId,
+        at: now,
+      };
+      return next;
+    }
+
     default:
-      const err = new Error('Unknown action type');
-      err.code = 'UNKNOWN_ACTION_TYPE';
-      err.status = 400;
+      const err = createError(ERRORS.UNKNOWN_ACTION_TYPE);
       throw err;
   }
 }

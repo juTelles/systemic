@@ -1,4 +1,3 @@
-// eslint-disable-next-line no-unused-vars
 import SystemStateItem from './systemStateHealthItem/SystemStateHealthItem.jsx';
 import styles from './SystemHealthStatesPanel.module.css';
 import { SYSTEM_HEALTH_STATES as systemStates } from '../../../../shared/src/constants/gameEnums.js';

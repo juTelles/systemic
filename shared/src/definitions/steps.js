@@ -1,5 +1,4 @@
-import { ACTION_TYPES } from '../constants/actionsTypes.js';
-import { ACTION_TRIGGER } from '../constants/gameEnums.js';
+import { ACTION_TYPES, ACTION_TRIGGER } from '../constants/actionsTypes.js';
 
 export const STEP_NAME = Object.freeze({
   WAITING_PLAYERS_READY: 'WAITING_PLAYERS_READY',
@@ -25,6 +24,13 @@ export const steps = Object.freeze({
     flowControl: {
       current: {
         accepts: ACTION_TRIGGER.PLAYER_INPUT,
+        allowedActions: [
+          ACTION_TYPES.START_GAME,
+          ACTION_TYPES.SET_READY,
+          ACTION_TYPES.UNSET_READY,
+          ACTION_TYPES.SET_CONFIG,
+          ACTION_TYPES.LEAVE_ROOM,
+        ],
       },
       nextTransition: {
         actionType: null,
@@ -45,6 +51,7 @@ export const steps = Object.freeze({
     stepInstructionKey: null,
     flowControl: {
       current: {
+        allowedActions: [ACTION_TYPES.START_ROUND],
         accepts: ACTION_TRIGGER.AUTO,
         delayMs: 7000,
       },
@@ -65,8 +72,9 @@ export const steps = Object.freeze({
     stepInstructionKey: null,
     flowControl: {
       current: {
+        allowedActions: [ACTION_TYPES.START_TURN],
         accepts: ACTION_TRIGGER.AUTO,
-        delayMs: 5000,
+        delayMs: 3000,
       },
       nextTransition: {
         actionType: ACTION_TYPES.START_TURN,
@@ -80,8 +88,9 @@ export const steps = Object.freeze({
     stepInstructionKey: null,
     flowControl: {
       current: {
+        allowedActions: [ACTION_TYPES.START_TURN],
         accepts: ACTION_TRIGGER.AUTO,
-        delayMs: 10000,
+        delayMs: 7000,
       },
       nextTransition: {
         actionType: ACTION_TYPES.START_TURN,
@@ -95,8 +104,9 @@ export const steps = Object.freeze({
     stepInstructionKey: null,
     flowControl: {
       current: {
+        allowedActions: [ACTION_TYPES.ASK_FOR_DECISION],
         accepts: ACTION_TRIGGER.AUTO,
-        delayMs: 3000,
+        delayMs: 2000,
       },
       nextTransition: {
         actionType: ACTION_TYPES.ASK_FOR_DECISION,
@@ -110,6 +120,10 @@ export const steps = Object.freeze({
     stepInstructionKey: null,
     flowControl: {
       current: {
+        allowedActions: [
+          ACTION_TYPES.SUBMIT_DECISION,
+          ACTION_TYPES.PROCEED_TO_CARD_DRAW,
+        ],
         accepts: ACTION_TRIGGER.PLAYER_INPUT,
       },
       nextTransition: {
@@ -128,6 +142,10 @@ export const steps = Object.freeze({
     stepInstructionKey: null,
     flowControl: {
       current: {
+        allowedActions: [
+          ACTION_TYPES.ASK_FOR_DECISION,
+          ACTION_TYPES.PROCEED_TO_CARD_DRAW,
+        ],
         accepts: ACTION_TRIGGER.AUTO,
         delayMs: 0,
       },
@@ -149,6 +167,7 @@ export const steps = Object.freeze({
     stepInstructionKey: null,
     flowControl: {
       current: {
+        allowedActions: [ACTION_TYPES.DRAW_CARD],
         accepts: ACTION_TRIGGER.PLAYER_INPUT,
       },
       nextTransition: {
@@ -163,6 +182,7 @@ export const steps = Object.freeze({
     stepInstructionKey: null,
     flowControl: {
       current: {
+        allowedActions: [ACTION_TYPES.APPLY_CARD_EFFECT],
         accepts: ACTION_TRIGGER.PLAYER_INPUT,
       },
       nextTransition: {
@@ -178,6 +198,7 @@ export const steps = Object.freeze({
     stepInstructionKey: null,
     flowControl: {
       current: {
+        allowedActions: [ACTION_TYPES.CHECK_SYSTEM_HEALTH],
         accepts: ACTION_TRIGGER.AUTO,
       },
       nextTransition: {
@@ -194,8 +215,12 @@ export const steps = Object.freeze({
     stepInstructionKey: null,
     flowControl: {
       current: {
+        allowedActions: [
+          ACTION_TYPES.FINISH_TURN,
+          ACTION_TYPES.PROCEED_TO_CARD_DRAW,
+        ],
         accepts: ACTION_TRIGGER.AUTO,
-        delayMs: 10000,
+        delayMs: 7000,
       },
       nextTransition: {
         actionType: null,
@@ -213,6 +238,7 @@ export const steps = Object.freeze({
     stepInstructionKey: null,
     flowControl: {
       current: {
+        allowedActions: [ACTION_TYPES.START_TURN, ACTION_TYPES.FINISH_ROUND],
         accepts: ACTION_TRIGGER.AUTO,
       },
       nextTransition: {
@@ -236,8 +262,13 @@ export const steps = Object.freeze({
     stepInstructionKey: null,
     flowControl: {
       current: {
+        allowedActions: [
+          ACTION_TYPES.FINISH_GAME,
+          ACTION_TYPES.START_ROUND,
+          ACTION_TYPES.START_CRISIS_ROUND,
+        ],
         accepts: ACTION_TRIGGER.AUTO,
-        delayMs: 5000,
+        delayMs: 3000,
       },
       nextTransition: {
         actionType: null,
@@ -258,11 +289,12 @@ export const steps = Object.freeze({
     stepInstructionKey: null,
     flowControl: {
       current: {
-        accepts: ACTION_TRIGGER.PLAYER_INPUT,
+        allowedActions: null,
+        accepts: null,
       },
       nextTransition: {
         actionType: null,
-        trigger: null
+        trigger: null,
       },
     },
     effects: ['SHOW_GAME_RESULT'],

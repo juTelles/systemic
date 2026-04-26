@@ -1,5 +1,3 @@
-// eslint-disable-next-line no-unused-vars
-import react from 'react';
 import styles from './SystemStateHealthItem.module.css';
 
 function SystemStateHealthItem({ label, active, level }) {

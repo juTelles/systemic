@@ -1,13 +1,26 @@
 import styles from './LobbyScreen.module.css';
 import { createRoom } from './../../api/roomsApi';
 import Button from '../../components/button/Button';
-import RoomList from '../../components/RoomList/RoomList';
+import RoomList from '../../components/roomList/RoomList';
 import { useRoomsPolling } from '../../hooks/useRoomsPolling';
 import { joinRoom } from '../../api/roomsApi';
 import LobbyHeader from '../../components/lobbyHeader/LobbyHeader';
+import lobbyTxt from '../../texts/lobbyTxt.js';
+import { useState } from 'react';
+import SideBarMenu from '../../components/sideBarMenu/SideBarMenu.jsx';
 
 function LobbyScreen({ onJoinSuccess }) {
   const { rooms } = useRoomsPolling(2000);
+  const [isSideBarOpen, setIsSideBarOpen] = useState(false);
+  const [menuTypeOpen, setIsMenuTypeOpen] = useState(false);
+
+  function handleOpenSideBar(menuType) {
+    setIsSideBarOpen(true);
+    setIsMenuTypeOpen(menuType);
+  }
+  function handleCloseSideBar() {
+    setIsSideBarOpen(false);
+  }
 
   async function handleCreateRoom() {
     try {
@@ -35,12 +48,16 @@ function LobbyScreen({ onJoinSuccess }) {
 
   return (
     <div className={styles.pageContainer}>
-      <LobbyHeader title="Systemic" />
+      <LobbyHeader
+        txt={lobbyTxt}
+        title={lobbyTxt?.gameTitle?.pt}
+        handleOpenSideBar={handleOpenSideBar}
+      />
       <div className={styles.lobbyWrapper}>
-        <RoomList rooms={rooms} onJoinRoom={handleJoinRoom} />
+        <RoomList rooms={rooms} onJoinRoom={handleJoinRoom} txt={lobbyTxt} />
         <div className={styles.buttonsWrapper}>
           <Button
-            label={'Criar uma sala'}
+            label={lobbyTxt?.roomListButtons?.createRoomButton?.pt}
             width="8rem"
             height="3rem"
             color={'var(--ciano)'}
@@ -48,9 +65,15 @@ function LobbyScreen({ onJoinSuccess }) {
           />
         </div>
         <span className={styles.bottomInfo}>
-          Escolha um apelido com até 8 caracteres
+          {lobbyTxt?.nicknameWarning?.pt}
         </span>
       </div>
+      <SideBarMenu
+        isSideBarOpen={isSideBarOpen}
+        handleCloseSideBar={handleCloseSideBar}
+        isLobby={true}
+        menuTypeOpen={menuTypeOpen}
+      />
     </div>
   );
 }

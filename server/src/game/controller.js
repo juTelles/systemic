@@ -1,22 +1,14 @@
+import { isPlayerActionValid, isAutoActionValid } from './actionValidators.js';
+
 export function createRunGameLoop({ rooms }) {
   return function runGameLoop(
     currentRoomState,
     currentRoomId,
-    playerAction = null
+    playerAction = null,
   ) {
     let state = structuredClone(currentRoomState);
 
-    let currentStepAcceptanceRule =
-      state?.flow?.step?.flowControl?.current?.accepts ?? null;
-    const playerValidation = !!playerAction &&
-      (state?.flow?.currentPlayerId === playerAction?.payload?.senderId ||
-        playerAction?.type === 'SET_READY');
-
-    if (
-      playerValidation &&
-      !isBlockedState(state) &&
-      currentStepAcceptanceRule === 'PLAYER_INPUT'
-    ) {
+    if (isPlayerActionValid(state, playerAction)) {
       state = rooms.applyRoomAction(currentRoomId, playerAction);
     }
 
@@ -25,11 +17,8 @@ export function createRunGameLoop({ rooms }) {
     while (iterations < MAX_ITERATIONS) {
       const nextAction = state?.flow?.step?.flowControl?.nextTransition ?? null;
 
-      if (
-        isBlockedState(state) === true ||
-        !nextAction?.actionType ||
-        nextAction.trigger !== 'AUTO'
-      )
+
+      if (!isAutoActionValid(state, nextAction))
         break;
 
       state = rooms.applyRoomAction(currentRoomId, {
@@ -41,13 +30,8 @@ export function createRunGameLoop({ rooms }) {
     return state;
   };
 }
-
-function isBlockedState(state) {
-  const now = Date.now();
-  return !!state.flow?.blockedUntil && now < state.flow.blockedUntil;
-}
-
-//TODO: Add type verification and validation for the player actions, to avoid applying
-//  invalid actions to the game state, which can cause bugs and inconsistencies in the game flow.
-// This can be done by defining a schema for each action type and validating the incoming actions
-//  against these schemas before applying them to the state.
+// TODO: Analize:
+// Add schema validation for each action type (e.g., with Zod/Yup/Joi)
+// Add idempotency control for actions (actionId or hash in backend)
+// (Optional) Implement state versioning to avoid concurrency issues in multiplayer actions
+// Add unit tests for validation functions

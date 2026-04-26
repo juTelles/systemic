@@ -40,7 +40,6 @@ export function createApp() {
 
   // Fallback do SPA: qualquer rota que não seja /api devolve index.html
   app.get("*", (req, res) => {
-    console.log("Fallback route hit, serving index.html");
     res.sendFile(path.join(clientDistPath, "index.html"));
   });
 

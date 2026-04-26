@@ -33,7 +33,6 @@ export function runDecisionsAvailabilityRules(rules, context) {
     const availabilityRule = decisionsAvailabilityRules[ruleName];
 
     if (!availabilityRule) {
-      console.warn(`[DECISION_VALIDATOR] missing validator: ${ruleName}`);
       continue;
     }
     const rulePassed = availabilityRule(context);

@@ -1,4 +1,3 @@
-// eslint-disable-next-line no-unused-vars
 import styles from './StatusBar.module.css';
 import SystemHealthStatesPanel from '../systemHealthStatesPanel/SystemHealthStatesPanel.jsx';
 import InstructionsPanel from '../instructionsPanel/InstructionsPanel.jsx';
@@ -42,6 +41,7 @@ function StatusBar({
             localPlayerId={localPlayerId}
             roomId={roomId}
             txt={statusBarTxt.playersPanelPreGameTxt}
+            gameConfigId={roomState?.gameConfig.id}
           />
         ) : (
           <PlayersPanel

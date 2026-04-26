@@ -25,7 +25,7 @@
   background-clip: content-box, border-box;
   border: 7px solid transparent;
   justify-content: flex-start;
-  gap: 15px;
+  gap: 5px;
 }
 
 .cardTitle,

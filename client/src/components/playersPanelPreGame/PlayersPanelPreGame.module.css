@@ -15,7 +15,7 @@
   font-size: var(--font-md);
   font-family: var(--font-family);
   margin: 0.2rem 0;
-  width: 50%;
+  width: 100%;
 }
 .playersItemsContainer {
   width: 95%;

@@ -1,9 +1,18 @@
+import { SYSTEM_HEALTH_STATES, GAME_PHASE, GAME_RESULT } from "../../../shared/src/constants/gameEnums.js";
+import { buildGameConfig } from "../../../shared/src/definitions/gameConfigOptions.js";
+import { createStepState } from "./roomStateFactories.js";
+
 export function createInitialState({ roomId }) {
   const now = Date.now();
+  const initialStep = createStepState('WAITING_PLAYERS_READY');
+  const defaultGameConfig = buildGameConfig({
+  playerCount: 4,
+  difficulty: 'REGULAR',
+});
 
   return {
     meta: { roomId, rev: 0, updatedAt: now, createdAt: now },
-    phase: 'LOBBY',
+    phase: GAME_PHASE.LOBBY,
     gameResult: null,
     players: [],
     flow: {
@@ -12,19 +21,7 @@ export function createInitialState({ roomId }) {
       currentPlayerId: null,
       blockedUntil: null,
       crisisRoundCounter: 0,
-      step: {
-        name: 'WAITING_PLAYERS_READY',
-        stepInstructionKey: null,
-        flowControl: {
-          current: {
-            accepts: 'PLAYER_INPUT',
-          },
-          nextTransition: {
-            actionType: null,
-            trigger: null,
-          },
-        },
-      },
+      step: initialStep,
     },
     deck: {
       drawPile: [],
@@ -32,7 +29,7 @@ export function createInitialState({ roomId }) {
     },
     log: { lastEvent: null },
     system: {
-      healthState: 'HEALTHY',
+      healthState: SYSTEM_HEALTH_STATES.HEALTHY,
       isCrisisRound: false,
       pendingCrisisRound: false,
     },
@@ -51,61 +48,6 @@ export function createInitialState({ roomId }) {
     },
     components: {},
     absorbedBugs: [],
-    gameConfig: {
-      maxPlayers: 4,
-      minPlayers: 2,
-      cardsPerTurn: 2,
-      bugSaturationLimit: 3,
-      taskPoints: {
-        maxPlayerPoints: 8,
-        maxDonationPerPlayer: 2,
-        maxHoldPerPlayer: 2,
-        playerPerRound: 3,
-        playerPerCrisisRound: 1,
-      },
-      decisionCosts: {
-        RESOLVE_LOCAL_BUG: 2,
-        RESOLVE_STRUCTURAL_BUG: 4,
-        RESOLVE_REQUESTS_BUG: 6,
-        RESOLVE_LOCAL_BUG_TESTED: 1,
-        RESOLVE_STRUCTURAL_BUG_TESTED: 2,
-        RESOLVE_REQUESTS_BUG_TESTED: 3,
-        DEVELOP_TESTS: 6,
-        DONATE_POINTS: 2,
-        HOLD_POINTS: 2,
-      },
-      deckComposition: {
-        regularCards: [
-          {
-            cardType: 'LOCAL',
-            componentType: 'LOCAL',
-            quantity: 20,
-          },
-          {
-            cardType: 'STRUCTURAL',
-            componentType: 'STRUCTURAL',
-            quantity: 15,
-          },
-          {
-            cardType: 'REQUESTS',
-            componentType: 'REQUESTS',
-            quantity: 10,
-          },
-          {
-            cardType: 'POINTS',
-            quantity: 5,
-          },
-        ],
-        specialCards: {
-          cardType: 'EVENT',
-          quantity: 10,
-          quantityByPressureLevel: {
-            LOW: 3,
-            WARNING: 4,
-            CRITICAL: 3,
-          },
-        },
-      },
-    },
+    gameConfig: defaultGameConfig,
   };
 }

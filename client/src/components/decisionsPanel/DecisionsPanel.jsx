@@ -1,5 +1,3 @@
-// eslint-disable-next-line no-unused-vars
-// import react, { Children, useEffect, useState } from 'react';
 import DecisionButton from './decisionButton/DecisionButton.jsx';
 import styles from './DecisionsPanel.module.css';
 import { decisions as decisionsDefinitions } from '../../../../shared/src/definitions/decisions.js';
@@ -75,4 +73,7 @@ function DecisionsPanel({
 }
 export default DecisionsPanel;
 
-// TODO: Change categoryColor to be defined in the color css variables, and then use the variable name in the decisionsTxt, instead of the hex color directly. This way we can keep all colors in one place and make it easier to update them in the future.
+// TODO: Change categoryColor to be defined in the color css variables, and
+// then use the variable name in the decisionsTxt, instead of the hex color
+// directly. This way we can keep all colors in one place and make it easier
+//  to update them in the future.
