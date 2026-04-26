@@ -38,7 +38,7 @@
 }
 
 /* AbsorbedBugsItem styles */
-.AbsorbedBugItemWrapper {
+.absorbedBugItemWrapper {
   width: 95%;
   display: flex;
   align-items: flex-start;
@@ -46,11 +46,12 @@
   gap: 0.6rem;
   margin: 0.1rem 0;
 }
-.AbsorbedBugItemLabel {
+.absorbedBugItemLabel {
   color: #ffffff;
   font-size: var(--font-sm);
   font-family: var(--font-family);
   text-wrap: nowrap;
+  font-weight: 400;
   text-transform: uppercase;
   text-shadow:
   1px 0px 0px rgba(255, 0, 0, 0.5),
