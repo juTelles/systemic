@@ -1,7 +1,7 @@
 import styles from './App.module.css';
 import GameScreen from './screens/gameScreen/GameScreen';
 import './theme.css';
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import LobbyScreen from './screens/lobbyScreen/LobbyScreen';
 
 const STORAGE_KEYS = {
@@ -25,13 +25,13 @@ export default function App() {
     setLocalPlayerId(localPlayerId);
   };
 
-  const clearSession = () => {
-    localStorage.removeItem(STORAGE_KEYS.roomId);
-    localStorage.removeItem(STORAGE_KEYS.localPlayerId);
+const clearSession = useCallback(() => {
+  localStorage.removeItem(STORAGE_KEYS.roomId);
+  localStorage.removeItem(STORAGE_KEYS.localPlayerId);
 
-    setRoomId('');
-    setLocalPlayerId('');
-  };
+  setRoomId('');
+  setLocalPlayerId('');
+}, []);
 
   return (
     <div className={styles.app}>
