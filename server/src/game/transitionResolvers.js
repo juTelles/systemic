@@ -1,8 +1,7 @@
-import { ACTION_TYPES } from '../../../shared/src/constants/actionsTypes.js';
+import { ACTION_TYPES, ACTION_TRIGGER } from '../../../shared/src/constants/actionsTypes.js';
 import { isGameReadyToStart } from './selectors.js';
 import {
   PLAYER_STATUS,
-  ACTION_TRIGGER,
   GAME_PHASE,
   GAME_RESULT,
 } from '../../../shared/src/constants/gameEnums.js';
