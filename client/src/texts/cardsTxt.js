@@ -91,9 +91,9 @@ export const cardsTxt = {
       },
       description: {
         pt: (amount) =>
-          `Você ganhou ${Number(amount) === 1 ? '1 ponto' : Number(amount) > 1 ? `${amount} pontos` : 'pontos'} de tarefa!`,
+          `Ganhou ${Number(amount) === 1 ? '1 ponto' : Number(amount) > 1 ? `${amount} pontos` : 'pontos'} de Tarefa!`,
         en: (amount) =>
-          `You gained ${Number(amount) === 1 ? '1 point' : Number(amount) > 1 ? `${amount} points` : 'points'} task points!`,
+          `Gained ${Number(amount) === 1 ? '1 point' : Number(amount) > 1 ? `${amount} points` : 'points'} of Task Points!`,
       },
     },
   },
