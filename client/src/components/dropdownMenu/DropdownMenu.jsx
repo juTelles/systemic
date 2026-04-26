@@ -1,4 +1,3 @@
-// eslint-disable-next-line no-unused-vars
 import { CONFIG_DEFINITIONS } from '../../../../shared/src/definitions/gameConfigOptions.js';
 import styles from './DropdownMenu.module.css';
 import { useState } from 'react';

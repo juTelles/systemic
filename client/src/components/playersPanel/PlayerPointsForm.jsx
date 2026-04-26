@@ -1,4 +1,3 @@
-// eslint-disable-next-line no-unused-vars
 import styles from '../playersPanel/PlayersPanel.module.css';
 import Button from '../button/Button.jsx';
 import { GiCheckMark } from 'react-icons/gi';

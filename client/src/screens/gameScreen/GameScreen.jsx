@@ -1,4 +1,3 @@
-// eslint-disable-next-line no-unused-vars
 import styles from './GameScreen.module.css';
 import ActionBar from '../../components/actionBar/ActionBar';
 import StatusBar from '../../components/statusBar/StatusBar';
@@ -11,10 +10,7 @@ import ModalDialog from '../../components/modalDialog/ModalDialog.jsx';
 import { deleteRoom } from '../../api/roomsApi';
 
 function GameScreen({ roomId, localPlayerId, onSessionInvalid }) {
-  const { submitDecision, endDecision } = useRoomActions(
-    roomId,
-    localPlayerId,
-  );
+  const { submitDecision, endDecision } = useRoomActions(roomId, localPlayerId);
   const { roomState, isLoading, errorCode } = useStatePolling(roomId);
 
   const previousPhaseRef = useRef(null);
@@ -98,6 +94,8 @@ function GameScreen({ roomId, localPlayerId, onSessionInvalid }) {
       }
     }
   }, [isLoading, errorCode, roomState, localPlayerId]);
+//TODO: refactor onSessionInvalid - find a better way to handle session
+// invalidation instead of passing a callback from the parent component.
 
   useEffect(() => {
     const currentPhase = roomState?.phase;

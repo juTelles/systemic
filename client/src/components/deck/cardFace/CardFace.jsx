@@ -1,9 +1,7 @@
-// eslint-disable-next-line no-unused-vars
-// import react, { Children, useEffect, useState } from 'react';
 import styles from './CardFace.module.css';
 import { getCardText } from '../../../texts/cardsTxt';
 
-function CardFace({ roomId, localPlayerId, currentCard }) {
+function CardFace({ currentCard }) {
   const { type, effect } = currentCard || {};
 
   const color = `var(--${type})`;

@@ -111,9 +111,6 @@ export function applyAction(state, action, ctx = {}) {
     }
 
     case ACTION_TYPES.START_GAME: {
-      // const gameConfig = structuredClone(next.gameConfig);
-      // TODO: add feat to change config possibilities
-
       if (!isGameReadyToStart(next, 'LOBBY', PLAYER_STATUS.READY)) {
         //TODO: Fix this log, applyRoomAction returns only the new state, so we passing
         // would means nothing without refactoring the applyRoomAction to return both
@@ -121,7 +118,6 @@ export function applyAction(state, action, ctx = {}) {
         // triggers the cleanUp function in the client, which is not what we want in this case,
         // since it's not an error from the user, but from the game state, so we should just log
         //  it and return the next state without applying the GAME_START action
-        console.warn('[GAME_START] skipped: conditions not met');
         return next;
       }
       next.flow.step = createStepState(STEP_NAME.GAME_START);

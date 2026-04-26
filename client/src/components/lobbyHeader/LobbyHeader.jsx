@@ -1,4 +1,3 @@
-// eslint-disable-next-line no-unused-vars
 import styles from './LobbyHeader.module.css';
 import Button from '../button/Button';
 

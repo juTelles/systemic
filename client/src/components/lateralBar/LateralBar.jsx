@@ -1,4 +1,3 @@
-// eslint-disable-next-line no-unused-vars
 import { STEP_NAME } from '../../../../shared/src/definitions/steps.js';
 import { ERRORS } from '../../../../shared/src/constants/errors.js';
 import { lateralBarTxt as txt } from '../../texts/lateralBarTxt.js';
@@ -21,7 +20,10 @@ function LateralBar({
   handleFinishDecision,
   isPreGame,
 }) {
-  const { drawCard, applyCard, leaveRoom, setConfig } = useRoomActions(roomId, localPlayerId);
+  const { drawCard, applyCard, leaveRoom, setConfig } = useRoomActions(
+    roomId,
+    localPlayerId,
+  );
   const [showErrorDialog, setShowErrorDialog] = useState(null);
   const [isSideBarOpen, setIsSideBarOpen] = useState(false);
   const [menuTypeOpen, setIsMenuTypeOpen] = useState(false);
@@ -32,7 +34,7 @@ function LateralBar({
   const isShowCardStep = currentStepName === STEP_NAME.SHOWING_CARD;
   const canDrawCard =
     currentStepName === STEP_NAME.AWAIT_CARD_DRAW && !isReadOnlyTurn;
-  const disabledExit =  isCurrentPlayerId ? true : false;
+  const disabledExit = isCurrentPlayerId ? true : false;
 
   function handleOpenSideBar(menuType) {
     setIsSideBarOpen(true);
@@ -72,7 +74,7 @@ function LateralBar({
     }
   };
 
-  const handleLeaveRoom= async () => {
+  const handleLeaveRoom = async () => {
     const result = await leaveRoom();
     if (!result.ok) {
       console.error('Error leaving room:', result.error);
@@ -159,8 +161,12 @@ function LateralBar({
           handleOpenSideBar={handleOpenSideBar}
           handleCloseSideBar={handleCloseSideBar}
           menuTypeOpen={menuTypeOpen}
-          handleChangeGameConfig={isPreGame ? handleChangeGameConfig : handleUnallowedClick}
-          handleLeaveRoom={isCurrentPlayerId ? handleUnallowedClick : handleLeaveRoom}
+          handleChangeGameConfig={
+            isPreGame ? handleChangeGameConfig : handleUnallowedClick
+          }
+          handleLeaveRoom={
+            isCurrentPlayerId ? handleUnallowedClick : handleLeaveRoom
+          }
           isPreGame={isPreGame}
           disabledExit={disabledExit}
           gameConfig={roomState?.gameConfig}

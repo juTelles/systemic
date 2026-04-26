@@ -3,7 +3,6 @@
   align-items: center;
   position: relative;
   filter: drop-shadow(0 0 8px var(--color-ciano-neon));
-  /* O "Brilho" */
 }
 
 .body {

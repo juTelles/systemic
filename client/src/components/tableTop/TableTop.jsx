@@ -1,4 +1,3 @@
-// eslint-disable-next-line no-unused-vars
 import styles from './TableTop.module.css';
 import Board from '../board/Board';
 
@@ -7,9 +6,8 @@ function TableTop({
   isPreGame,
   handleDecisionSubmit,
   selectedDecisionUIId,
-  isReadOnly
+  isReadOnly,
 }) {
-
   return (
     <div className={styles.tableTopContainer}>
       <Board

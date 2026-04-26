@@ -1,4 +1,3 @@
-// eslint-disable-next-line no-unused-vars
 import styles from './ActionBar.module.css';
 import DecisionsPanel from '../decisionsPanel/DecisionsPanel';
 

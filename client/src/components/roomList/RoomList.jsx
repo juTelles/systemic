@@ -1,4 +1,3 @@
-// eslint-disable-next-line no-unused-vars
 import styles from './RoomList.module.css';
 import RoomListPlayers from './roomListPlayers/RoomListPlayers.jsx';
 import RoomPlayerForm from './roomPlayerForm/RoomPlayerForm';

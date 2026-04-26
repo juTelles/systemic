@@ -44,11 +44,6 @@ export function buildDecisionIdFromUISelection(
   targetStateObj,
   amount = null,
 ) {
-  console.log('Resolving decision ID from UI selection', {
-    decisionUI,
-    targetStateObj,
-    amount,
-  });
   let chosen = decisionUI.regularDecisionId;
   if (!decisionUI || !targetStateObj) return null;
 
@@ -66,12 +61,6 @@ export function buildDecisionIdFromUISelection(
 }
 
 export function validateDecision(decisionId, targetObj, amount, roomState) {
-  console.log('Validating decision', {
-    decisionId,
-    targetObj,
-    amount,
-    roomState,
-  });
   const definition = decisionDefinitions.options[decisionId];
   if (!definition) throw Error(ERRORS.DECISION_DEFINITION_NOT_FOUND);
 
@@ -98,7 +87,6 @@ export function runDecisionsValidators(validators, context) {
     const validator = decisionsApplicationValidators[validatorName];
 
     if (!validator) {
-      console.warn(`[DECISION_VALIDATOR] missing validator: ${validatorName}`);
       return {
         ok: false,
         type: 'VALIDATOR_NOT_FOUND',
@@ -109,7 +97,6 @@ export function runDecisionsValidators(validators, context) {
     const isValid = validator(context);
 
     if (!isValid) {
-      console.warn(`[DECISION_VALIDATOR] failed: ${validatorName}`, context);
       return {
         ok: false,
         type: 'INVALID_DECISION',

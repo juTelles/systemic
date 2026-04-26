@@ -1,4 +1,3 @@
-// eslint-disable-next-line no-unused-vars
 import styles from './AbsorbedBugsPanel.module.css';
 
 function AbsorbedBugItem({ component }) {

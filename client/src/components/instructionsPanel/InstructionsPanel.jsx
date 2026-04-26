@@ -1,4 +1,3 @@
-// eslint-disable-next-line no-unused-vars
 import styles from './InstructionsPanel.module.css';
 import { resolveInstructionTxt } from '../../texts/instructionsPanelTxt/instructionsResolver.js';
 import { resolveInstructionEffect } from '../../helpers/instructionEffectResolver.js';
@@ -31,7 +30,9 @@ function InstructionsPanel({
   });
 
   return (
-    <div className={`${styles.instructionsPanelContainer} ${styles[shine] || ''}`}>
+    <div
+      className={`${styles.instructionsPanelContainer} ${styles[shine] || ''}`}
+    >
       <div className={styles.instructionsPanelTitleBox}>
         <h2 className={styles.instructionsPanelTitle}>{currentTitle}</h2>
       </div>

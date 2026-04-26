@@ -1,6 +1,4 @@
-// eslint-disable-next-line no-unused-vars
 import styles from './DropdownMenu.module.css';
-import Button from '../button/Button';
 import { useState } from 'react';
 
 function DropdownItem({ title, children, disabled }) {

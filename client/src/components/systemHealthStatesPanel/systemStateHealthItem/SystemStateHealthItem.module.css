@@ -47,9 +47,9 @@
   background-color: var(--led-neon);
   border: 3px solid var(--led-neon);
   box-shadow:
-    0 0 5px var(--led-neon),            /* Brilho imediato do LED */
-    0 0 10px var(--led-light), /* Luz iluminando o tabuleiro ao redor */
-    inset 0 0 10px rgba(0,0,0,0.5);   /* Volume para parecer uma lente de plástico */
+    0 0 5px var(--led-neon),
+    0 0 10px var(--led-light),
+    inset 0 0 10px rgba(0,0,0,0.5);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -58,15 +58,15 @@
   from {
     background-color: #c2002d;
     box-shadow:
-      0 0 5px var(--led-dark),            /* Brilho do LED */
-      0 0 10px var(--led-light),           /* Aura de luz base */
-      inset 0 0 10px rgba(0,0,0,0.5); /* Volume interno (NÃO PODE SUMIR) */
+      0 0 5px var(--led-dark),
+      0 0 10px var(--led-light),
+      inset 0 0 10px rgba(0,0,0,0.5);
   }
   to {
     background-color: var(--led-neon);
     box-shadow:
-      0 0 15px var(--led-neon),           /* Brilho do LED aumenta */
-      0 0 12px var(--led-light),           /* Aura de luz expande (O PULSO) */
-      inset 0 0 10px rgba(0,0,0,0.5); /* Volume interno mantido */
+      0 0 15px var(--led-neon),
+      0 0 12px var(--led-light),
+      inset 0 0 10px rgba(0,0,0,0.5);
   }
 }

@@ -1,4 +1,3 @@
-// eslint-disable-next-line no-unused-vars
 import { Tooltip } from 'react-tooltip';
 import styles from '../board/Board.module.css';
 

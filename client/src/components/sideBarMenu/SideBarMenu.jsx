@@ -1,4 +1,3 @@
-// eslint-disable-next-line no-unused-vars
 import styles from './SideBarMenu.module.css';
 import { sideBarTxt } from '../../texts/sideBarTxt.js';
 import DropdownRules from '../dropDownRules/DropdownRules';

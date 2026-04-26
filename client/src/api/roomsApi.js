@@ -37,7 +37,6 @@ export async function getRoomState(roomId, rev) {
 }
 
 export async function sendAction(roomId, type, payload = {}) {
-console.log(`Sending action to room ${roomId} from sender ${payload.senderId} with type ${type} and payload:`, payload);
   return apiFetch(`/rooms/${roomId}/action`, {
     method: "POST",
     body: JSON.stringify({

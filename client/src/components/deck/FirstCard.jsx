@@ -1,9 +1,8 @@
-// eslint-disable-next-line no-unused-vars
 import styles from './Deck.module.css';
 import CardFace from './cardFace/CardFace';
 import CardBack from './CardBack';
 
-function FirstCard({ roomId, localPlayerId, currentCard, isFlipped }) {
+function FirstCard({ currentCard, isFlipped }) {
   return (
     <div className={styles.firstCardContainer}>
       <div

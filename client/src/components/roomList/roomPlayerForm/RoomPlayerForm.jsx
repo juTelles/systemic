@@ -1,4 +1,3 @@
-// eslint-disable-next-line no-unused-vars
 import Button from '../../button/Button';
 import styles from './RoomPlayerForm.module.css';
 import { useState } from 'react';
@@ -25,10 +24,7 @@ function RoomPlayerForm({ room, onJoinRoom }) {
 
   return (
     <div className={styles.roomPlayerFormContainer}>
-      <form
-        className={styles.playersFormWrapper}
-        onSubmit={handleSubmit}
-      >
+      <form className={styles.playersFormWrapper} onSubmit={handleSubmit}>
         <input
           type="text"
           maxLength="8"

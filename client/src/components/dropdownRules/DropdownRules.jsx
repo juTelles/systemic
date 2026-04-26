@@ -1,7 +1,5 @@
-// eslint-disable-next-line no-unused-vars
 import { CONFIG_DEFINITIONS } from '../../../../shared/src/definitions/gameConfigOptions.js';
 import styles from './DropdownRules.module.css';
-import Button from '../button/Button';
 import { useState } from 'react';
 import DropdownItem from './DropdownItem';
 import { getGameObjectRulesTxt } from '../../texts/gameRulesTxt.js';
@@ -27,7 +25,7 @@ function DropdownRules({ txt }) {
   };
 
   const { playerCount, difficulty } = CONFIG_DEFINITIONS;
-  console.log('gameRulesTxt', CONFIG_DEFINITIONS);
+
   return (
     <div className={`${styles.dropdownContainer} ${isOpen ? styles.open : ''}`}>
       <div className={styles.configMenuContainer}>
