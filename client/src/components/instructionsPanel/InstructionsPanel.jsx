@@ -22,13 +22,13 @@ function InstructionsPanel({
     'pt',
   );
   const step = roomState?.flow?.step?.name;
-  const stepInstructionKey = roomState?.flow?.step?.stepInstructionsKey;
-  const shine = resolveInstructionEffect(
+  const stepInstructionKey = roomState?.flow?.step?.stepInstructionKey;
+  const shine = resolveInstructionEffect({
     step,
     isReadOnly,
     decisionUIId,
     stepInstructionKey,
-  );
+  });
 
   return (
     <div className={`${styles.instructionsPanelContainer} ${styles[shine] || ''}`}>
