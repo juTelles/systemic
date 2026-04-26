@@ -9,7 +9,7 @@ function CardFace({ currentCard }) {
   const cardType = type === 'POINTS' ? `POINTS${effect.amount}` : type;
 
   const getImageUrl = (type) => {
-    return new URL(`../../../assets/${type}.png`, import.meta.url).href;
+    return new URL(`../../../assets/${type}.webp`, import.meta.url).href;
   };
 
   const title = getCardText(currentCard, 'title', 'pt');

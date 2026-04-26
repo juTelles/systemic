@@ -55,19 +55,17 @@
 }
 
 .cardImageContainer {
-  width: 80%;
+  width: 100%;
   height: auto;
   display: flex;
   align-items: center;
   justify-content: center;
   padding-bottom: 7px;
 }
-.cardImageContainer.POINTS {
-    width: 70%;
+.cardImageContainer.POINTS, .cardImageContainer.REQUESTS  {
+    width: 85%;
 }
-.cardImageContainer.REQUESTS {
-    width: 60%;
-}
+
 .cardImage {
   max-width: 100%;
   height: auto;

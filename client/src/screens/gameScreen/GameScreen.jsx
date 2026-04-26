@@ -8,6 +8,8 @@ import LateralBar from '../../components/lateralBar/LateralBar';
 import { useRoomActions } from '../../actions/roomsActions';
 import ModalDialog from '../../components/modalDialog/ModalDialog.jsx';
 import { deleteRoom } from '../../api/roomsApi';
+import { useRoomSessionGuard } from '../../hooks/useSessionGuard';
+
 
 function GameScreen({ roomId, localPlayerId, onSessionInvalid }) {
   const { submitDecision, endDecision } = useRoomActions(roomId, localPlayerId);
@@ -24,6 +26,15 @@ function GameScreen({ roomId, localPlayerId, onSessionInvalid }) {
 
   const isPreGame = roomState?.phase === 'LOBBY';
   const isReadOnlyTurn = localPlayerId !== roomState?.flow?.currentPlayerId;
+
+  useRoomSessionGuard({
+  isLoading,
+  errorCode,
+  roomState,
+  localPlayerId,
+  onSessionInvalid,
+  maxFailures: 3,
+});
 
   const handleDecisionUISelect = (decisionUIId, decisionInstructionKey) => {
     if (decisionUIId === selectedDecisionUIId) {
@@ -75,27 +86,6 @@ function GameScreen({ roomId, localPlayerId, onSessionInvalid }) {
     setSelectedDecisionUIId(null);
     return;
   }
-
-  useEffect(() => {
-    if (isLoading) return;
-
-    if (errorCode === 'ROOM_NOT_FOUND' || errorCode === 'INTERNAL_ERROR') {
-      onSessionInvalid();
-      return;
-    }
-
-    if (roomState?.players) {
-      const playerExists = roomState.players.some(
-        (player) => player.id === localPlayerId,
-      );
-
-      if (!playerExists) {
-        onSessionInvalid();
-      }
-    }
-  }, [isLoading, errorCode, roomState, localPlayerId]);
-//TODO: refactor onSessionInvalid - find a better way to handle session
-// invalidation instead of passing a callback from the parent component.
 
   useEffect(() => {
     const currentPhase = roomState?.phase;

@@ -66,9 +66,9 @@ export const instructionsTxt = (ctx) => {
       },
       description: {
         pt: (ctx) =>
-          `Agora é a a vez de ${ctx.playerNickname}! Gaste seus pontos em uma das possíveis decisões no painel de decisões!`,
+          `Agora é a a vez de ${ctx.playerNickname}! Gaste seus Pontos em uma das possíveis decisões no painel de decisões!`,
         en: (ctx) =>
-          `It's ${ctx.playerNickname}'s turn! Spend your points on one of the possible decisions in the decision panel!`,
+          `It's ${ctx.playerNickname}'s turn! Spend your Points on one of the possible decisions in the decision panel!`,
       },
     },
     AWAIT_DECISION: {
@@ -78,9 +78,9 @@ export const instructionsTxt = (ctx) => {
       },
       description: {
         pt: (ctx) =>
-          `${ctx.playerNickname}, escolha entre resolver Bugs, desenvolver Testes, guardar pontos ou doá-los a outro membro do Time.\n\nPressione PULAR quando não quiser mais realizar decisões.\n\nLembre-se: Ao final do turno, os pontos da mão que não forem utilizados serão descartados.\nCada membro do Time pode ter no máximo ${ctx.maxPlayerPoints} pontos no total (mão + banco).`,
+          `${ctx.playerNickname}, escolha entre resolver Bugs, desenvolver Testes, guardar Pontos ou doá-los a outro membro do Time.\n\nPressione PULAR quando não quiser mais realizar decisões.\n\nLembre-se: Ao final do turno, os Pontos da mão que não forem utilizados serão descartados.\nCada membro do Time pode ter no máximo ${ctx.maxPlayerPoints} Pontos no total (mão + banco).`,
         en: (ctx) =>
-          `${ctx.playerNickname}, choose between fixing Bugs, developing Tests, holding points, or donating them to another Team member.\n\nPress SKIP when you don't want to make more decisions.\n\nRemember: At the end of the turn, any points in hand that are not used will be discarded.\nEach Team member can have a maximum of ${ctx.maxPlayerPoints} points in total (hand + bank).`,
+          `${ctx.playerNickname}, choose between fixing Bugs, developing Tests, holding Points, or donating them to another Team member.\n\nPress SKIP when you don't want to make more decisions.\n\nRemember: At the end of the turn, any points in hand that are not used will be discarded.\nEach Team member can have a maximum of ${ctx.maxPlayerPoints} points in total (hand + bank).`,
       },
     },
     AWAIT_CARD_DRAW: {
