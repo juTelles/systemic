@@ -64,19 +64,13 @@ export function applyAction(state, action, ctx = {}) {
       const localPlayerId = action.payload?.senderId;
 
       if (!localPlayerId) {
-        const err = new Error('Player ID is required for SET_READY action');
-        err.status = 400;
-        err.code = 'PLAYER_ID_REQUIRED';
-        throw err;
+        throw createError(ERRORS.MISSING_SENDER_ID, 400);
       }
 
       const player = next.players.find((player) => player.id === localPlayerId);
 
       if (!player) {
-        const err = new Error(`Player with ID ${localPlayerId} not found`);
-        err.status = 404;
-        err.code = 'PLAYER_NOT_FOUND';
-        throw err;
+        throw createError(ERRORS.PLAYER_NOT_FOUND, 404);
       }
       player.status = PLAYER_STATUS.READY;
 
@@ -96,19 +90,13 @@ export function applyAction(state, action, ctx = {}) {
       const localPlayerId = action.payload?.senderId;
 
       if (!localPlayerId) {
-        const err = new Error('Player ID is required for UNSET_READY action');
-        err.status = 400;
-        err.code = 'PLAYER_ID_REQUIRED';
-        throw err;
+        throw createError(ERRORS.MISSING_SENDER_ID, 400);
       }
 
       const player = next.players.find((player) => player.id === localPlayerId);
 
       if (!player) {
-        const err = new Error(`Player with ID ${localPlayerId} not found`);
-        err.status = 404;
-        err.code = 'PLAYER_NOT_FOUND';
-        throw err;
+        throw createError(ERRORS.PLAYER_NOT_FOUND, 404);
       }
       player.status = PLAYER_STATUS.WAITING;
 
@@ -363,7 +351,6 @@ export function applyAction(state, action, ctx = {}) {
         console.error('[ENGINE]', error);
         throw error;
       }
-
       nextCard.meta.rev += 1;
       nextCard.meta.updatedAt = now;
       nextCard.log.lastEvent = {
@@ -373,6 +360,7 @@ export function applyAction(state, action, ctx = {}) {
       };
       return nextCard;
     }
+
     case ACTION_TYPES.CHECK_SYSTEM_HEALTH: {
       next.flow.step = createStepState(STEP_NAME.PROCESSING_SYSTEM_HEALTH);
 
@@ -383,9 +371,8 @@ export function applyAction(state, action, ctx = {}) {
         next.flow.blockedUntil =
           now + next.flow.step.flowControl.current.delayMs;
       }
-
       next.flow.step.flowControl.nextTransition =
-        transitionResolvers['PROCESSING_SYSTEM_HEALTH'](next);
+        transitionResolvers[STEP_NAME.PROCESSING_SYSTEM_HEALTH](next);
 
       next.meta.rev += 1;
       next.meta.updatedAt = now;
@@ -500,9 +487,7 @@ export function applyAction(state, action, ctx = {}) {
     }
 
     default:
-      const err = new Error('Unknown action type');
-      err.code = 'UNKNOWN_ACTION_TYPE';
-      err.status = 400;
+      const err = createError(ERRORS.UNKNOWN_ACTION_TYPE);
       throw err;
   }
 }
