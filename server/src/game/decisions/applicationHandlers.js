@@ -7,7 +7,6 @@ import {
   applyTest,
   subtractPointsToPlayer,
 } from '../gameHelpers.js';
-
 export const decisionHandlers = {
   RESOLVE_BUG: handleResolveBugDecision,
   DONATE_POINTS: handleDonatePointsDecision,
@@ -18,8 +17,7 @@ export const decisionHandlers = {
 export function handleResolveBugDecision(next, context, decisionDefinition) {
   const { currentPlayer, component } = context;
 
-  if (!component)
-    throw new Error(ERRORS.COMPONENT_NOT_FOUND);
+  if (!component) throw new Error(ERRORS.COMPONENT_NOT_FOUND);
 
   const updatedComponent = resolveBug(component);
 
@@ -37,8 +35,7 @@ export function handleResolveBugDecision(next, context, decisionDefinition) {
 export function handleDonatePointsDecision(next, context) {
   const { currentPlayer, amount, targetPlayer } = context;
 
-  if (!targetPlayer)
-    throw new Error(ERRORS.PLAYER_NOT_FOUND);
+  if (!targetPlayer) throw new Error(ERRORS.PLAYER_NOT_FOUND);
 
   const updatedTargetPlayer = addPointsToPlayerBank(
     targetPlayer,
@@ -77,8 +74,7 @@ export function handleHoldPointsDecision(next, context) {
 export function handleDevelopTestsDecision(next, context, decisionDefinition) {
   const { currentPlayer, component } = context;
 
-  if (!component)
-    throw new Error(ERRORS.COMPONENT_NOT_FOUND);
+  if (!component) throw new Error(ERRORS.COMPONENT_NOT_FOUND);
 
   if (!isComponentEligibleForTests(component, next.components))
     throw new Error(ERRORS.COMPONENT_NOT_ELIGIBLE_FOR_TESTS);

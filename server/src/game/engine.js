@@ -37,6 +37,13 @@ import {
 } from './roomStateFactories.js';
 
 export function applyAction(state, action, ctx = {}) {
+  console.info('[ACTION_RECEIVED]', {
+  roomId: state.meta?.roomId,
+  rev: state.meta?.rev,
+  step: state.flow?.step?.name,
+  actionType: action.type,
+  payload: action.payload,
+});
   const now = Date.now();
   const next = structuredClone(state); // Node 18+ (Render geralmente usa)
 
@@ -48,8 +55,11 @@ export function applyAction(state, action, ctx = {}) {
         throw createError(ERRORS.MISSING_GAME_CONFIG, 400);
       }
       next.gameConfig = buildGameConfig({ playerCount, difficulty });
-      next.flow.step.flowControl.nextTransition =
-        transitionResolvers[STEP_NAME.WAITING_PLAYERS_READY](next);
+      next.players = next.players.map((player) => ({
+        ...player,
+       status: PLAYER_STATUS.WAITING,
+      }));
+
       next.meta.rev += 1;
       next.meta.updatedAt = now;
       next.log.lastEvent = {

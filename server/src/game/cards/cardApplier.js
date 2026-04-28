@@ -6,7 +6,14 @@ import { createError } from '../../utils/createErrors.js';
 
 export function applyCardEffect(roomState, card) {
   const applyCard = cardAppliers[card.type];
-
+  console.info('[APPLY_CARD]', {
+  roomId: roomState.meta?.roomId,
+  rev: roomState.meta?.rev,
+  step: roomState.flow?.step?.name,
+  cardDrawId: card.drawId,
+  cardType: card.type,
+  cardEffect: card.effect,
+  });
   if (!applyCard) {
     throw createError(ERRORS.CARD_TYPE_NOT_FOUND);
   }
@@ -25,7 +32,7 @@ function applyBugCard(clonedState, card) {
   const { components, absorbedBugs } = clonedState;
   const componentAffectedId = card.effect.componentsAffected[0];
   const component = clonedState.components.nodes[componentAffectedId];
-  
+
   if (!component) throw createError(ERRORS.COMPONENT_NOT_FOUND);
 
   if (component.hasTests === true) {

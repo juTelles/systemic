@@ -25,6 +25,10 @@ export function processEndRoundRequestPropagation(stateComponents) {
     stateComponents,
     saturatedRequestNodes,
   );
+  console.info('[PROPAGATE_BUGS]', {
+      before: stateComponents.nodes,
+      after: updatedComponents.nodes,
+   });
   return updatedComponents;
 }
 

@@ -88,7 +88,7 @@ export function useRoomSessionGuard({
       });
 
       if (playerNotFoundCountRef.current >= maxFailures) {
-        onSessionInvalid();
+        onSessionInvalid('session_guard_confirmed_invalid');
       }
 
       return;

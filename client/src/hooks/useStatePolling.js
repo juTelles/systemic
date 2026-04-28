@@ -1,5 +1,5 @@
-import { useEffect, useState, useRef } from "react";
-import { getRoomState } from "../api/roomsApi";
+import { useEffect, useState, useRef } from 'react';
+import { getRoomState } from '../api/roomsApi';
 
 // This custom Hook does four things
 // 1) fetches the initial state of the room,
@@ -21,14 +21,23 @@ export function useStatePolling(roomId, intervalMs = 1200) {
   //reset state when roomId changes
   useEffect(() => {
     setRoomState(null);
-    setIsLoading(true);
     setErrorCode(null);
     lastRev.current = 0;
+
+    if (!roomId) {
+      setIsLoading(false);
+      return;
+    }
+
+    setIsLoading(true);
   }, [roomId]);
 
   // Polling effect to fetch room state at regular intervals
   useEffect(() => {
-    if (!roomId) return;
+    if (!roomId) {
+      setIsLoading(false);
+      return;
+    }
 
     // Using a flag to prevent state updates after unmounting
     let alive = true;
@@ -44,7 +53,7 @@ export function useStatePolling(roomId, intervalMs = 1200) {
         if (!alive) return;
         // Handle errors from the API response
         if (!result.ok) {
-          setErrorCode(result.code || "INTERNAL_ERROR");
+          setErrorCode(result.code || 'INTERNAL_ERROR');
           setIsLoading(false);
           return;
         }
@@ -63,10 +72,9 @@ export function useStatePolling(roomId, intervalMs = 1200) {
         // If the component has unmounted while waiting for the response, we should not attempt to update state
         if (!alive) return;
         // Log the error and set an appropriate error code
-        console.error("Polling error:", err);
-        setErrorCode("INTERNAL_ERROR");
+        console.error('Polling error:', err);
+        setErrorCode('INTERNAL_ERROR');
         setIsLoading(false);
-
       } finally {
         // Mark that we're no longer fetching, allowing the next polling cycle to proceed
         fetching.current = false;

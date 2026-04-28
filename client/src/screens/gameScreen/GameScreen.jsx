@@ -70,7 +70,11 @@ function GameScreen({ roomId, localPlayerId, onSessionInvalid }) {
 
   async function handleEndGame() {
     try {
-      await deleteRoom(roomId);
+      const result = await deleteRoom(roomId);
+      if (!result.ok) {
+        console.error('Failed to delete room:', result.error);
+      }
+      onSessionInvalid('end_game_success');
     } catch (err) {
       console.error('Failed to delete room:', err);
     }
@@ -141,6 +145,7 @@ function GameScreen({ roomId, localPlayerId, onSessionInvalid }) {
           isReadOnlyTurn={isReadOnlyTurn}
           roomId={roomId}
           handleFinishDecision={handleFinishDecision}
+          onSessionInvalid={onSessionInvalid}
         />
       </div>
       {showGameStartDialog ? (

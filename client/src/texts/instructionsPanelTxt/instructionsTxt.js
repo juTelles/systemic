@@ -21,8 +21,8 @@ export const instructionsTxt = (ctx) => {
         en: 'Welcome to Systemic!',
       },
       description: {
-        pt: `Todos devem clicar em 'PRONTO' para iniciar o jogo!\n\nDefina a quantidade de jogadores e a dificuldade clicando no ícone de engrenagem (canto superior direito). Enquanto aguarda, aproveite para conhecer o tabuleiro e as regras no ícone '?' no topo da tela.`,
-        en: `Everyone must click 'READY' to start the game!\n\nSet the number of players and difficulty by clicking on the gear icon (top right corner). While waiting, take the opportunity to get to know the board and the rules in the '?' icon at the top of the screen.`,
+        pt: `Para iniciar a partida todos devem clicar no CHECK do seu apelido no Painel de Pontos ao lado, confirmando que estão PRONTOS.\n\nEnquanto aguarda, aproveite para conhecer o tabuleiro e as regras no ícone '?' no topo da tela.\n\nDefina a quantidade de jogadores e a dificuldade clicando no ícone de engrenagem (canto superior direito).\nAlerta: Ao mudar a configurão stauts são resetados para AGUARDANDO.`,
+        en: `To start the game, everyone must click the CHECK mark on their nickname line in the Points Panel on the side, confirming that they are READY.\n\nWhile waiting, take the opportunity to get to know the board and the rules by clicking on the '?' icon at the top of the screen.\n\nSet the number of players and difficulty by clicking on the gear icon (top right corner).\nWarning: Changing the configuration resets statuses to WAITING.`,
       },
     },
     GAME_START: {
@@ -61,7 +61,7 @@ export const instructionsTxt = (ctx) => {
     },
     TURN_START: {
       title: {
-        pt: (ctx) => `É a vez de: ${ctx.playerNickname}`,
+        pt: (ctx) => `Turno de: ${ctx.playerNickname}`,
         en: (ctx) => `Player Turn: ${ctx.playerNickname}`,
       },
       description: {
@@ -78,9 +78,9 @@ export const instructionsTxt = (ctx) => {
       },
       description: {
         pt: (ctx) =>
-          `${ctx.playerNickname}, escolha entre resolver Bugs, desenvolver Testes, guardar Pontos ou doá-los a outro membro do Time.\n\nPressione PULAR quando não quiser mais realizar decisões.\n\nLembre-se: Ao final do turno, os Pontos da mão que não forem utilizados serão descartados.\nCada membro do Time pode ter no máximo ${ctx.maxPlayerPoints} Pontos no total (mão + banco).`,
+          `Jogador ${ctx.playerNickname}, escolha entre resolver Bugs, desenvolver Testes, guardar Pontos ou doá-los a outro membro do Time.\n\nPressione PULAR quando não quiser mais realizar decisões.\n\nLembre-se: Ao final do turno, os Pontos da mão que não forem utilizados serão descartados.\nCada membro do Time pode ter no máximo ${ctx.maxPlayerPoints} Pontos no total (mão + banco).`,
         en: (ctx) =>
-          `${ctx.playerNickname}, choose between fixing Bugs, developing Tests, holding Points, or donating them to another Team member.\n\nPress SKIP when you don't want to make more decisions.\n\nRemember: At the end of the turn, any points in hand that are not used will be discarded.\nEach Team member can have a maximum of ${ctx.maxPlayerPoints} points in total (hand + bank).`,
+          `Player ${ctx.playerNickname}, choose between fixing Bugs, developing Tests, holding Points, or donating them to another Team member.\n\nPress SKIP when you don't want to make more decisions.\n\nRemember: At the end of the turn, any points in hand that are not used will be discarded.\nEach Team member can have a maximum of ${ctx.maxPlayerPoints} points in total (hand + bank).`,
       },
     },
     AWAIT_CARD_DRAW: {
@@ -90,9 +90,9 @@ export const instructionsTxt = (ctx) => {
       },
       description: {
         pt: (ctx) =>
-          `${ctx.playerNickname}, clique no baralho para comprar uma carta!\n\nAs cartas podem ser de três tipos: Pontos, Bugs ou Eventos, e cada uma possui um efeito diferente.`,
+          `Jogador ${ctx.playerNickname}, clique no baralho para comprar uma carta!\n\nAs cartas podem ser de três tipos: Pontos, Bugs ou Eventos, e cada uma possui um efeito diferente.`,
         en: (ctx) =>
-          `${ctx.playerNickname}, click on the deck to draw a card!\n\nCards can be of three types: Points, Bugs, or Events, and each has a different effect.`,
+          `Player ${ctx.playerNickname}, click on the deck to draw a card!\n\nCards can be of three types: Points, Bugs, or Events, and each has a different effect.`,
       },
     },
     SHOWING_CARD: {

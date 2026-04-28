@@ -77,6 +77,9 @@ function applyBug(component, components, amount = 1) {
     });
     return { ...component, bugAmount: 0, saturated: false };
   }
+    console.info('[APPLY_BUG]', {
+    componentId: component.id,
+   });
   return {
     ...component,
     bugAmount: component.bugAmount + amount,
@@ -143,6 +146,9 @@ function resolveBug(component, amount = 1) {
   if (component.bugAmount <= 0) {
     throw createError(ERRORS.COMPONENT_HAS_NO_BUGS_TO_RESOLVE);
   }
+  console.info('[RESOLVE_BUG]', {
+    component: component.id,
+  });
   return {
     ...component,
     bugAmount: component.bugAmount - amount,
@@ -241,10 +247,20 @@ function cleanPlayerHandPoints(playerId, players) {
 }
 
 function addComponentToAbsorbedBugs(absorbedBugsArray, componentId) {
+    console.info('[ADD_TO_ABSORBED_BUGS]', {
+    componentId,
+    before: absorbedBugsArray,
+    after: [...absorbedBugsArray, componentId],
+   });
   return [...absorbedBugsArray, componentId];
 }
 
 function removeComponentFromAbsorbedBugs(absorbedBugsArray, componentId) {
+  console.info('[REMOVE_FROM_ABSORBED_BUGS]', {
+    componentId,
+    before: absorbedBugsArray,
+    after: absorbedBugsArray.filter((id) => id !== componentId),
+   });
   return absorbedBugsArray.filter((id) => id !== componentId);
 }
 

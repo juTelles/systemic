@@ -19,6 +19,7 @@ function LateralBar({
   isReadOnlyTurn,
   handleFinishDecision,
   isPreGame,
+  onSessionInvalid,
 }) {
   const { drawCard, applyCard, leaveRoom, setConfig } = useRoomActions(
     roomId,
@@ -82,6 +83,7 @@ function LateralBar({
         content: ERRORS.LEAVE_ROOM_ERROR,
       });
     }
+    onSessionInvalid('leave_room_success');
   };
 
   const handleUnallowedClick = () => {
