@@ -491,7 +491,10 @@ export function applyAction(state, action, ctx = {}) {
       if (!next.players.some((p) => p.id === localPlayerId)) {
         throw createError(ERRORS.PLAYER_NOT_FOUND, 404);
       }
-      if (localPlayerId === next.flow?.currentPlayerId) {
+      if (
+        localPlayerId === next.flow?.currentPlayerId &&
+        next.players.length > 1
+      ) {
         throw createError(ERRORS.CANNOT_LEAVE_DURING_OWN_TURN, 400);
       }
       const leavingPlayerIndex = next.players.findIndex(
