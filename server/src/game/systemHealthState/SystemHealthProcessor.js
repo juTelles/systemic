@@ -1,6 +1,7 @@
 import { SYSTEM_HEALTH_STATES } from '../../../../shared/src/constants/gameEnums.js';
 import { verifySystemHealthChange } from './systemHealthChangeVerifier.js';
 import { getKeyForHealthChange } from './systemHealthInstructionResolver.js';
+import { addGameLog } from '../gameLog.js';
 
 export function processSystemHealth(gameState) {
   validateSystemHealthProcessInput(gameState);
@@ -15,7 +16,16 @@ export function processSystemHealth(gameState) {
   const updatedSystem = updateSystemHealthState(system, changeObject);
   const changeKey = getKeyForHealthChange(oldHealthState, newHealthState);
 
+  const gameLog = addGameLog(gameState, {
+    type: '[SYSTEM_HEALTH_CHANGE]',
+    oldHealthState: oldHealthState,
+    newHealthState: newHealthState,
+    oldSystemState: system,
+    newSystemState: updatedSystem,
+  });
+
   return {
+    gameLog: gameLog,
     system: updatedSystem,
     stepInstructionKey: changeKey,
     updated: true,
