@@ -1,4 +1,5 @@
 import styles from './Button.module.css';
+import { Tooltip } from 'react-tooltip';
 
 function Button({
   label,
@@ -12,7 +13,8 @@ function Button({
   fontSize,
   disabled,
   border,
-  color
+  color,
+  title,
 }) {
   return (
     <button
@@ -29,8 +31,11 @@ function Button({
       className={inverted ? styles.invertedButton : styles.button}
       onClick={onClick}
       disabled={disabled}
+      title={title}
+      data-tooltip-id="button"
     >
       {label}
+      <Tooltip id="button" place="top" variant="light" />
     </button>
   );
 }

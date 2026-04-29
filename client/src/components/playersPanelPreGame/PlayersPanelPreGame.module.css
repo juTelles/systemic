@@ -9,6 +9,7 @@
   border-image-source: linear-gradient(to bottom, #2c2c2c, #121212);
   border-image-slice: 1;
   background-color: var(--bg-elevated);
+  cursor: default;
 }
 .playersPanelTitle {
   color: var(--text-main);

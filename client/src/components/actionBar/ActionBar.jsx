@@ -8,6 +8,7 @@ function ActionBar({
   handleDecisionUISelect,
   selectedDecisionUIId,
   isReadOnly,
+  currentPlayerId,
 }) {
   return (
     <div className={styles.actionBarContainer}>
@@ -18,6 +19,7 @@ function ActionBar({
         handleDecisionUISelect={handleDecisionUISelect}
         selectedDecisionUIId={selectedDecisionUIId}
         isReadOnly={isReadOnly}
+        currentPlayerId={currentPlayerId}
       />
     </div>
   );

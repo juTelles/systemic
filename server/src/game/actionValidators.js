@@ -76,7 +76,7 @@ function leaveRoomActionValidation(state, action) {
   if (!player) {
     throw createError(ERRORS.PLAYER_NOT_FOUND, 404);
   }
-  if (localPlayerId === currentPlayerId) {
+  if (localPlayerId === currentPlayerId && state.players.length > 1) {
     throw createError(ERRORS.CANNOT_LEAVE_DURING_OWN_TURN, 400);
   }
   return player;

@@ -19,6 +19,8 @@ function LateralBar({
   isReadOnlyTurn,
   handleFinishDecision,
   isPreGame,
+  onSessionInvalid,
+  downloadGameLog,
 }) {
   const { drawCard, applyCard, leaveRoom, setConfig } = useRoomActions(
     roomId,
@@ -34,7 +36,7 @@ function LateralBar({
   const isShowCardStep = currentStepName === STEP_NAME.SHOWING_CARD;
   const canDrawCard =
     currentStepName === STEP_NAME.AWAIT_CARD_DRAW && !isReadOnlyTurn;
-  const disabledExit = isCurrentPlayerId ? true : false;
+  const disabledExit = isCurrentPlayerId && roomState?.players.length > 1 ? true : false;
 
   function handleOpenSideBar(menuType) {
     setIsSideBarOpen(true);
@@ -82,6 +84,7 @@ function LateralBar({
         content: ERRORS.LEAVE_ROOM_ERROR,
       });
     }
+    onSessionInvalid('leave_room_success');
   };
 
   const handleUnallowedClick = () => {
@@ -165,12 +168,13 @@ function LateralBar({
             isPreGame ? handleChangeGameConfig : handleUnallowedClick
           }
           handleLeaveRoom={
-            isCurrentPlayerId ? handleUnallowedClick : handleLeaveRoom
+            disabledExit ? handleUnallowedClick : handleLeaveRoom
           }
           isPreGame={isPreGame}
           disabledExit={disabledExit}
           gameConfig={roomState?.gameConfig}
           players={roomState?.players}
+          downloadGameLog={downloadGameLog}
         />
       </div>
     </>

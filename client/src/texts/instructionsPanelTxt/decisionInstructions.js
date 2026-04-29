@@ -83,9 +83,9 @@ export const decisionInstructionTxt = {
     },
     description: {
       pt: ({ playerNickname, maxPlayerPoints, holdLimit, donateLimit }) =>
-        `${playerNickname}, no painel de Pontos ao lado, escolha o membro do Time para doar, informe quantos Pontos e clique no botão de confirmação.\n\nLembre-se: Você pode guardar até ${holdLimit} Pontos e doar até ${donateLimit} Pontos por turno.\nCada membro do Time pode ter no máximo ${maxPlayerPoints} Pontos no total (mão + banco).\nPontos não utilizados serão descartados no final da etapa de decisões.`,
+        `${playerNickname}, no painel de Pontos ao lado, escolha o membro do Time para doar, informe quantos Pontos e clique no botão ENVIAR.\n\nLembre-se: Você pode guardar até ${holdLimit} Pontos e doar até ${donateLimit} Pontos por turno.\nCada membro do Time pode ter no máximo ${maxPlayerPoints} Pontos no total (mão + banco).\nPontos não utilizados serão descartados no final da etapa de decisões.`,
       en: ({ playerNickname, maxPlayerPoints, holdLimit, donateLimit }) =>
-        `${playerNickname}, in the Points panel on the side, choose the Team member to donate to, enter how many points and click the check to confirm.\n\nRemember: You can save up to ${holdLimit} Points and donate up to ${donateLimit} Points per turn.\nEach Team member can have a maximum of ${maxPlayerPoints} Points in total (hand + bank).\nPoints that are not used will be discarded at the end of the decision phase.`,
+        `${playerNickname}, in the Points panel on the side, choose the Team member to donate to, enter how many points and click the SEND button.\n\nRemember: You can save up to ${holdLimit} Points and donate up to ${donateLimit} Points per turn.\nEach Team member can have a maximum of ${maxPlayerPoints} Points in total (hand + bank).\nPoints that are not used will be discarded at the end of the decision phase.`,
     },
   },
   HOLD_POINTS: {
@@ -95,9 +95,9 @@ export const decisionInstructionTxt = {
     },
     description: {
       pt: ({ playerNickname, maxPlayerPoints, holdLimit, donateLimit }) =>
-        `${playerNickname}, no painel de Pontos ao lado, informe quantos Pontos deseja guardar e clique no botão de confirmação.\n\nLembre-se: Você pode guardar até ${holdLimit} Pontos e doar até ${donateLimit} Pontos por turno.\nCada membro do Time pode ter no máximo ${maxPlayerPoints} Pontos no total (mão + banco).\nPontos não utilizados serão descartados no final da etapa de decisões.`,
+        `${playerNickname}, no painel de Pontos ao lado, informe quantos Pontos deseja guardar e clique no botão ENVIAR.\n\nLembre-se: Você pode guardar até ${holdLimit} Pontos e doar até ${donateLimit} Pontos por turno.\nCada membro do Time pode ter no máximo ${maxPlayerPoints} Pontos no total (mão + banco).\nPontos não utilizados serão descartados no final da etapa de decisões.`,
       en: ({ playerNickname, maxPlayerPoints, holdLimit, donateLimit }) =>
-        `${playerNickname}, in the Points panel on the side, enter how many Points you want to save and click the check to confirm.\n\nRemember: You can save up to ${holdLimit} Points and donate up to ${donateLimit} Points per turn.\nEach Team member can have a maximum of ${maxPlayerPoints} Points in total (hand + bank).\nPoints that are not used will be discarded at the end of the decision phase.`,
+        `${playerNickname}, in the Points panel on the side, enter how many Points you want to save and click the SEND button.\n\nRemember: You can save up to ${holdLimit} Points and donate up to ${donateLimit} Points per turn.\nEach Team member can have a maximum of ${maxPlayerPoints} Points in total (hand + bank).\nPoints that are not used will be discarded at the end of the decision phase.`,
     },
   },
   DEVELOP_TESTS: {

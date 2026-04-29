@@ -51,9 +51,8 @@ function getEventCardText(currentCard, textType, lang) {
       return `A argument is required for description text of event cards`;
 
     return (
-      cardsTxt?.specialCards?.[eventId]?.[textType]?.[lang](
-        argument,
-      ) || 'Text not found for this card type'
+      cardsTxt?.specialCards?.[eventId]?.[textType]?.[lang](argument) ||
+      'Text not found for this card type'
     );
   } else {
     return (
@@ -105,10 +104,10 @@ export const cardsTxt = {
       },
       description: {
         pt: (amount) =>
-          `Ganhou ${Number(amount) === 1 ? '1 ponto' : Number(amount) > 1 ? `${amount} Pontos` : 'Pontos'} de Tarefa!`,
+          `Você ganhou ${Number(amount) === 1 ? '+1 ponto' : Number(amount) > 1 ? `+${amount} pontos` : 'pontos'} para cada jogador`,
         en: (amount) =>
-          `Gained ${Number(amount) === 1 ? '1 point' : Number(amount) > 1 ? `${amount} Points` : 'Points'} of Task Points!`,
-      },
+          `You gained ${Number(amount) === 1 ? '+1 point' : Number(amount) > 1 ? `+${amount} points` : 'points'} for each player`,
+        },
     },
   },
   specialCards: {

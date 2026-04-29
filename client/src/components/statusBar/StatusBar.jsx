@@ -15,6 +15,10 @@ function StatusBar({
   instructionKey,
   handleDecisionSubmit,
 }) {
+  const inputMode =
+    !isReadOnly &&
+    (selectedDecisionUIId === 'HOLD_POINTS' ||
+      selectedDecisionUIId === 'DONATE_POINTS');
   return (
     <div className={styles.statusBarContainer}>
       <div className={styles.systemStatesPanelWraper}>
@@ -24,7 +28,7 @@ function StatusBar({
           crisisRound={roomState?.system?.isCrisisRound}
         />
       </div>
-      <div className={styles.gamePromptPanelWraper}>
+      <div className={`${styles.instructionsPanelWraper} ${inputMode ? styles.inputMode : ''}`}>
         <InstructionsPanel
           roomState={roomState}
           instructionKey={instructionKey}
@@ -34,7 +38,7 @@ function StatusBar({
           decisionUIId={selectedDecisionUIId}
         />
       </div>
-      <div className={styles.playersPanelWraper}>
+      <div className={`${styles.playersPanelWraper} ${inputMode ? styles.inputMode : ''}`}>
         {isPreGame ? (
           <PlayersPanelPreGame
             players={roomState?.players}
@@ -52,6 +56,7 @@ function StatusBar({
             isReadOnly={isReadOnly}
             txt={statusBarTxt.playersPanelTxt}
             handleDecisionSubmit={handleDecisionSubmit}
+            inputMode={inputMode}
           />
         )}
       </div>

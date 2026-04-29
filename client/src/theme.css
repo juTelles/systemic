@@ -65,7 +65,7 @@
 @media (min-width: 1000px) {
   :root {
     --card-width: 150px;
-    --card-height: 160px;
+    --card-height: 190px;
     --font-xs: clamp(8px, 1.1vh, 16px);
     --font-sm: clamp(10px, 1.3vh, 18px);
     --font-md: clamp(12px, 1.5vh, 20px);

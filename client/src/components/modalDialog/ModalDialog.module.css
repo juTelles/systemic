@@ -38,3 +38,9 @@
   font-size: var(--font-lg);
   white-space: pre-line;
 }
+
+.modalButtonsContainer {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}

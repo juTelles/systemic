@@ -1,15 +1,23 @@
 import { ERRORS } from '../../../../shared/src/constants/errors.js';
-import { applyBug, cloneNodesForUpdate, addPointsToPlayerBank } from '../gameHelpers.js';
+import { applyBugs, addPointsToPlayerBank } from '../gameHelpers.js';
 import { getTotalPlayersPoints } from '../selectors.js';
 import { updateAbsorbBugsState } from '../absorbedBugsLogic.js';
 import { createError } from '../../utils/createErrors.js';
+import { addGameLog } from '../gameLog.js';
 
 export function applyCardEffect(roomState, card) {
   const applyCard = cardAppliers[card.type];
-
   if (!applyCard) {
     throw createError(ERRORS.CARD_TYPE_NOT_FOUND);
   }
+
+  roomState.gameLog = addGameLog(roomState, {
+    type: '[APPLIED_CARD]',
+    cardDrawId: card.drawId,
+    cardType: card.type,
+    cardEffect: card.effect,
+  });
+
   return applyCard(roomState, card);
 }
 
@@ -21,78 +29,89 @@ const cardAppliers = {
   EVENT: applyEventCard,
 };
 
-function applyBugCard(clonedState, card) {
-  const { components, absorbedBugs } = clonedState;
+function applyBugCard(state, card) {
+  const { absorbedBugs } = state;
   const componentAffectedId = card.effect.componentsAffected[0];
-  const component = clonedState.components.nodes[componentAffectedId];
-  
+  const component = state.components.nodes[componentAffectedId];
+
   if (!component) throw createError(ERRORS.COMPONENT_NOT_FOUND);
 
   if (component.hasTests === true) {
     const absorbBugResult = updateAbsorbBugsState(absorbedBugs, component);
-    clonedState.absorbedBugs = absorbBugResult.absorbedBugs;
+    state.absorbedBugs = absorbBugResult.absorbedBugs;
+
+    state.gameLog = addGameLog(state, {
+      type: 'ABSORBED_BUGS',
+      componentId: component.id,
+      absorbed: absorbBugResult.wasAbsorbed,
+      before: absorbedBugs,
+      after: absorbBugResult.absorbedBugs,
+    });
 
     if (absorbBugResult.wasAbsorbed) {
-      return clonedState;
+      return state;
     }
   }
-  const { updatedNodes, updatedComponents } = cloneNodesForUpdate(components);
 
-  updatedNodes[componentAffectedId] = applyBug(component, updatedComponents);
-  clonedState.components = {
-    ...updatedComponents,
-    nodes: updatedNodes,
-  };
-  return clonedState;
+  const { nodes, log } = applyBugs(
+    [componentAffectedId],
+    state.components.nodes,
+  );
+
+  state.gameLog = addGameLog(state, {
+    type: '[BUGS_APPLIED]',
+    reason: 'BUG_CARD_EFFECT',
+    appliedBugs: log.bugsApplied,
+    amount: 1,
+    propagated: log.componentsPropagated,
+  });
+  state.components.nodes = nodes;
+  return state;
 }
 
-function applyPointsCard(clonedState, card) {
+function applyPointsCard(state, card) {
   const pointsToAdd = card.effect.amount;
-  const currentPlayer = clonedState.players.find(
-    (player) => player.id === clonedState.flow.currentPlayerId,
-  );
-  if (!currentPlayer) throw createError(ERRORS.CURRENT_PLAYER_NOT_FOUND);
 
-  const totalPoints = getTotalPlayersPoints(currentPlayer);
-  if (totalPoints >= clonedState.gameConfig.taskPoints.maxPlayerPoints) {
-    return clonedState;
-  }
-
-  const updatedCurrentPlayer = addPointsToPlayerBank(
-    currentPlayer,
-    pointsToAdd,
-    clonedState.gameConfig.taskPoints.maxPlayerPoints,
+  const updatedPlayers = state.players.map((player) =>
+    addPointsToPlayerBank(
+      player,
+      pointsToAdd,
+      state.gameConfig.taskPoints.maxPlayerPoints,
+    ),
   );
-  clonedState.players = clonedState.players.map((player) =>
-    player.id === currentPlayer.id ? updatedCurrentPlayer : player,
-  );
-  return clonedState;
+  state.gameLog = addGameLog(state, {
+    type: '[POINTS_APPLIED]',
+    reason: 'POINTS_CARD_EFFECT',
+    playersBefore: state.players,
+    playersAfter: updatedPlayers,
+    amount: pointsToAdd,
+  });
+  state.players = updatedPlayers;
+  return state;
 }
 
-export function applyEventCard(clonedState, card) {
+export function applyEventCard(state, card) {
   const amount = card.effect.amount;
-  const { components } = clonedState;
   const affectedComponents = card.effect.componentsAffected;
 
   if (!affectedComponents || !Array.isArray(affectedComponents)) {
     throw createError(ERRORS.INVALID_CARD);
   }
 
-  const { updatedNodes, updatedComponents } = cloneNodesForUpdate(
-    components,
+  const { nodes, log } = applyBugs(
+    affectedComponents,
+    state.components.nodes,
+    amount,
   );
 
-  affectedComponents.forEach((componentId) => {
-    updatedNodes[componentId] = applyBug(
-      updatedNodes[componentId],
-      updatedComponents,
-      amount,
-    );
+  state.gameLog = addGameLog(state, {
+    type: '[BUGS_APPLIED]',
+    reason: 'EVENT_CARD_EFFECT',
+    appliedBugs: log.bugsApplied,
+    amount: amount,
+    propagated: log.componentsPropagated,
   });
 
-  clonedState.components = {
-    ...updatedComponents,
-    nodes: updatedNodes,
-  };
-  return clonedState;
+  state.components.nodes = nodes;
+  return state;
 }

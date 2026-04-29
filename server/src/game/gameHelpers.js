@@ -2,13 +2,13 @@ import { isComponentEligibleForTests } from '../../../shared/src/game/helpers.js
 import { createError } from '../utils/createErrors.js';
 import { ERRORS } from '../../../shared/src/constants/errors.js';
 import { getTotalPlayersPoints } from './selectors.js';
+import { ACTION_TYPES } from '../../../shared/src/constants/actionsTypes.js';
 
 export {
   cloneNodesForUpdate,
   existsComponentEligibleForBugResolvByType,
   existsComponentEligibleForTests,
-  applyBug,
-  applyBugAndUpdateComponents,
+  applyBugs,
   applyGameStartBugs,
   applyTest,
   resolveBug,
@@ -22,6 +22,7 @@ export {
   addComponentToAbsorbedBugs,
   removeComponentFromAbsorbedBugs,
   removePlayerFromRoom,
+  shouldDeleteRoomAfterAction,
 };
 
 function cloneNodesForUpdate(stateComponents) {
@@ -67,66 +68,73 @@ function existsComponentEligibleForTests(components) {
   return exists;
 }
 
-function applyBug(component, components, amount = 1) {
-  const saturated = component.bugAmount + amount >= component.saturationLimit;
+function applyBug(component, amount = 1) {
+  component.bugAmount += amount;
+  component.saturated = component.bugAmount >= component.saturationLimit;
 
-  if (saturated && component.type !== 'REQUESTS') {
-    component.parentIds.forEach((parentId) => {
-      const parentComponent = components.nodes[parentId];
-      components.nodes[parentId] = applyBug(parentComponent, components);
-    });
-    return { ...component, bugAmount: 0, saturated: false };
+  return component;
+}
+
+function propagateBug(component) {
+  if (component.bugAmount < component.saturationLimit) {
+    return component;
   }
-  return {
-    ...component,
-    bugAmount: component.bugAmount + amount,
-    saturated: component.bugAmount + amount >= component.saturationLimit,
-  };
+  component.bugAmount = component.bugAmount - component.saturationLimit;
+  component.saturated = false;
+
+  return component;
 }
-// TODO: refactor to make applyBug more generica and pure
 
-function applyBugAndUpdateComponents(componentId, stateComponents, amount = 1) {
-  const updatedNodes = { ...stateComponents.nodes };
-  const componentsWithUpdatedNodes = {
-    ...stateComponents,
-    nodes: updatedNodes,
+function applyBugs(componentsIds, nodesState, amount = 1) {
+  const log = {
+    bugsApplied: [],
+    componentsPropagated: [],
   };
-
-  updatedNodes[componentId] = applyBug(
-    updatedNodes[componentId],
-    componentsWithUpdatedNodes,
+  const componentsIdsToUpdate = componentsIds.map((node) => ({
+    nodeId: node,
     amount,
-  );
+  }));
+  const nodesUpdated = { ...nodesState };
 
-  return {
-    ...stateComponents,
-    nodes: updatedNodes,
-  };
+  while (componentsIdsToUpdate.length > 0) {
+    const { nodeId, amount: currentAmount } =
+      componentsIdsToUpdate.shift();
+
+    nodesUpdated[nodeId] = applyBug(nodesUpdated[nodeId], currentAmount);
+    log.bugsApplied.push({
+      componentId: nodeId,
+      type: nodesUpdated[nodeId].type,
+      bugsApplied: amount,
+      bugAmount: nodesUpdated[nodeId].bugAmount,
+      saturated: nodesUpdated[nodeId].saturated,
+    });
+
+    if (
+      nodesUpdated[nodeId].saturated &&
+      nodesUpdated[nodeId].type !== 'REQUESTS'
+    ) {
+      nodesUpdated[nodeId] = propagateBug(nodesUpdated[nodeId]);
+      log.componentsPropagated.push(nodeId);
+      const parentIds = nodesUpdated[nodeId].parentIds || [];
+      parentIds.forEach((parentId) => {
+        componentsIdsToUpdate.push({ nodeId: parentId, amount: 1 });
+      });
+    }
+  }
+  return { nodes: nodesUpdated, log };
 }
-// TODO: refactor applyBug and applyBugAndUpdateComponents to use an queue based
-// approach to avoid deep recursion and potential stack overflow with large
-// component trees
 
 function applyGameStartBugs(stateComponents, amount = 5) {
-  const updatedNodes = { ...stateComponents.nodes };
-  const componentsWithUpdatedNodes = {
-    ...stateComponents,
-    nodes: updatedNodes,
-  };
+  const randomComponentsIds = [];
   for (let i = 0; i < amount; i++) {
     let randomComponentId =
       stateComponents.allIds[
         Math.floor(Math.random() * stateComponents.allIds.length)
       ];
-    updatedNodes[randomComponentId] = applyBug(
-      updatedNodes[randomComponentId],
-      componentsWithUpdatedNodes,
-    );
+    randomComponentsIds.push(randomComponentId);
   }
-  return {
-    ...stateComponents,
-    nodes: updatedNodes,
-  };
+  const { nodes, log } = applyBugs(randomComponentsIds, stateComponents.nodes);
+  return { nodes, log };
 }
 
 function applyTest(component) {
@@ -143,9 +151,11 @@ function resolveBug(component, amount = 1) {
   if (component.bugAmount <= 0) {
     throw createError(ERRORS.COMPONENT_HAS_NO_BUGS_TO_RESOLVE);
   }
+  const bugAmount = component.bugAmount - amount;
   return {
     ...component,
     bugAmount: component.bugAmount - amount,
+    saturated: bugAmount >= component.saturationLimit,
   };
 }
 
@@ -184,7 +194,6 @@ function addPointsToPlayerBank(player, pointsToAdd, maxPlayerPoints) {
 }
 
 function addPointsToPlayerBankByHolding(player, pointsToHold) {
-
   const allowedPointsToHold = Math.min(pointsToHold, player.handPoints);
 
   return {
@@ -248,15 +257,21 @@ function removeComponentFromAbsorbedBugs(absorbedBugsArray, componentId) {
   return absorbedBugsArray.filter((id) => id !== componentId);
 }
 
-function removePlayerFromRoom(players, playerId){
-    const exists = players.some((player) => player.id === playerId);
-    if (!exists) {
-      throw createError(ERRORS.PLAYER_NOT_FOUND, 404);
-    }
-
-    players = players.filter(
-      (player) => player.id !== playerId
-    );
-
-    return players;
+function removePlayerFromRoom(players, playerId) {
+  const exists = players.some((player) => player.id === playerId);
+  if (!exists) {
+    throw createError(ERRORS.PLAYER_NOT_FOUND, 404);
   }
+
+  players = players.filter((player) => player.id !== playerId);
+
+  return players;
+}
+
+function shouldDeleteRoomAfterAction(action, nextState) {
+  return (
+    action.type === ACTION_TYPES.LEAVE_ROOM &&
+    Array.isArray(nextState.players) &&
+    nextState.players.length === 0
+  );
+}

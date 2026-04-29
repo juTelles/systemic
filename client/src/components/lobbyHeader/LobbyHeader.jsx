@@ -13,6 +13,7 @@ function LobbyHeader({ title, txt, handleOpenSideBar }) {
           padding={'8px 20px'}
           color={'var(--ciano)'}
           onClick={() => handleOpenSideBar('MENU')}
+          title={txt?.roomListButtons?.optionsButton?.pt}
         />
       </div>
       <div className={styles.titleDiv}>
@@ -27,6 +28,7 @@ function LobbyHeader({ title, txt, handleOpenSideBar }) {
           padding={'8px 20px'}
           color={'var(--ciano)'}
           onClick={() => handleOpenSideBar('RULES')}
+          title={txt?.roomListButtons?.rulesButton?.pt}
         />
       </div>
     </header>

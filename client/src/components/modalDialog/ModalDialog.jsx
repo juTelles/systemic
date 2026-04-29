@@ -3,8 +3,14 @@ import Button from '../button/Button';
 import { getErrorMessage } from '../../texts/errorsMessages.js';
 import styles from './ModalDialog.module.css';
 
-function ModalDialog({button, onClose, modalType, error}) {
-
+function ModalDialog({
+  button,
+  onClose,
+  modalType,
+  error,
+  downloadButton,
+  onPressDownload,
+}) {
   let title = '';
   let content = '';
 
@@ -14,7 +20,6 @@ function ModalDialog({button, onClose, modalType, error}) {
 
     title = errorTitle ? errorTitle : 'Erro';
     content = errorContent ? errorContent : '';
-    
   } else {
     title = getModalTxt(modalType, 'title', 'pt');
     content = getModalTxt(modalType, 'content', 'pt');
@@ -25,15 +30,26 @@ function ModalDialog({button, onClose, modalType, error}) {
       <div className={styles.dialogBox}>
         <h2>{title}</h2>
         <p>{content}</p>
-      {button ? (
-        <Button
-          label={'OK'}
-          width="4rem"
-          height="2rem"
-          color={'var(--ciano)'}
-          onClick={onClose}
-        />
-      ) : null}
+        <div className={styles.modalButtonsContainer}>
+          {button ? (
+            <Button
+              label={'OK'}
+              width="6rem"
+              height="2rem"
+              color={'var(--ciano)'}
+              onClick={onClose}
+            />
+          ) : null}
+          {downloadButton ? (
+            <Button
+              label={'Baixar Game Log'}
+              width="6rem"
+              height="2rem"
+              color={'var(--ciano)'}
+              onClick={() => onPressDownload()}
+            />
+          ) : null}
+        </div>
       </div>
     </div>
   );

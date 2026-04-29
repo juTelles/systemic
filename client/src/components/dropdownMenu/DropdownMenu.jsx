@@ -12,6 +12,7 @@ function DropdownMenu({
   disabledExit,
   gameConfig,
   players,
+  downloadGameLog,
 }) {
   const [isOpen] = useState(false);
   const playerCountCurrent = gameConfig?.playerCountConfig;
@@ -50,6 +51,12 @@ function DropdownMenu({
         ) : null}
 
         <div className={styles.configOptionsContainer}>
+        <button
+          className={styles.exitGameButton}
+          onClick={() => downloadGameLog()}
+        >
+          {'Baixar Game Log'}
+        </button>
           <DropdownItem
             disabled={!isPreGame || isLobby ? true : false}
             key={''}
