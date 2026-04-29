@@ -57,7 +57,7 @@ export function applyAction(state, action, ctx = {}) {
       next.gameConfig = buildGameConfig({ playerCount, difficulty });
       next.players = next.players.map((player) => ({
         ...player,
-       status: PLAYER_STATUS.WAITING,
+        status: PLAYER_STATUS.WAITING,
       }));
 
       next.meta.rev += 1;

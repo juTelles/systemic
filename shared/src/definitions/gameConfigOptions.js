@@ -86,7 +86,7 @@ const REGULAR_BY_PLAYERS = {
       maxPlayerPoints: 6,
       maxDonationPerPlayer: 2,
       maxHoldPerPlayer: 2,
-      playerPerRound: 3,
+      playerPerRound: 4,
       playerPerCrisisRound: 2,
     },
     decisionCosts: {
@@ -105,12 +105,12 @@ const REGULAR_BY_PLAYERS = {
         {
           cardType: CARD_TYPES.LOCAL,
           componentType: NODE_TYPES.LOCAL,
-          quantity: 20,
+          quantity: 18,
         },
         {
           cardType: CARD_TYPES.STRUCTURAL,
           componentType: NODE_TYPES.STRUCTURAL,
-          quantity: 18,
+          quantity: 15,
         },
         {
           cardType: CARD_TYPES.REQUESTS,
@@ -119,7 +119,7 @@ const REGULAR_BY_PLAYERS = {
         },
         {
           cardType: CARD_TYPES.POINTS,
-          quantity: 7,
+          quantity: 15,
         },
       ],
       specialCards: {
@@ -127,7 +127,7 @@ const REGULAR_BY_PLAYERS = {
         quantity: 9,
         quantityByPressureLevel: {
           LOW: 3,
-          WARNING: 3,
+          WARNING: 2,
           CRITICAL: 3,
         },
       },

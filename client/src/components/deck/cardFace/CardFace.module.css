@@ -62,8 +62,11 @@
   justify-content: center;
   padding-bottom: 7px;
 }
-.cardImageContainer.POINTS, .cardImageContainer.REQUESTS  {
+.cardImageContainer.REQUESTS  {
     width: 85%;
+}
+.cardImageContainer.POINTS {
+    width: 70%;
 }
 
 .cardImage {
