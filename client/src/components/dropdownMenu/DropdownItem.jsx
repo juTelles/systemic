@@ -13,14 +13,14 @@ function DropdownItem({ title, children, disabled }) {
       >
         {title}
         <span
-          className={`${styles.arrow} ${isOpen ? styles.arrowRotated : ''}`}
+          className={`${styles.arrow} ${isOpen && !disabled ? styles.arrowRotated : ''}`}
         >
           ▼
         </span>
       </button>
 
       <div
-        className={`${styles.dropdownContent} ${isOpen ? styles.dropdownOpen : ''}`}
+        className={`${styles.dropdownContent} ${isOpen && !disabled ? styles.dropdownOpen : ''}`}
       >
         <div className={styles.dropdownContentInner}>{children}</div>
       </div>
