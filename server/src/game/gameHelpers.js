@@ -194,7 +194,6 @@ function addPointsToPlayerBank(player, pointsToAdd, maxPlayerPoints) {
 }
 
 function addPointsToPlayerBankByHolding(player, pointsToHold) {
-
   const allowedPointsToHold = Math.min(pointsToHold, player.handPoints);
 
   return {
@@ -251,33 +250,23 @@ function cleanPlayerHandPoints(playerId, players) {
 }
 
 function addComponentToAbsorbedBugs(absorbedBugsArray, componentId) {
-    console.info('[ADD_TO_ABSORBED_BUGS]', {
-    componentId,
-    before: absorbedBugsArray,
-    after: [...absorbedBugsArray, componentId],
-   });
   return [...absorbedBugsArray, componentId];
 }
 
 function removeComponentFromAbsorbedBugs(absorbedBugsArray, componentId) {
-  console.info('[REMOVE_FROM_ABSORBED_BUGS]', {
-    componentId,
-    before: absorbedBugsArray,
-    after: absorbedBugsArray.filter((id) => id !== componentId),
-   });
   return absorbedBugsArray.filter((id) => id !== componentId);
 }
 
-function removePlayerFromRoom(players, playerId){
-    const exists = players.some((player) => player.id === playerId);
-    if (!exists) {
-      throw createError(ERRORS.PLAYER_NOT_FOUND, 404);
-    }
+function removePlayerFromRoom(players, playerId) {
+  const exists = players.some((player) => player.id === playerId);
+  if (!exists) {
+    throw createError(ERRORS.PLAYER_NOT_FOUND, 404);
+  }
 
-    players = players.filter(
-      (player) => player.id !== playerId
-    );
+  players = players.filter((player) => player.id !== playerId);
 
+  return players;
+}
 
 function shouldDeleteRoomAfterAction(action, nextState) {
   return (
