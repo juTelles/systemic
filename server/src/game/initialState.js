@@ -13,11 +13,13 @@ export function createInitialState({ roomId }) {
   return {
     meta: { roomId, rev: 0, updatedAt: now, createdAt: now },
     phase: GAME_PHASE.LOBBY,
+    gameLog: [],
     gameResult: null,
     players: [],
     flow: {
       round: 0,
       turn: 0,
+      allTurnsCounter: 0,
       currentPlayerId: null,
       blockedUntil: null,
       crisisRoundCounter: 0,
