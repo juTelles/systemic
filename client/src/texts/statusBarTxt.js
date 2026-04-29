@@ -58,6 +58,16 @@ export const statusBarTxt = {
         en: `WAITING`,
       },
     },
+    preGameToolTipStatus: {
+      READY: {
+        pt: `Desmarcar PRONTO`,
+        en: `Unmark READY`,
+      },
+      WAITING: {
+        pt: `Marcar PRONTO`,
+        en: `Mark READY`,
+      },
+    },
   },
   systemStatesPanelTxt: {
     systemStateTitle: {

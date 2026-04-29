@@ -2,6 +2,7 @@ import styles from './PlayersPanelPreGame.module.css';
 import { useRoomActions } from '../../actions/roomsActions';
 import Button from '../button/Button';
 import { GiCheckMark } from 'react-icons/gi';
+import { Tooltip } from 'react-tooltip';
 
 function PlayersPanelPreGame({ players, localPlayerId, roomId, txt, gameConfigId }) {
   const { setReady, unsetReady } = useRoomActions(roomId, localPlayerId);
@@ -44,6 +45,7 @@ function PlayersPanelPreGame({ players, localPlayerId, roomId, txt, gameConfigId
               onClick={
                 player.status === 'READY' ? handleUnsetReady : handleReady
               }
+              title={txt.preGameToolTipStatus[player.status]?.pt || ''}
               padding={'0'}
               disabled={localPlayerId === player.id ? false : true}
               color={'var(--ciano)'}
