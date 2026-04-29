@@ -62,6 +62,7 @@ function LobbyScreen({ onJoinSuccess }) {
             height="3rem"
             color={'var(--ciano)'}
             onClick={handleCreateRoom}
+            title={lobbyTxt?.roomListButtons?.createRoomButton?.pt}
           />
         </div>
         <span className={styles.bottomInfo}>
