@@ -41,6 +41,7 @@ function RoomPlayerForm({ room, onJoinRoom }) {
           inverted={true}
           borderRadius="0px"
           color={'var(--ciano)'}
+          title={`Entrar na Sala ${room.id}`}
         />
       </form>
       {error && <span className={styles.errorMessage}>{error}</span>}

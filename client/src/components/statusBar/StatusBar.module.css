@@ -8,11 +8,17 @@
   width: 30%;
   height: 100%;
 }
-.gamePromptPanelWraper {
+.instructionsPanelWraper {
   width: 70%;
   height: 100%;
 }
 .playersPanelWraper {
   width: 40%;
   height: 100%;
+}
+.playersPanelWraper.inputMode {
+  width: 55%;
+}
+.instructionsPanelWraper.inputMode {
+  width: 65%;
 }

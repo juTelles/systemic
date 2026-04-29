@@ -14,6 +14,7 @@ function SideBarMenu({
   disabledExit,
   gameConfig,
   players,
+  downloadGameLog,
 }) {
   return (
     <>
@@ -42,6 +43,7 @@ function SideBarMenu({
               disabledExit={disabledExit}
               gameConfig={gameConfig}
               players={players}
+              downloadGameLog={downloadGameLog}
             />
           )}
         </div>

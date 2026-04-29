@@ -9,7 +9,7 @@ import { useRoomActions } from '../../actions/roomsActions';
 import ModalDialog from '../../components/modalDialog/ModalDialog.jsx';
 import { deleteRoom } from '../../api/roomsApi';
 import { useRoomSessionGuard } from '../../hooks/useSessionGuard';
-
+import { downloadGameLog } from '../../helpers/createGameLog.js';
 
 function GameScreen({ roomId, localPlayerId, onSessionInvalid }) {
   const { submitDecision, endDecision } = useRoomActions(roomId, localPlayerId);
@@ -28,13 +28,13 @@ function GameScreen({ roomId, localPlayerId, onSessionInvalid }) {
   const isReadOnlyTurn = localPlayerId !== roomState?.flow?.currentPlayerId;
 
   useRoomSessionGuard({
-  isLoading,
-  errorCode,
-  roomState,
-  localPlayerId,
-  onSessionInvalid,
-  maxFailures: 3,
-});
+    isLoading,
+    errorCode,
+    roomState,
+    localPlayerId,
+    onSessionInvalid,
+    maxFailures: 3,
+  });
 
   const handleDecisionUISelect = (decisionUIId, decisionInstructionKey) => {
     if (decisionUIId === selectedDecisionUIId) {
@@ -135,6 +135,7 @@ function GameScreen({ roomId, localPlayerId, onSessionInvalid }) {
           handleDecisionUISelect={handleDecisionUISelect}
           selectedDecisionUIId={selectedDecisionUIId}
           isReadOnly={isReadOnlyTurn}
+          currentPlayerId={roomState?.flow?.currentPlayerId}
         />
       </div>
       <div className={styles.lateralBarContainer}>
@@ -146,6 +147,7 @@ function GameScreen({ roomId, localPlayerId, onSessionInvalid }) {
           roomId={roomId}
           handleFinishDecision={handleFinishDecision}
           onSessionInvalid={onSessionInvalid}
+          downloadGameLog={() => downloadGameLog(roomState)}
         />
       </div>
       {showGameStartDialog ? (
@@ -162,12 +164,16 @@ function GameScreen({ roomId, localPlayerId, onSessionInvalid }) {
           modalType={'GAME_WIN'}
           button={true}
           onClose={handleEndGame}
+          downloadButton={true}
+          onPressDownload={() => downloadGameLog(roomState)}
         />
       ) : roomState?.gameResult === 'GAME_OVER' ? (
         <ModalDialog
           modalType={'GAME_OVER'}
           button={true}
           onClose={handleEndGame}
+          downloadButton={true}
+          onPressDownload={() => downloadGameLog(roomState)}
         />
       ) : null}
     </div>
