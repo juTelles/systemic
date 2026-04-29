@@ -6,11 +6,11 @@ import { createInitialState } from '../game/initialState.js';
 import { applyAction } from '../game/engine.js';
 import crypto from 'crypto';
 import { createPlayerState } from '../game/roomStateFactories.js';
+import { shouldDeleteRoomAfterAction } from '../game/gameHelpers.js';
 import {
   validateNickname,
   validateNicknameAvailability,
 } from '../../../shared/src/validations/validations.js';
-
 
 export function createRoomsService() {
   const store = createRoomsStore();
@@ -121,7 +121,18 @@ export function createRoomsService() {
     }
 
     let nextState = applyAction(room.state, action, ctx);
+
     room.state = nextState;
+
+    if (shouldDeleteRoomAfterAction(action, room.state)) {
+      store.removeRoom(roomId);
+      return {
+        ok: true,
+        roomDeleted: true,
+        state: null,
+      };
+    }
+
     return room.state;
   }
-};
+}
