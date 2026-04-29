@@ -20,6 +20,7 @@ import { processSystemHealth } from './systemHealthState/SystemHealthProcessor.j
 import { processEndRoundRequestPropagation } from './propagationProcessor.js';
 import { transitionResolvers } from './transitionResolvers.js';
 import { isGameReadyToStart } from './selectors.js';
+import { addGameLog } from './gameLog.js';
 import {
   verifyGameOverCondition,
   verifyGameWinCondition,
@@ -37,15 +38,14 @@ import {
 } from './roomStateFactories.js';
 
 export function applyAction(state, action, ctx = {}) {
-  console.info('[ACTION_RECEIVED]', {
-  roomId: state.meta?.roomId,
-  rev: state.meta?.rev,
-  step: state.flow?.step?.name,
-  actionType: action.type,
-  payload: action.payload,
-});
   const now = Date.now();
   const next = structuredClone(state); // Node 18+ (Render geralmente usa)
+
+  next.gameLog = addGameLog(next, {
+    type: '[ACTION_RECEIVED]',
+    actionType: action.type,
+    payload: action.payload,
+  });
 
   switch (action?.type) {
     case ACTION_TYPES.SET_CONFIG: {
@@ -133,7 +133,15 @@ export function applyAction(state, action, ctx = {}) {
       next.flow.step = createStepState(STEP_NAME.GAME_START);
       next.flow.blockedUntil = now + next.flow.step.flowControl.current.delayMs;
       next.components = structuredClone(components);
-      next.components = applyGameStartBugs(next.components);
+      const { nodes, log } = applyGameStartBugs(next.components);
+      next.components.nodes = nodes;
+      next.gameLog = addGameLog(next, {
+        type: '[BUGS_APPLIED]',
+        reason: 'GAME_START',
+        appliedBugs: log.bugsApplied,
+        propagated: log.componentsPropagated,
+        amount: 1,
+      });
       const deck = composeDeck(next.gameConfig.deckComposition);
       next.deck.drawPile = deck;
       next.phase = 'IN_GAME';
@@ -163,12 +171,19 @@ export function applyAction(state, action, ctx = {}) {
       }
 
       const handPointsToAdd = next.gameConfig.taskPoints.playerPerRound;
+      const players = next.players.map((player) => ({ ...player })); // shallow clone for logging
       next.players = addStartRoundPointsToPlayers(
-        next.players,
+        players,
         handPointsToAdd,
         next.gameConfig.taskPoints.maxPlayerPoints,
       );
-
+      next.gameLog = addGameLog(next, {
+        type: '[POINTS_APPLIED]',
+        reason: 'ROUND_START',
+        playersBefore: players,
+        playersAfter: next.players,
+        amount: handPointsToAdd,
+      });
       next.flow.turn = 0;
       next.meta.rev += 1;
       next.meta.updatedAt = now;
@@ -213,6 +228,7 @@ export function applyAction(state, action, ctx = {}) {
       next.flow.currentPlayerId = next.players[next.flow.turn].id;
       next.cardState.cardsRemainingInTurn = next.gameConfig.cardsPerTurn;
       next.meta.rev += 1;
+      next.flow.allTurnsCounter += 1;
       next.meta.updatedAt = now;
       next.log.lastEvent = {
         type: ACTION_TYPES.START_TURN,
@@ -273,6 +289,7 @@ export function applyAction(state, action, ctx = {}) {
       ) {
         const systemChange = processSystemHealth(decisionNext);
         if (systemChange.updated) {
+          decisionNext.gameLog = systemChange.gameLog;
           decisionNext.system = systemChange.system;
           decisionNext.flow.step.stepInstructionKey =
             systemChange.stepInstructionKey;
@@ -372,6 +389,7 @@ export function applyAction(state, action, ctx = {}) {
 
       const systemChange = processSystemHealth(next);
       if (systemChange.updated) {
+        next.gameLog = systemChange.gameLog;
         next.system = systemChange.system;
         next.flow.step.stepInstructionKey = systemChange.stepInstructionKey;
         next.flow.blockedUntil =
@@ -417,9 +435,15 @@ export function applyAction(state, action, ctx = {}) {
         next.system.healthState === SYSTEM_HEALTH_STATES.WARNING ||
         next.system.healthState === SYSTEM_HEALTH_STATES.CRITICAL
       ) {
-        next.components = processEndRoundRequestPropagation(next.components);
+        const requestPropagationResult =
+          processEndRoundRequestPropagation(next);
+        if (requestPropagationResult.propagated) {
+          next.gameLog = requestPropagationResult.gameLog;
+          next.components.nodes = requestPropagationResult.nodes;
+        }
         const systemChange = processSystemHealth(next);
         if (systemChange.updated) {
+          next.gameLog = systemChange.gameLog;
           next.system = systemChange.system;
           next.flow.step.stepInstructionKey = systemChange.stepInstructionKey;
           next.flow.blockedUntil =
