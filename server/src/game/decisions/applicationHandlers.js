@@ -1,4 +1,5 @@
 import { ERRORS } from '../../../../shared/src/constants/errors.js';
+import { addGameLog } from '../gameLog.js';
 import { isComponentEligibleForTests } from '../../../../shared/src/game/helpers.js';
 import {
   addPointsToPlayerBank,
@@ -24,11 +25,22 @@ export function handleResolveBugDecision(next, context, decisionDefinition) {
   const cost = next.gameConfig.decisionCosts[decisionDefinition.id];
   const updatedCurrentPlayer = subtractPointsToPlayer(currentPlayer, cost);
 
+  next.gameLog = addGameLog(next, {
+    type: '[DECISION_APPLIED]',
+    decisionType: 'RESOLVE_BUG',
+    chosen: decisionDefinition.id,
+    componentId: component.id,
+    componentBefore: component,
+    componentAfter: updatedComponent,
+    playerBefore: currentPlayer,
+    playerAfter: updatedCurrentPlayer,
+    cost: cost,
+  });
+
   next.components.nodes[component.id] = updatedComponent;
   next.players = next.players.map((player) =>
     player.id === currentPlayer.id ? updatedCurrentPlayer : player,
   );
-
   return next;
 }
 
@@ -43,6 +55,16 @@ export function handleDonatePointsDecision(next, context) {
     next.gameConfig.taskPoints.maxPlayerPoints,
   );
   const updatedCurrentPlayer = subtractPointsToPlayer(currentPlayer, amount);
+
+  next.gameLog = addGameLog(next, {
+    type: '[DECISION_APPLIED]',
+    decisionType: 'DONATE_POINTS',
+    currentPlayerBefore: currentPlayer,
+    currentPlayerAfter: updatedCurrentPlayer,
+    targetPlayerBefore: targetPlayer,
+    targetPlayerAfter: updatedTargetPlayer,
+    amount: amount,
+  });
 
   next.players = next.players.map((player) =>
     player.id === currentPlayer.id ? updatedCurrentPlayer : player,
@@ -62,6 +84,14 @@ export function handleHoldPointsDecision(next, context) {
     currentPlayer,
     amount,
   );
+
+  next.gameLog = addGameLog(next, {
+    type: '[DECISION_APPLIED]',
+    decisionType: 'HOLD_POINTS',
+    currentPlayerBefore: currentPlayer,
+    currentPlayerAfter: updatedCurrentPlayer,
+    amount: amount,
+  });
 
   next.players = next.players.map((player) =>
     player.id === currentPlayer.id ? updatedCurrentPlayer : player,
@@ -83,6 +113,17 @@ export function handleDevelopTestsDecision(next, context, decisionDefinition) {
 
   const cost = next.gameConfig.decisionCosts[decisionDefinition.id];
   const updatedCurrentPlayer = subtractPointsToPlayer(currentPlayer, cost);
+
+    next.gameLog = addGameLog(next, {
+    type: '[DECISION_APPLIED]',
+    decisionType: 'DEVELOP_TESTS',
+    componentId: component.id,
+    componentBefore: component,
+    componentAfter: updatedComponent,
+    playerBefore: currentPlayer,
+    playerAfter: updatedCurrentPlayer,
+    cost: cost,
+  });
 
   next.components.nodes[component.id] = updatedComponent;
   next.players = next.players.map((player) =>
