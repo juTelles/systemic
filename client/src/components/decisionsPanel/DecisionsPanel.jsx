@@ -48,7 +48,7 @@ function DecisionsPanel({
         const isAvailable = decisionUI.decisionIds.some((id) =>
           availableSet.has(id),
         );
-        
+
         const canAfford =
           cost != null ? currentPlayerTotalPoints >= cost : true;
         const canAffordTested =
@@ -58,7 +58,7 @@ function DecisionsPanel({
           decisionUIId === 'DONATE_POINTS'
             ? `Doar para o banco de outro jogador\nLimite: até ${cost} pontos por turno\n${isAvailable ? '' : canAfford ? '(Passou do limite)' : '(Não tem Pontos para Doar)'}`
             : decisionUIId === 'HOLD_POINTS'
-              ? `Guardar pontosde mão no seu banco\nLimite: até ${cost} pontos por turno\n${isAvailable ? '' : canAfford ? '(Passou do limite)' : '(Não tem pontos de mão para guardar no banco)'}`
+              ? `Guardar pontos de mão no seu banco\nLimite: até ${cost} pontos por turno\n${isAvailable ? '' : canAfford ? '(Passou do limite)' : '(Não tem pontos de mão para guardar no banco)'}`
               : decisionUIId === 'DEVELOP_TESTS'
                 ? `Desenvolver testes em um componente\nCusto: ${cost} pontos ${isAvailable ? '' : canAfford ? '(INDISPONÍVEL)\n\nTestes só podem ser desenvolvidos em\nComponentes sem Bugs cujo todos os\ncomponentes filhos já possuem Testes' : '(Faltam Pontos)'}`
                 : `Resolver ${getDecisionTxt(decisionUIId, null, 'label', 'pt')}Custo sem Testes: ${cost} ${isAvailable ? '' : canAfford ? `(Sem Componentes com Bugs)` : '(Faltam Pontos)'} ${costTested != null ? `\nCusto com Testes: ${costTested} ${isTestedDecisionAvailable ? '' : canAffordTested ? '(Sem Componentes Testados com Bugs)' : '(Faltam Pontos)'}` : ''}`;

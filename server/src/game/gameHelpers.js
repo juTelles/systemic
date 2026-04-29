@@ -151,11 +151,11 @@ function resolveBug(component, amount = 1) {
   if (component.bugAmount <= 0) {
     throw createError(ERRORS.COMPONENT_HAS_NO_BUGS_TO_RESOLVE);
   }
-
+  const bugAmount = component.bugAmount - amount;
   return {
     ...component,
     bugAmount: component.bugAmount - amount,
-    saturated: component.bugAmount - amount < component.saturationLimit,
+    saturated: bugAmount >= component.saturationLimit,
   };
 }
 

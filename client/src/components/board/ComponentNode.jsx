@@ -27,7 +27,7 @@ function ComponentNode({ anchorRef, ...props }) {
         id={id}
         role="button"
         tabIndex={0}
-        onClick={() => handleSubmit()}
+        onClick={handleSubmit}
         data-tooltip-id="nodes"
         ref={anchorRef}
         className={`${

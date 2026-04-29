@@ -1,3 +1,5 @@
+import crypto from 'crypto';
+
 export function addGameLog(state, event) {
   if (!state.gameLog) {
     state.gameLog = [];

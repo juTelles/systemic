@@ -21,7 +21,7 @@ export const instructionsTxt = (ctx) => {
         en: 'Welcome to Systemic!',
       },
       description: {
-        pt: `Para iniciar a partida todos devem clicar no CHECK do seu apelido no Painel de Pontos ao lado, confirmando que estão PRONTOS.\n\nEnquanto aguarda, aproveite para conhecer o tabuleiro e as regras no ícone '?' no topo da tela.\n\nDefina a quantidade de jogadores e a dificuldade clicando no ícone de engrenagem (canto superior direito).\nAlerta: Ao mudar a configurão stauts são resetados para AGUARDANDO.`,
+        pt: `Para iniciar a partida todos devem clicar no CHECK do seu apelido no Painel de Pontos ao lado, confirmando que estão PRONTOS.\n\nEnquanto aguarda, aproveite para conhecer o tabuleiro e as regras no ícone '?' no topo da tela.\n\nDefina a quantidade de jogadores e a dificuldade clicando no ícone de engrenagem (canto superior direito).\nAlerta: Ao mudar a configuração o status dos jogadores é resetado para AGUARDANDO.`,
         en: `To start the game, everyone must click the CHECK mark on their nickname line in the Points Panel on the side, confirming that they are READY.\n\nWhile waiting, take the opportunity to get to know the board and the rules by clicking on the '?' icon at the top of the screen.\n\nSet the number of players and difficulty by clicking on the gear icon (top right corner).\nWarning: Changing the configuration resets statuses to WAITING.`,
       },
     },
