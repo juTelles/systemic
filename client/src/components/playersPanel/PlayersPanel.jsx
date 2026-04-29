@@ -11,6 +11,7 @@ function PlayersPanel({
   isReadOnly,
   txt,
   handleDecisionSubmit,
+  inputMode
 }) {
   const [selectedTargetPlayerId, setSelectedTargetPlayerId] = useState(null);
   const [prevSelectedDecisionUIId, setPrevSelectedDecisionUIId] =
@@ -26,17 +27,13 @@ function PlayersPanel({
   }
 
   const targetMode = selectedDecisionUIId === 'DONATE_POINTS';
-  const inputMode =
-    !isReadOnly &&
-    (selectedDecisionUIId === 'HOLD_POINTS' ||
-      selectedDecisionUIId === 'DONATE_POINTS');
 
   const handleSelectTargetPlayer = (playerId) => {
     if (targetMode && !isReadOnly) {
       setSelectedTargetPlayerId(playerId);
     }
   };
-
+  const sendButtonToolTip  = txt.sendButton.pt || 'Send';
   return (
     <div className={`${styles.playersPanelContainer} ${inputMode ? styles.cianoShine : ''}`}>
       <div className={`${styles.gridRow} ${styles.playersPanelHeader}`}>
@@ -44,6 +41,7 @@ function PlayersPanel({
         <h2 className={styles.playersPanelTitle}>{txt.handPointsTitle.pt}</h2>
         <h2 className={styles.playersPanelTitle}>{txt.bankPointsTitle.pt}</h2>
         <h2 className={styles.playersPanelTitle}>{txt.totalPointsTitle.pt}</h2>
+        {inputMode? <h2 className={styles.playersPanelTitle}>{`Enviar`}</h2> : null}
       </div>
 
       <div
@@ -58,11 +56,13 @@ function PlayersPanel({
               handleDecisionSubmit={handleDecisionSubmit}
               selectedDecisionUIId={selectedDecisionUIId}
               roomState={roomState}
+              sendButtonToolTip={sendButtonToolTip}
             />
           ) : (
             <Player
               key={player.id}
               id={player.id}
+              sendButtonToolTip={sendButtonToolTip}
               playerName={player.nickname}
               pointsHand={player.handPoints}
               pointsBank={player.bankPoints}
@@ -70,6 +70,7 @@ function PlayersPanel({
               targetMode={player.id !== localPlayerId && targetMode}
               currentPlayerId={currentPlayerId}
               handleSelectTargetPlayer={handleSelectTargetPlayer}
+              inputMode={inputMode}
             />
           );
         })}

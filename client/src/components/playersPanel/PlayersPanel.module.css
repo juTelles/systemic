@@ -28,12 +28,16 @@
 
 .gridRow {
   display: grid;
-  grid-template-columns: 30% 1fr 1fr 1fr;
   width: 100%;
   padding: 5px 5px;
   justify-items: center;
   align-items: center;
   box-sizing: border-box;
+  display: grid;
+  grid-template-columns: 25%;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  gap: 5px;
 }
 .itemRow {
   transition: background 0.2s ease;
@@ -71,11 +75,14 @@
   cursor: none;
 }
 .playerPointsTotal {
-  width: 50%;
+  width: 40%;
   font-size: var(--font-md-lg);
   border: 1px solid var(--text-main);
   border-radius: 5px;
   padding: 0px 10px;
+}
+.playerPointsTotal.inputMode {
+  border: none;
 }
 
 /* Custom Scrollbar para Chrome/Edge/Safari */
@@ -112,8 +119,9 @@
   color: var(--text-error);
   font-size: 10px;
   line-height: 15px;
-  grid-column: 1 / -1;
+  display: flex;
   padding-top: 5px;
+  justify-content: center;
 }
 .cianoShine {
   box-shadow: 0 0 5px var(--color-ciano-neon),

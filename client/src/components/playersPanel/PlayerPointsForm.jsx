@@ -3,12 +3,14 @@ import Button from '../button/Button.jsx';
 import { GiCheckMark } from 'react-icons/gi';
 import { useState } from 'react';
 import { resolveDecision } from '../../helpers/decisionResolver.js';
+import { Tooltip } from 'react-tooltip';
 
 function PlayerPointsForm({
   targetPlayer,
   handleDecisionSubmit,
   selectedDecisionUIId,
   roomState,
+  sendButtonToolTip,
 }) {
   const [error, setError] = useState(null);
   const [value, setValue] = useState(0);
@@ -41,24 +43,14 @@ function PlayerPointsForm({
   };
 
   return (
+    <>
     <div
       className={`${styles.gridRow} ${styles.itemRow} ${styles.selectedRow}`}
     >
       <span className={`${styles.cell} ${styles.playerName}`}>{nickname}</span>
-      <Button
-        className={`${styles.cell} ${styles.buttonSendPoints}`}
-        label={<GiCheckMark size={16} />}
-        width={'40%'}
-        height={'1.2rem'}
-        margin={'3px 0px 3px 7px'}
-        borderRadius={'0px'}
-        padding={'0'}
-        color={'var(--ciano)'}
-        inverted
-        onClick={() =>
-          handleSubmit(roomState, selectedDecisionUIId, targetPlayer, value)
-        }
-      />
+      <span className={`${styles.cell} ${styles.playerPoints} `}>
+        {handPoints}
+      </span>
       <input
         id="inputPoints"
         className={`${styles.cell} ${styles.inputPoints}`}
@@ -72,8 +64,25 @@ function PlayerPointsForm({
       <span className={`${styles.cell} ${styles.playerPoints} `}>
         {displayTotal}
       </span>
-      {error && <span className={styles.errorMessage}>{error}</span>}
+      <Button
+        className={`${styles.cell} ${styles.buttonSendPoints}`}
+        label={<GiCheckMark size={16} />}
+        width={'40%'}
+        height={'1.2rem'}
+        margin={'3px 0px 3px 7px'}
+        borderRadius={'0px'}
+        padding={'0'}
+        color={'var(--ciano)'}
+        inverted
+        title={sendButtonToolTip}
+        onClick={() =>
+          handleSubmit(roomState, selectedDecisionUIId, targetPlayer, value)
+        }
+        />
+      <Tooltip id="my-btn" place="top" variant="light" />
     </div>
+    {error && <span className={styles.errorMessage}>{error}</span>}
+    </>
   );
 }
 
