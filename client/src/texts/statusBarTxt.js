@@ -16,12 +16,16 @@ export const statusBarTxt = {
       pt: `Total`,
       en: `Total`,
     },
+    sendButton: {
+      pt: `ENVIAR`,
+      en: `SEND`,
+    },
   },
   playersPanelPreGameTxt: {
-    preGameRoom:{
-        pt: `Sala`,
-        en: `Room`,
-      },
+    preGameRoom: {
+      pt: `Sala`,
+      en: `Room`,
+    },
     preGamePlayersTitle: {
       REGULAR_2P: {
         pt: `Regular - 2 Jogadores`,

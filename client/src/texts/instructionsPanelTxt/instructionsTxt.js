@@ -78,7 +78,7 @@ export const instructionsTxt = (ctx) => {
       },
       description: {
         pt: (ctx) =>
-          `Jogador ${ctx.playerNickname}, escolha entre resolver Bugs, desenvolver Testes, guardar Pontos ou doá-los a outro membro do Time.\n\nPressione PULAR quando não quiser mais realizar decisões.\n\nLembre-se: Ao final do turno, os Pontos da mão que não forem utilizados serão descartados.\nCada membro do Time pode ter no máximo ${ctx.maxPlayerPoints} Pontos no total (mão + banco).`,
+          `Jogador ${ctx.playerNickname}, pressione os botões no painel de decisões (abaixo do tabuleiro) para escolher entre resolver Bugs, desenvolver Testes, guardar Pontos ou doá-los a outro membro do Time.\n\nPressione PULAR quando não quiser mais realizar decisões.\n\nLembre-se: Ao final do turno, os Pontos da mão que não forem utilizados serão descartados.\nCada membro do Time pode ter no máximo ${ctx.maxPlayerPoints} Pontos no total (mão + banco).`,
         en: (ctx) =>
           `Player ${ctx.playerNickname}, choose between fixing Bugs, developing Tests, holding Points, or donating them to another Team member.\n\nPress SKIP when you don't want to make more decisions.\n\nRemember: At the end of the turn, any points in hand that are not used will be discarded.\nEach Team member can have a maximum of ${ctx.maxPlayerPoints} points in total (hand + bank).`,
       },
