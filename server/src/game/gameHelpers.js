@@ -2,6 +2,7 @@ import { isComponentEligibleForTests } from '../../../shared/src/game/helpers.js
 import { createError } from '../utils/createErrors.js';
 import { ERRORS } from '../../../shared/src/constants/errors.js';
 import { getTotalPlayersPoints } from './selectors.js';
+import { ACTION_TYPES } from '../../../shared/src/constants/actionsTypes.js';
 
 export {
   cloneNodesForUpdate,
@@ -21,6 +22,7 @@ export {
   addComponentToAbsorbedBugs,
   removeComponentFromAbsorbedBugs,
   removePlayerFromRoom,
+  shouldDeleteRoomAfterAction,
 };
 
 function cloneNodesForUpdate(stateComponents) {
@@ -277,5 +279,11 @@ function removePlayerFromRoom(players, playerId){
       (player) => player.id !== playerId
     );
 
-    return players;
-  }
+
+function shouldDeleteRoomAfterAction(action, nextState) {
+  return (
+    action.type === ACTION_TYPES.LEAVE_ROOM &&
+    Array.isArray(nextState.players) &&
+    nextState.players.length === 0
+  );
+}
