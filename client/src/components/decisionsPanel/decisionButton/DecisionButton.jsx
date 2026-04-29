@@ -1,4 +1,5 @@
 import styles from './DecisionButton.module.css';
+import { Tooltip } from 'react-tooltip';
 
 function DecisionButton({
   categoryColor,
@@ -14,6 +15,7 @@ function DecisionButton({
   isReadOnly,
   instructionKey,
   isPreGame,
+  title,
 }) {
   return (
     <div className={styles.decisionButtonWrapper}>
@@ -27,6 +29,8 @@ function DecisionButton({
         }}
         onClick={() => handleDecisionUISelect(id, instructionKey)}
         disabled={isDisabled}
+        data-tooltip-id="decisionButton"
+        title={title}
       >
         <span>{label}</span>
         <span
@@ -46,6 +50,7 @@ function DecisionButton({
           </span>
         ) : null}
       </button>
+      <Tooltip id="decisionButton" place="top" variant="light" />
     </div>
   );
 }
