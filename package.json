@@ -3,11 +3,16 @@
   "version": "1.0.0",
   "type": "module",
   "private": true,
+  "workspaces": [
+    "client",
+    "server"
+  ],
   "scripts": {
     "build": "npm --prefix client ci && npm --prefix client run build && npm --prefix server ci",
     "start": "npm --prefix server start",
     "dev:client": "npm --prefix client run dev",
     "dev:server": "npm --prefix server run dev",
-    "install:all": "npm --prefix server install && npm --prefix client install"
+    "install:all": "npm --prefix server install && npm --prefix client install",
+    "test": "npm run test --workspace=systemic-server"
   }
 }
