@@ -71,3 +71,9 @@ A questionnaire was applied after the session. Participants highlighted that the
 The playtests showed an iterative improvement of the prototype in terms of stability, UX, difficulty balance, and cooperative dynamics.
 
 The final observed playtest indicated that Systemic was able to support a complete online multiplayer match and stimulate collaboration, communication, strategic thinking, and collective decision-making.
+
+## Evidence and validation materials
+
+Complementary evidence from the playtests process is organized in a separate folder, including test reports, playtest records, game logs, questionnaires, screenshots, and supporting materials.
+
+[Evidence folder](https://drive.google.com/drive/folders/1cM144FDsedQ13VHwRcPM56IuPqxh6zNo?usp=sharing)
