@@ -26,11 +26,13 @@ Adds a player to an existing room.
 
 Client function: `joinRoom(roomId, nickname)`
 
-### `POST /api/rooms/:roomId/leave`
+### `POST /api/rooms/:roomId/leave` _(legacy)_
 
-Removes a player from a room.
+This endpoint is not currently supported by the backend and should not be used.
 
-Client function: `leaveRoom(roomId, playerId)`
+To leave a room, use the action-based flow instead:
+
+Client function: `sendAction(roomId, "LEAVE_ROOM", payload)`
 
 ### `POST /api/rooms/:roomId/deleteRoom`
 
