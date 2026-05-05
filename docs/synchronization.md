@@ -10,16 +10,16 @@ WebSocket communication was initially considered, but HTTP polling was chosen be
 
 Polling also reduces deployment complexity and avoids potential WebSocket restrictions in corporate networks.
 
-## Polling flows
+## Polling hooks
 
-Systemic currently uses two polling flows:
+Systemic currently uses two polling hooks:
 
-- `roomsPolling`: used in the lobby to keep the list of available rooms updated.
-- `statePolling`: used during the match to keep the current room state synchronized.
+- `useRoomsPolling`: used in the lobby to keep the list of available rooms updated.
+- `useStatePolling`: used during the match to keep the current room state synchronized.
 
 ## Rooms polling
 
-`roomsPolling` runs while the player is in the lobby.
+`useStatePolling` runs while the player is in the lobby.
 
 It periodically requests the list of available rooms from the backend and updates the lobby interface.
 
@@ -27,7 +27,7 @@ This allows players to see newly created rooms or changes in room availability.
 
 ## State polling
 
-`statePolling` runs during the match.
+`useRoomsPolling` runs during the match.
 
 It periodically requests the current state of the player’s room from the backend.
 
