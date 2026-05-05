@@ -14,7 +14,7 @@ Examples of actions used in Systemic include:
 - `UNSET_READY`: allows a player to cancel their ready state.
 - `START_GAME`: starts the match when the room is ready.
 - `SUBMIT_DECISION`: submits the decision chosen in the interface to the backend.
-- `DRAW_CARD`: waits for the player to draw a card.
+- `DRAW_CARD`: player-triggered action that advances the flow to reveal or show the already-drawn current card.
 - `APPLY_CARD_EFFECT`: applies the effect of the currently drawn card.
 - `CHECK_SYSTEM_HEALTH`: checks and updates the current system health conditions.
 
