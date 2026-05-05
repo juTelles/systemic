@@ -94,6 +94,6 @@ The current version was developed as an academic prototype and is not intended t
 
 Complementary evidence from the development and validation process is organized in a separate folder, including test reports, playtest records, game logs, questionnaires, screenshots, and supporting materials.
 
-[Evidence folder(https://drive.google.com/drive/folders/1cM144FDsedQ13VHwRcPM56IuPqxh6zNo?usp=sharing)]
+[Evidence folder](https://drive.google.com/drive/folders/1cM144FDsedQ13VHwRcPM56IuPqxh6zNo?usp=sharing)
 
 Some materials, such as recordings and raw logs, may have restricted access due to participant privacy.
