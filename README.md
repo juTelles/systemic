@@ -5,7 +5,11 @@
 
 ## Project status
 
-This project is currently in development.
+Systemic is currently a functional high-fidelity prototype.
+
+The application supports complete online multiplayer matches, including room management, shared game state synchronization, player actions, game rules, event logs, and automatic win/loss conditions.
+
+The project is still evolving, with planned improvements related to automated tests, technical documentation, UX refinements, game logs, and long-term persistence.
 
 ## Tech stack
 
@@ -32,6 +36,16 @@ Synchronization currently happens through two polling flows:
 
 - **State polling:** used to keep the current game state updated
 - **Rooms polling:** used to keep the room list updated
+
+## Deployment
+
+Systemic is deployed on Render as a single web service, with the frontend build served by the backend.
+
+The current deployed version is available at:
+
+https://systemic.onrender.com
+
+> Note: if the Render service is inactive, the first access may take a few seconds while the server starts.
 
 ## Requirements
 
@@ -68,13 +82,18 @@ If your backend is using the current default local setup, it should run at:
 
 http://localhost:3001
 
-## Production
-
-In production, the frontend is built and served by the backend as a single web application.
-
-The project is intended to be deployed as a Web Service on Render.
-
 ## Notes
+
 This repository is organized as a multi-part project, with separate frontend and backend applications.
-Shared definitions that must remain consistent between client and server are stored in the shared folder.
-The project is still under active development, so parts of the structure and implementation may change.
+
+Shared definitions that must remain consistent between client and server are stored in the `shared/` folder.
+
+The current version was developed as an academic prototype and is not intended to be considered a final commercial product. Some improvements remain planned, including automated test coverage, technical refactoring, persistent storage, and additional playtesting.
+
+## Evidence and validation materials
+
+Complementary evidence from the development and validation process is organized in a separate folder, including test reports, playtest records, game logs, questionnaires, screenshots, and supporting materials.
+
+[Evidence folder](https://drive.google.com/drive/folders/1cM144FDsedQ13VHwRcPM56IuPqxh6zNo?usp=sharing)
+
+Some materials, such as recordings and raw logs, may have restricted access due to participant privacy.
